@@ -51,6 +51,7 @@ import type { JobListing } from "@/lib/jobs-data"
 // Job categories with their icons
 const jobCategories = [
   { id: "all", label: "All Jobs", icon: Briefcase },
+  { id: "intern", label: "Internships", icon: GraduationCap },
   { id: "frontend", label: "Frontend", icon: Palette },
   { id: "backend", label: "Backend", icon: Server },
   { id: "fullstack", label: "Full Stack", icon: Code2 },
@@ -61,7 +62,17 @@ const jobCategories = [
   { id: "security", label: "Security", icon: Shield },
   { id: "hr", label: "HR", icon: Users },
   { id: "sales", label: "Sales", icon: Globe },
-  { id: "intern", label: "Internship", icon: Database },
+]
+
+// Employment type options
+const employmentTypes = [
+  { id: "all", label: "All Types" },
+  { id: "Full-time", label: "Full-time" },
+  { id: "Part-time", label: "Part-time" },
+  { id: "Contract", label: "Contract" },
+  { id: "Internship", label: "Paid Internship" },
+  { id: "Unpaid Internship", label: "Unpaid Internship" },
+  { id: "Freelance", label: "Freelance" },
 ]
 
 const getCategoryIcon = (category: string) => {
@@ -333,14 +344,27 @@ export function JobsSection() {
                               {job.posted}
                             </span>
                           </div>
-                          <div className="mt-2 flex items-center gap-2">
-                            <Badge variant="secondary" className="text-xs">
-                              {job.locationType}
-                            </Badge>
-                            <Badge variant="outline" className="text-xs">
-                              {job.employmentType}
-                            </Badge>
-                          </div>
+<div className="mt-2 flex flex-wrap items-center gap-1.5">
+                                            <Badge variant="secondary" className="text-xs">
+                                              {job.locationType}
+                                            </Badge>
+                                            <Badge 
+                                              variant={job.employmentType === "Unpaid Internship" ? "destructive" : "outline"} 
+                                              className={`text-xs ${job.employmentType === "Internship" ? "border-green-500 text-green-600" : ""}`}
+                                            >
+                                              {job.employmentType}
+                                            </Badge>
+                                            {job.employmentType === "Unpaid Internship" && (
+                                              <Badge variant="outline" className="border-orange-500 text-xs text-orange-600">
+                                                Beginner Friendly
+                                              </Badge>
+                                            )}
+                                            {job.employmentType === "Internship" && (
+                                              <Badge variant="outline" className="border-green-500 text-xs text-green-600">
+                                                Paid
+                                              </Badge>
+                                            )}
+                                          </div>
                         </div>
                         
                         <Button
@@ -408,6 +432,36 @@ export function JobsSection() {
                       </div>
                     </div>
 
+                    {/* Unpaid Internship Banner */}
+                    {selectedJob.employmentType === "Unpaid Internship" && (
+                      <div className="mb-4 rounded-lg border border-orange-500/30 bg-orange-500/10 p-4">
+                        <div className="flex items-start gap-3">
+                          <GraduationCap className="h-5 w-5 shrink-0 text-orange-600" />
+                          <div>
+                            <h4 className="font-semibold text-orange-700">Beginner-Friendly Unpaid Internship</h4>
+                            <p className="mt-1 text-sm text-orange-600/80">
+                              This is a learning opportunity for students and freshers. While unpaid, you will receive a certificate of completion, letter of recommendation, and hands-on project experience to kickstart your career.
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Paid Internship Banner */}
+                    {selectedJob.employmentType === "Internship" && (
+                      <div className="mb-4 rounded-lg border border-green-500/30 bg-green-500/10 p-4">
+                        <div className="flex items-start gap-3">
+                          <GraduationCap className="h-5 w-5 shrink-0 text-green-600" />
+                          <div>
+                            <h4 className="font-semibold text-green-700">Paid Internship Opportunity</h4>
+                            <p className="mt-1 text-sm text-green-600/80">
+                              This is a paid internship with stipend: {selectedJob.salary}. Great opportunity to gain industry experience while earning.
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+
                     {/* Quick Info */}
                     <div className="mb-6 grid grid-cols-2 gap-3 sm:grid-cols-4">
                       <div className="rounded-lg border border-border/50 bg-muted/30 p-3">
@@ -427,7 +481,7 @@ export function JobsSection() {
                       <div className="rounded-lg border border-border/50 bg-muted/30 p-3">
                         <div className="flex items-center gap-2 text-xs text-muted-foreground">
                           <DollarSign className="h-3.5 w-3.5" />
-                          Salary
+                          {selectedJob.employmentType === "Unpaid Internship" ? "Compensation" : "Salary"}
                         </div>
                         <p className="mt-1 text-sm font-medium text-foreground">{selectedJob.salary}</p>
                       </div>

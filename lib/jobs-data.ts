@@ -9,8 +9,10 @@ export interface JobListing {
   companyDescription: string
   location: string
   locationType: "On-site" | "Remote" | "Hybrid"
-  employmentType: "Full-time" | "Part-time" | "Contract" | "Internship" | "Freelance"
-  experienceLevel: "Entry level" | "Associate" | "Mid-Senior level" | "Director" | "Executive"
+  employmentType: "Full-time" | "Part-time" | "Contract" | "Internship" | "Unpaid Internship" | "Freelance"
+  experienceLevel: "Entry level" | "Associate" | "Mid-Senior level" | "Director" | "Executive" | "Fresher/Student"
+  isPaid: boolean
+  stipend?: string
   function: string
   industry: string
   salary: string
@@ -233,7 +235,17 @@ const jobTitles: Record<string, string[]> = {
     "Software Engineering Intern", "Frontend Development Intern", "Backend Development Intern",
     "Full Stack Development Intern", "Data Science Intern", "Machine Learning Intern",
     "DevOps Intern", "Mobile Development Intern", "UI/UX Design Intern", "QA Intern",
-    "HR Intern", "Marketing Intern", "Business Development Intern", "Product Management Intern"
+    "HR Intern", "Marketing Intern", "Business Development Intern", "Product Management Intern",
+    "Web Development Intern", "Python Development Intern", "Java Development Intern",
+    "Cloud Engineering Intern", "Cybersecurity Intern", "Research Intern", "Technical Writing Intern",
+    "Graphic Design Intern", "Content Writing Intern", "Digital Marketing Intern", "Social Media Intern",
+    "Operations Intern", "Finance Intern", "Legal Intern", "Customer Support Intern"
+  ],
+  unpaidIntern: [
+    "Campus Ambassador", "Student Developer", "Open Source Contributor", "Community Intern",
+    "Volunteer Web Developer", "Research Assistant", "Social Impact Intern", "NGO Tech Volunteer",
+    "Startup Intern (Equity)", "Learning Intern", "Shadow Program Intern", "Mentorship Program Intern",
+    "Academic Project Intern", "Virtual Intern", "Summer Research Fellow"
   ]
 }
 
@@ -313,7 +325,15 @@ const skillsByCategory: Record<string, string[][]> = {
     ["Python", "JavaScript", "SQL", "Git", "Problem Solving"],
     ["React", "Node.js", "HTML/CSS", "Basic Algorithms"],
     ["Python", "Machine Learning", "Pandas", "NumPy", "Jupyter"],
-    ["Communication", "Teamwork", "Eagerness to Learn", "Adaptability"]
+    ["Communication", "Teamwork", "Eagerness to Learn", "Adaptability"],
+    ["Java", "Spring Boot", "MySQL", "REST APIs", "Git"],
+    ["Flutter", "Dart", "Firebase", "Mobile Development", "UI Design"]
+  ],
+  unpaidIntern: [
+    ["HTML", "CSS", "JavaScript", "Basic Programming", "Willingness to Learn"],
+    ["Communication", "Social Media", "Content Creation", "Research", "MS Office"],
+    ["Python Basics", "Data Entry", "Excel", "Google Sheets", "Documentation"],
+    ["Graphic Design", "Canva", "Adobe Basics", "Creativity", "Attention to Detail"]
   ]
 }
 
@@ -359,14 +379,16 @@ const locations = {
 // Salary ranges
 const salaryRanges = {
   india: {
-    intern: ["₹15,000 - ₹25,000/month", "₹20,000 - ₹35,000/month", "₹10,000 - ₹20,000/month"],
+    unpaidIntern: ["Unpaid - Certificate Provided", "Unpaid - Letter of Recommendation", "Unpaid - Learning Opportunity"],
+    intern: ["₹15,000 - ₹25,000/month", "₹20,000 - ₹35,000/month", "₹10,000 - ₹20,000/month", "₹5,000 - ₹15,000/month", "₹8,000 - ₹18,000/month"],
     entry: ["₹4,00,000 - ₹8,00,000", "₹5,00,000 - ₹10,00,000", "₹6,00,000 - ₹12,00,000"],
     mid: ["₹10,00,000 - ₹18,00,000", "₹12,00,000 - ₹22,00,000", "₹15,00,000 - ₹25,00,000"],
     senior: ["₹20,00,000 - ₹35,00,000", "₹25,00,000 - ₹45,00,000", "₹30,00,000 - ₹50,00,000"],
     lead: ["₹35,00,000 - ₹55,00,000", "₹40,00,000 - ₹65,00,000", "₹50,00,000 - ₹80,00,000"]
   },
   us: {
-    intern: ["$25 - $45/hour", "$30 - $50/hour", "$35 - $60/hour"],
+    unpaidIntern: ["Unpaid - Certificate Provided", "Unpaid - Academic Credit", "Unpaid - Portfolio Building"],
+    intern: ["$25 - $45/hour", "$30 - $50/hour", "$35 - $60/hour", "$20 - $35/hour"],
     entry: ["$70,000 - $100,000", "$80,000 - $120,000", "$90,000 - $130,000"],
     mid: ["$120,000 - $160,000", "$130,000 - $180,000", "$140,000 - $200,000"],
     senior: ["$160,000 - $220,000", "$180,000 - $250,000", "$200,000 - $280,000"],
@@ -666,17 +688,26 @@ function generateApplicantCount(): number {
 }
 
 // Generate a single job listing
-function generateJob(id: number, category: string, region: "india" | "us" | "remote"): JobListing {
+function generateJob(id: number, category: string, region: "india" | "us" | "remote", isUnpaidIntern: boolean = false): JobListing {
   const company = companies[Math.floor(Math.random() * companies.length)]
-  const titles = jobTitles[category] || jobTitles.fullstack
+  
+  // Handle unpaid internships separately
+  const actualCategory = isUnpaidIntern ? "unpaidIntern" : category
+  const titles = isUnpaidIntern ? jobTitles.unpaidIntern : (jobTitles[category] || jobTitles.fullstack)
   const title = titles[Math.floor(Math.random() * titles.length)]
-  const skills = skillsByCategory[category]?.[Math.floor(Math.random() * (skillsByCategory[category]?.length || 1))] || ["JavaScript", "Python", "SQL"]
+  const skillsOptions = isUnpaidIntern ? skillsByCategory.unpaidIntern : skillsByCategory[category]
+  const skills = skillsOptions?.[Math.floor(Math.random() * (skillsOptions?.length || 1))] || ["JavaScript", "Python", "SQL"]
   
   // Determine experience level from title
   let experienceLevel: JobListing["experienceLevel"] = "Mid-Senior level"
-  let salaryLevel: "intern" | "entry" | "mid" | "senior" | "lead" = "mid"
+  let salaryLevel: "unpaidIntern" | "intern" | "entry" | "mid" | "senior" | "lead" = "mid"
+  let isPaid = true
   
-  if (title.includes("Intern")) {
+  if (isUnpaidIntern) {
+    experienceLevel = "Fresher/Student"
+    salaryLevel = "unpaidIntern"
+    isPaid = false
+  } else if (title.includes("Intern")) {
     experienceLevel = "Entry level"
     salaryLevel = "intern"
   } else if (title.includes("Junior") || title.includes("Associate") || !title.includes("Senior") && !title.includes("Lead") && !title.includes("Principal")) {
@@ -711,19 +742,21 @@ function generateJob(id: number, category: string, region: "india" | "us" | "rem
   const salary = salaryOptions[Math.floor(Math.random() * salaryOptions.length)]
   
   // Get responsibilities and qualifications
-  const responsibilities = responsibilitiesTemplates[category] || responsibilitiesTemplates.fullstack
-  const qualifications = qualificationsTemplates[category] || qualificationsTemplates.fullstack
+  const respCategory = isUnpaidIntern ? "intern" : category
+  const responsibilities = responsibilitiesTemplates[respCategory] || responsibilitiesTemplates.fullstack
+  const qualifications = qualificationsTemplates[respCategory] || qualificationsTemplates.fullstack
   
   // Get education
   let education = educationRequirements.technical
   if (category === "data" || category === "ai") education = educationRequirements.data
   else if (category === "hr") education = educationRequirements.hr
   else if (category === "sales") education = educationRequirements.business
-  else if (category === "intern") education = educationRequirements.intern
+  else if (category === "intern" || isUnpaidIntern) education = educationRequirements.intern
   
   // Employment type
   let employmentType: JobListing["employmentType"] = "Full-time"
-  if (category === "intern") employmentType = "Internship"
+  if (isUnpaidIntern) employmentType = "Unpaid Internship"
+  else if (category === "intern") employmentType = "Internship"
   else if (Math.random() < 0.1) employmentType = "Contract"
   
   // Function mapping
@@ -738,8 +771,21 @@ function generateJob(id: number, category: string, region: "india" | "us" | "rem
     security: "Information Security",
     hr: "Human Resources",
     sales: "Sales & Business Development",
-    intern: "Internship Program"
+    intern: "Internship Program",
+    unpaidIntern: "Internship Program - Beginners"
   }
+  
+  // Benefits for unpaid internships
+  const internBenefits = [
+    "Certificate of completion",
+    "Letter of recommendation",
+    "Hands-on project experience",
+    "Mentorship from industry experts",
+    "Portfolio building opportunity",
+    "Networking opportunities",
+    "Flexible working hours",
+    "Remote work option"
+  ]
   
   return {
     id,
@@ -751,34 +797,49 @@ function generateJob(id: number, category: string, region: "india" | "us" | "rem
     locationType,
     employmentType,
     experienceLevel,
-    function: functionMap[category] || "Engineering",
+    isPaid,
+    stipend: isUnpaidIntern ? undefined : (category === "intern" ? salary : undefined),
+    function: functionMap[isUnpaidIntern ? "unpaidIntern" : category] || "Engineering",
     industry: company.industry,
     salary,
     posted: generatePostedTime(),
     applicants: generateApplicantCount(),
-    category,
+    category: isUnpaidIntern ? "intern" : category,
     skills,
-    aboutJob: `We are looking for a talented ${title} to join our ${company.name} team. This is an exciting opportunity to work on cutting-edge technology and make a significant impact on our products and services.`,
-    positionOverview: `As a ${title} at ${company.name}, you will be responsible for ${category === "frontend" ? "building and maintaining user-facing applications" : category === "backend" ? "developing scalable backend services and APIs" : category === "ai" ? "designing and implementing machine learning solutions" : "delivering high-quality solutions"}. You will collaborate with cross-functional teams to deliver exceptional results and contribute to our company's growth.`,
+    aboutJob: isUnpaidIntern 
+      ? `${company.name} is offering an exciting unpaid internship opportunity for students and freshers looking to kickstart their career. This is a great chance to gain real-world experience, build your portfolio, and learn from industry professionals.`
+      : `We are looking for a talented ${title} to join our ${company.name} team. This is an exciting opportunity to work on cutting-edge technology and make a significant impact on our products and services.`,
+    positionOverview: isUnpaidIntern
+      ? `As a ${title} at ${company.name}, you will get hands-on experience working on real projects. This internship is designed for beginners who want to learn and grow. No prior experience required - just enthusiasm and willingness to learn!`
+      : `As a ${title} at ${company.name}, you will be responsible for ${category === "frontend" ? "building and maintaining user-facing applications" : category === "backend" ? "developing scalable backend services and APIs" : category === "ai" ? "designing and implementing machine learning solutions" : "delivering high-quality solutions"}. You will collaborate with cross-functional teams to deliver exceptional results and contribute to our company's growth.`,
     keyResponsibilities: responsibilities.slice(0, 5 + Math.floor(Math.random() * 3)),
-    preferredQualifications: qualifications.slice(0, 5 + Math.floor(Math.random() * 3)),
+    preferredQualifications: isUnpaidIntern 
+      ? ["Currently enrolled in college/university", "Basic understanding of relevant concepts", "Strong communication skills", "Eagerness to learn", "Ability to commit 20-40 hours per week"]
+      : qualifications.slice(0, 5 + Math.floor(Math.random() * 3)),
     educationalRequirements: education.slice(0, 2 + Math.floor(Math.random() * 2)),
     toolsAndTechnologies: skills,
-    benefits: benefitsTemplates.slice(0, 6 + Math.floor(Math.random() * 4)),
+    benefits: isUnpaidIntern ? internBenefits : benefitsTemplates.slice(0, 6 + Math.floor(Math.random() * 4)),
     companySize: company.size,
     companyWebsite: company.website,
     applyUrl: `${company.website}/careers`
   }
 }
 
-// Generate jobs database
+// Generate jobs database with internship quota for beginners
 export function generateJobsDatabase(count: number = 1000): JobListing[] {
   const jobs: JobListing[] = []
-  const categories = Object.keys(jobTitles)
-  const regions: ("india" | "us" | "remote")[] = ["india", "us", "remote"]
+  const categories = Object.keys(jobTitles).filter(c => c !== "unpaidIntern") // Exclude unpaidIntern from regular rotation
   
-  for (let i = 0; i < count; i++) {
-    const category = categories[Math.floor(Math.random() * categories.length)]
+  // Calculate internship quota (15% of total jobs will be internships, 5% unpaid)
+  const paidInternshipQuota = Math.floor(count * 0.10) // 10% paid internships
+  const unpaidInternshipQuota = Math.floor(count * 0.05) // 5% unpaid internships
+  const regularJobsCount = count - paidInternshipQuota - unpaidInternshipQuota
+  
+  let jobId = 1
+  
+  // Generate regular jobs
+  for (let i = 0; i < regularJobsCount; i++) {
+    const category = categories.filter(c => c !== "intern")[Math.floor(Math.random() * (categories.length - 1))]
     // More jobs from India
     const regionWeights = [0.6, 0.3, 0.1] // 60% India, 30% US, 10% Remote
     const rand = Math.random()
@@ -786,11 +847,36 @@ export function generateJobsDatabase(count: number = 1000): JobListing[] {
     if (rand > regionWeights[0]) region = "us"
     if (rand > regionWeights[0] + regionWeights[1]) region = "remote"
     
-    jobs.push(generateJob(i + 1, category, region))
+    jobs.push(generateJob(jobId++, category, region, false))
+  }
+  
+  // Generate paid internships (beginner friendly)
+  for (let i = 0; i < paidInternshipQuota; i++) {
+    const rand = Math.random()
+    let region: "india" | "us" | "remote" = "india"
+    if (rand > 0.7) region = "us" // 70% India, 20% US, 10% Remote
+    if (rand > 0.9) region = "remote"
+    
+    jobs.push(generateJob(jobId++, "intern", region, false))
+  }
+  
+  // Generate unpaid internships (for absolute beginners)
+  for (let i = 0; i < unpaidInternshipQuota; i++) {
+    const rand = Math.random()
+    let region: "india" | "us" | "remote" = "india"
+    if (rand > 0.8) region = "remote" // 80% India, 20% Remote (most unpaid internships are in India)
+    
+    jobs.push(generateJob(jobId++, "intern", region, true))
+  }
+  
+  // Shuffle jobs array to mix internships with regular jobs
+  for (let i = jobs.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [jobs[i], jobs[j]] = [jobs[j], jobs[i]]
   }
   
   return jobs
 }
 
-// Pre-generate a large batch of jobs
-export const jobsDatabase = generateJobsDatabase(25000)
+// Pre-generate a large batch of jobs (30,000 total)
+export const jobsDatabase = generateJobsDatabase(30000)

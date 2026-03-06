@@ -91,8 +91,13 @@ export async function GET(req: NextRequest) {
       companies,
       industries,
       locationTypes: ["Remote", "Hybrid", "On-site"],
-      employmentTypes: ["Full-time", "Part-time", "Contract", "Internship", "Freelance"],
-      experienceLevels: ["Entry level", "Associate", "Mid-Senior level", "Director", "Executive"]
+      employmentTypes: ["Full-time", "Part-time", "Contract", "Internship", "Unpaid Internship", "Freelance"],
+      experienceLevels: ["Fresher/Student", "Entry level", "Associate", "Mid-Senior level", "Director", "Executive"]
+    },
+    stats: {
+      totalJobs: jobsDatabase.length,
+      paidInternships: jobsDatabase.filter(j => j.employmentType === "Internship").length,
+      unpaidInternships: jobsDatabase.filter(j => j.employmentType === "Unpaid Internship").length,
     }
   })
 }
