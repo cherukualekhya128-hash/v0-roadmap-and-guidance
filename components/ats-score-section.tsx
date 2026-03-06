@@ -146,17 +146,27 @@ export function ATSScoreSection() {
     setHasAnalyzed(false)
     setHasResumeSkills(false)
     setUploadedFileName(null)
+    setUploadError(null)
     if (fileInputRef.current) {
       fileInputRef.current.value = ""
     }
   }
 
+  const [uploadError, setUploadError] = useState<string | null>(null)
+
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
     if (!file) return
 
+    // Validate file size (max 10MB)
+    if (file.size > 10 * 1024 * 1024) {
+      setUploadError("File is too large. Please upload a file smaller than 10MB.")
+      return
+    }
+
     setIsUploading(true)
     setUploadedFileName(file.name)
+    setUploadError(null)
 
     try {
       const formData = new FormData()
@@ -167,12 +177,16 @@ export function ATSScoreSection() {
         body: formData,
       })
 
+      const data = await response.json()
+
       if (!response.ok) {
-        const error = await response.json()
-        throw new Error(error.error || "Failed to parse file")
+        throw new Error(data.error || "Failed to parse file")
       }
 
-      const data = await response.json()
+      if (!data.text || data.text.length < 20) {
+        throw new Error("Could not extract text from file. Please paste your resume text directly.")
+      }
+
       setResumeText(data.text)
       setIsUploading(false)
       
@@ -186,7 +200,7 @@ export function ATSScoreSection() {
     } catch (error) {
       console.error("Upload error:", error)
       setUploadedFileName(null)
-      alert(error instanceof Error ? error.message : "Failed to parse file")
+      setUploadError(error instanceof Error ? error.message : "Failed to parse file. Please try pasting your resume text directly.")
     } finally {
       setIsUploading(false)
     }
@@ -449,6 +463,15 @@ export function ATSScoreSection() {
                 </div>
               )}
             </div>
+
+            {/* Upload Error Display */}
+            {uploadError && (
+              <div className="rounded-lg border border-red-500/30 bg-red-500/10 p-3 text-sm text-red-600">
+                <p className="font-medium">Upload Error</p>
+                <p className="mt-1">{uploadError}</p>
+                <p className="mt-2 text-xs">Tip: Try pasting your resume text directly in the box below.</p>
+              </div>
+            )}
 
             {/* Or divider */}
             <div className="flex items-center gap-3">
