@@ -35,8 +35,9 @@ import {
   ArrowRight,
   X,
   Play,
+  Bell,
+  CheckCircle,
 } from "lucide-react"
-import Link from "next/link"
 
 const categories = [
   { id: "all", label: "All Features" },
@@ -234,6 +235,11 @@ export { features }
 export function FeaturesGrid() {
   const [activeCategory, setActiveCategory] = useState("all")
   const [selectedFeature, setSelectedFeature] = useState<typeof features[0] | null>(null)
+  const [notifiedFeatures, setNotifiedFeatures] = useState<Set<number>>(new Set())
+
+  const handleNotifyMe = (featureId: number) => {
+    setNotifiedFeatures(prev => new Set(prev).add(featureId))
+  }
 
   const filteredFeatures = activeCategory === "all" 
     ? features 
@@ -364,14 +370,23 @@ export function FeaturesGrid() {
                         <Play className="h-4 w-4" />
                         Try Paper Chatbot
                       </Button>
-                    ) : (
+                    ) : notifiedFeatures.has(selectedFeature.id) ? (
                       <Button
                         className="flex-1 gap-2"
                         variant="secondary"
                         disabled
                       >
-                        <Clock className="h-4 w-4" />
-                        Coming Soon
+                        <CheckCircle className="h-4 w-4 text-green-500" />
+                        You will be notified
+                      </Button>
+                    ) : (
+                      <Button
+                        className="flex-1 gap-2"
+                        variant="default"
+                        onClick={() => handleNotifyMe(selectedFeature.id)}
+                      >
+                        <Bell className="h-4 w-4" />
+                        Notify Me When Ready
                       </Button>
                     )}
                     <Button variant="outline" onClick={() => setSelectedFeature(null)} className="gap-2">
