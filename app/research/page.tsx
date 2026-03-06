@@ -1,6 +1,7 @@
 import { Metadata } from "next"
 import { ResearchNavbar } from "@/components/research/research-navbar"
 import { ResearchHero } from "@/components/research/research-hero"
+import { PaperChatbot } from "@/components/research/paper-chatbot"
 import { FeaturesGrid } from "@/components/research/features-grid"
 import { ResearchFooter } from "@/components/research/research-footer"
 
@@ -14,6 +15,7 @@ export default function ResearchPage() {
     <main className="min-h-screen bg-background">
       <ResearchNavbar />
       <ResearchHero />
+      <PaperChatbot />
       <FeaturesGrid />
       <ResearchFooter />
     </main>
