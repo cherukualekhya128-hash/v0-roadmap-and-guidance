@@ -150,6 +150,12 @@ export function ATSScoreSection() {
 
       const data = await response.json()
       setResumeText(data.text)
+      
+      // Auto-analyze if job description is already provided
+      if (jobAdText.trim()) {
+        setIsUploading(false)
+        await runAnalysis(data.text, jobAdText)
+      }
     } catch (error) {
       console.error("Upload error:", error)
       setUploadedFileName(null)
@@ -276,19 +282,20 @@ export function ATSScoreSection() {
     })
   }
 
-  const handleAnalyze = async () => {
-    if (!resumeText.trim() || !jobAdText.trim()) return
+  // Reusable analysis function that can be called with custom text
+  const runAnalysis = async (resume: string, jobAd: string) => {
+    if (!resume.trim() || !jobAd.trim()) return
     
     setIsAnalyzing(true)
-    // Simulate processing time
-    await new Promise(resolve => setTimeout(resolve, 1500))
+    // Brief processing delay for UX
+    await new Promise(resolve => setTimeout(resolve, 800))
     
     // Analyze keywords from both documents
     const analyzedKeywords: KeywordMatch[] = []
     
     for (const kw of keywordDatabase) {
-      const inResume = checkKeywordPresence(resumeText, [kw.keyword.toLowerCase(), ...kw.variants])
-      const inJobAd = checkKeywordPresence(jobAdText, [kw.keyword.toLowerCase(), ...kw.variants])
+      const inResume = checkKeywordPresence(resume, [kw.keyword.toLowerCase(), ...kw.variants])
+      const inJobAd = checkKeywordPresence(jobAd, [kw.keyword.toLowerCase(), ...kw.variants])
       
       // Only include if keyword appears in at least one document
       if (inResume || inJobAd) {
@@ -319,6 +326,11 @@ export function ATSScoreSection() {
     setKeywords(sortedKeywords)
     setHasAnalyzed(true)
     setIsAnalyzing(false)
+  }
+
+  // Button click handler uses current state
+  const handleAnalyze = async () => {
+    await runAnalysis(resumeText, jobAdText)
   }
 
   return (
