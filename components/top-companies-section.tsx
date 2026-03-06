@@ -1,9 +1,10 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
+import { Switch } from "@/components/ui/switch"
 import {
   Building2,
   ExternalLink,
@@ -14,9 +15,41 @@ import {
   ChevronRight,
   Globe,
   Sparkles,
+  Bell,
+  BellOff,
+  Check,
+  DollarSign,
+  Clock,
+  X,
 } from "lucide-react"
 
-const companies = [
+interface JobOffer {
+  id: string
+  title: string
+  location: string
+  type: "Full-time" | "Part-time" | "Contract" | "Internship"
+  salary: string
+  posted: string
+  isNew: boolean
+}
+
+interface Company {
+  name: string
+  logo: string
+  industry: string
+  description: string
+  employees: string
+  headquarters: string
+  openRoles: string[]
+  benefits: string[]
+  careerUrl: string
+  color: string
+  bgColor: string
+  textColor: string
+  jobs: JobOffer[]
+}
+
+const companies: Company[] = [
   {
     name: "Google",
     logo: "G",
@@ -30,6 +63,12 @@ const companies = [
     color: "from-blue-500 to-green-500",
     bgColor: "bg-blue-500/10",
     textColor: "text-blue-500",
+    jobs: [
+      { id: "g1", title: "Senior Software Engineer", location: "Mountain View, CA", type: "Full-time", salary: "$180K - $250K", posted: "2 days ago", isNew: true },
+      { id: "g2", title: "ML Engineer - LLMs", location: "New York, NY", type: "Full-time", salary: "$200K - $280K", posted: "1 week ago", isNew: false },
+      { id: "g3", title: "Cloud Solutions Architect", location: "Remote", type: "Full-time", salary: "$160K - $220K", posted: "3 days ago", isNew: true },
+      { id: "g4", title: "Product Manager - AI", location: "San Francisco, CA", type: "Full-time", salary: "$170K - $240K", posted: "5 days ago", isNew: false },
+    ],
   },
   {
     name: "Microsoft",
@@ -44,6 +83,12 @@ const companies = [
     color: "from-blue-600 to-cyan-500",
     bgColor: "bg-blue-600/10",
     textColor: "text-blue-600",
+    jobs: [
+      { id: "m1", title: "Azure DevOps Engineer", location: "Redmond, WA", type: "Full-time", salary: "$150K - $200K", posted: "1 day ago", isNew: true },
+      { id: "m2", title: "Senior .NET Developer", location: "Remote", type: "Full-time", salary: "$140K - $180K", posted: "4 days ago", isNew: false },
+      { id: "m3", title: "AI Research Scientist", location: "Redmond, WA", type: "Full-time", salary: "$180K - $260K", posted: "2 days ago", isNew: true },
+      { id: "m4", title: "Product Designer", location: "Seattle, WA", type: "Full-time", salary: "$130K - $170K", posted: "1 week ago", isNew: false },
+    ],
   },
   {
     name: "Amazon",
@@ -58,6 +103,12 @@ const companies = [
     color: "from-orange-500 to-yellow-500",
     bgColor: "bg-orange-500/10",
     textColor: "text-orange-500",
+    jobs: [
+      { id: "a1", title: "SDE II - AWS", location: "Seattle, WA", type: "Full-time", salary: "$160K - $220K", posted: "1 day ago", isNew: true },
+      { id: "a2", title: "Solutions Architect", location: "Remote", type: "Full-time", salary: "$150K - $200K", posted: "3 days ago", isNew: true },
+      { id: "a3", title: "Data Engineer - Redshift", location: "Austin, TX", type: "Full-time", salary: "$140K - $190K", posted: "1 week ago", isNew: false },
+      { id: "a4", title: "Technical Program Manager", location: "Arlington, VA", type: "Full-time", salary: "$145K - $195K", posted: "5 days ago", isNew: false },
+    ],
   },
   {
     name: "Apple",
@@ -72,6 +123,11 @@ const companies = [
     color: "from-gray-600 to-gray-800",
     bgColor: "bg-gray-500/10",
     textColor: "text-gray-500",
+    jobs: [
+      { id: "ap1", title: "iOS Software Engineer", location: "Cupertino, CA", type: "Full-time", salary: "$170K - $230K", posted: "2 days ago", isNew: true },
+      { id: "ap2", title: "Machine Learning Engineer", location: "Cupertino, CA", type: "Full-time", salary: "$180K - $250K", posted: "4 days ago", isNew: false },
+      { id: "ap3", title: "Hardware Design Engineer", location: "Austin, TX", type: "Full-time", salary: "$160K - $220K", posted: "1 week ago", isNew: false },
+    ],
   },
   {
     name: "IBM",
@@ -86,6 +142,11 @@ const companies = [
     color: "from-blue-700 to-blue-500",
     bgColor: "bg-blue-700/10",
     textColor: "text-blue-700",
+    jobs: [
+      { id: "ib1", title: "Cloud Solutions Architect", location: "Remote", type: "Full-time", salary: "$140K - $180K", posted: "3 days ago", isNew: true },
+      { id: "ib2", title: "Watson AI Developer", location: "New York, NY", type: "Full-time", salary: "$130K - $170K", posted: "5 days ago", isNew: false },
+      { id: "ib3", title: "Cybersecurity Consultant", location: "Washington, DC", type: "Full-time", salary: "$125K - $165K", posted: "1 week ago", isNew: false },
+    ],
   },
   {
     name: "Intel",
@@ -100,6 +161,10 @@ const companies = [
     color: "from-blue-500 to-cyan-400",
     bgColor: "bg-cyan-500/10",
     textColor: "text-cyan-600",
+    jobs: [
+      { id: "in1", title: "ASIC Design Engineer", location: "Santa Clara, CA", type: "Full-time", salary: "$150K - $200K", posted: "2 days ago", isNew: true },
+      { id: "in2", title: "Firmware Developer", location: "Portland, OR", type: "Full-time", salary: "$130K - $170K", posted: "4 days ago", isNew: false },
+    ],
   },
   {
     name: "Oracle",
@@ -114,6 +179,11 @@ const companies = [
     color: "from-red-600 to-red-500",
     bgColor: "bg-red-500/10",
     textColor: "text-red-500",
+    jobs: [
+      { id: "o1", title: "Oracle DBA", location: "Austin, TX", type: "Full-time", salary: "$120K - $160K", posted: "1 day ago", isNew: true },
+      { id: "o2", title: "Java Cloud Developer", location: "Remote", type: "Full-time", salary: "$130K - $175K", posted: "3 days ago", isNew: true },
+      { id: "o3", title: "OCI Solutions Architect", location: "Chicago, IL", type: "Full-time", salary: "$140K - $185K", posted: "1 week ago", isNew: false },
+    ],
   },
   {
     name: "Meta",
@@ -128,6 +198,11 @@ const companies = [
     color: "from-blue-600 to-purple-600",
     bgColor: "bg-purple-500/10",
     textColor: "text-purple-600",
+    jobs: [
+      { id: "me1", title: "React Native Engineer", location: "Menlo Park, CA", type: "Full-time", salary: "$175K - $240K", posted: "1 day ago", isNew: true },
+      { id: "me2", title: "VR/AR Software Engineer", location: "Burlingame, CA", type: "Full-time", salary: "$180K - $250K", posted: "3 days ago", isNew: true },
+      { id: "me3", title: "ML Infrastructure Engineer", location: "Remote", type: "Full-time", salary: "$170K - $230K", posted: "5 days ago", isNew: false },
+    ],
   },
   {
     name: "NVIDIA",
@@ -142,6 +217,11 @@ const companies = [
     color: "from-green-500 to-green-600",
     bgColor: "bg-green-500/10",
     textColor: "text-green-500",
+    jobs: [
+      { id: "n1", title: "CUDA Software Engineer", location: "Santa Clara, CA", type: "Full-time", salary: "$180K - $260K", posted: "1 day ago", isNew: true },
+      { id: "n2", title: "Deep Learning Researcher", location: "Remote", type: "Full-time", salary: "$200K - $300K", posted: "2 days ago", isNew: true },
+      { id: "n3", title: "Graphics Driver Developer", location: "Austin, TX", type: "Full-time", salary: "$160K - $220K", posted: "4 days ago", isNew: false },
+    ],
   },
   {
     name: "Tesla",
@@ -156,6 +236,11 @@ const companies = [
     color: "from-red-600 to-red-700",
     bgColor: "bg-red-600/10",
     textColor: "text-red-600",
+    jobs: [
+      { id: "t1", title: "Autopilot Software Engineer", location: "Palo Alto, CA", type: "Full-time", salary: "$170K - $240K", posted: "2 days ago", isNew: true },
+      { id: "t2", title: "Battery Systems Engineer", location: "Austin, TX", type: "Full-time", salary: "$140K - $190K", posted: "4 days ago", isNew: false },
+      { id: "t3", title: "Robotics Engineer - Optimus", location: "Fremont, CA", type: "Full-time", salary: "$160K - $220K", posted: "1 week ago", isNew: false },
+    ],
   },
   {
     name: "Accenture",
@@ -170,6 +255,11 @@ const companies = [
     color: "from-purple-600 to-purple-500",
     bgColor: "bg-purple-600/10",
     textColor: "text-purple-600",
+    jobs: [
+      { id: "ac1", title: "Technology Consultant", location: "New York, NY", type: "Full-time", salary: "$90K - $140K", posted: "1 day ago", isNew: true },
+      { id: "ac2", title: "Cloud Migration Specialist", location: "Chicago, IL", type: "Full-time", salary: "$100K - $150K", posted: "3 days ago", isNew: true },
+      { id: "ac3", title: "Data Analytics Manager", location: "Remote", type: "Full-time", salary: "$120K - $170K", posted: "5 days ago", isNew: false },
+    ],
   },
   {
     name: "Deloitte",
@@ -184,6 +274,10 @@ const companies = [
     color: "from-green-600 to-green-500",
     bgColor: "bg-green-600/10",
     textColor: "text-green-600",
+    jobs: [
+      { id: "d1", title: "Cyber Security Consultant", location: "Washington, DC", type: "Full-time", salary: "$95K - $145K", posted: "2 days ago", isNew: true },
+      { id: "d2", title: "SAP Implementation Lead", location: "Dallas, TX", type: "Full-time", salary: "$110K - $160K", posted: "4 days ago", isNew: false },
+    ],
   },
   {
     name: "TCS",
@@ -198,6 +292,11 @@ const companies = [
     color: "from-blue-600 to-indigo-600",
     bgColor: "bg-indigo-500/10",
     textColor: "text-indigo-600",
+    jobs: [
+      { id: "tcs1", title: "Java Full Stack Developer", location: "Bangalore, India", type: "Full-time", salary: "INR 8-15 LPA", posted: "1 day ago", isNew: true },
+      { id: "tcs2", title: "Cloud DevOps Engineer", location: "Hyderabad, India", type: "Full-time", salary: "INR 10-18 LPA", posted: "3 days ago", isNew: true },
+      { id: "tcs3", title: "Data Scientist", location: "Chennai, India", type: "Full-time", salary: "INR 12-20 LPA", posted: "1 week ago", isNew: false },
+    ],
   },
   {
     name: "Infosys",
@@ -212,6 +311,10 @@ const companies = [
     color: "from-blue-500 to-blue-600",
     bgColor: "bg-blue-500/10",
     textColor: "text-blue-500",
+    jobs: [
+      { id: "inf1", title: "Python Developer", location: "Pune, India", type: "Full-time", salary: "INR 7-14 LPA", posted: "2 days ago", isNew: true },
+      { id: "inf2", title: "SAP ABAP Consultant", location: "Bangalore, India", type: "Full-time", salary: "INR 10-18 LPA", posted: "5 days ago", isNew: false },
+    ],
   },
   {
     name: "Wipro",
@@ -226,12 +329,27 @@ const companies = [
     color: "from-purple-500 to-indigo-500",
     bgColor: "bg-purple-500/10",
     textColor: "text-purple-500",
+    jobs: [
+      { id: "w1", title: "React.js Developer", location: "Hyderabad, India", type: "Full-time", salary: "INR 6-12 LPA", posted: "1 day ago", isNew: true },
+      { id: "w2", title: "AWS Cloud Engineer", location: "Bangalore, India", type: "Full-time", salary: "INR 9-16 LPA", posted: "4 days ago", isNew: false },
+    ],
   },
 ]
 
+interface Notification {
+  id: string
+  company: string
+  job: string
+  time: string
+}
+
 export function TopCompaniesSection() {
-  const [selectedCompany, setSelectedCompany] = useState<typeof companies[0] | null>(null)
+  const [selectedCompany, setSelectedCompany] = useState<Company | null>(null)
   const [filter, setFilter] = useState<string>("all")
+  const [subscribedCompanies, setSubscribedCompanies] = useState<Set<string>>(new Set())
+  const [notifications, setNotifications] = useState<Notification[]>([])
+  const [showNotifications, setShowNotifications] = useState(false)
+  const [hasNewNotifications, setHasNewNotifications] = useState(false)
 
   const industries = ["all", ...new Set(companies.map((c) => c.industry))]
 
@@ -240,21 +358,167 @@ export function TopCompaniesSection() {
       ? companies
       : companies.filter((c) => c.industry === filter)
 
+  const totalJobs = companies.reduce((acc, c) => acc + c.jobs.length, 0)
+  const newJobs = companies.reduce((acc, c) => acc + c.jobs.filter(j => j.isNew).length, 0)
+
+  const toggleSubscription = (companyName: string) => {
+    setSubscribedCompanies(prev => {
+      const newSet = new Set(prev)
+      if (newSet.has(companyName)) {
+        newSet.delete(companyName)
+      } else {
+        newSet.add(companyName)
+        // Add a notification for subscribing
+        const newNotification: Notification = {
+          id: `notif-${Date.now()}`,
+          company: companyName,
+          job: "You will receive alerts for new job postings",
+          time: "Just now"
+        }
+        setNotifications(prev => [newNotification, ...prev])
+        setHasNewNotifications(true)
+      }
+      return newSet
+    })
+  }
+
+  // Simulate new job notifications for subscribed companies
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (subscribedCompanies.size > 0) {
+        const subscribedArray = Array.from(subscribedCompanies)
+        const randomCompany = subscribedArray[Math.floor(Math.random() * subscribedArray.length)]
+        const company = companies.find(c => c.name === randomCompany)
+        if (company && company.jobs.length > 0) {
+          const randomJob = company.jobs[Math.floor(Math.random() * company.jobs.length)]
+          const newNotification: Notification = {
+            id: `notif-${Date.now()}`,
+            company: company.name,
+            job: `New opening: ${randomJob.title}`,
+            time: "Just now"
+          }
+          setNotifications(prev => [newNotification, ...prev.slice(0, 9)])
+          setHasNewNotifications(true)
+        }
+      }
+    }, 30000) // Every 30 seconds for demo purposes
+
+    return () => clearInterval(interval)
+  }, [subscribedCompanies])
+
   return (
     <section id="top-companies" className="px-6 py-24">
       <div className="mx-auto max-w-6xl">
         {/* Header */}
-        <div className="text-center">
-          <span className="font-mono text-sm font-medium uppercase tracking-widest text-primary">
-            Dream Companies
-          </span>
-          <h2 className="mt-4 text-balance text-3xl font-bold text-foreground md:text-4xl">
-            Top 15 MNCs Hiring Now
-          </h2>
-          <p className="mx-auto mt-4 max-w-xl text-pretty text-muted-foreground">
-            Explore career opportunities at the world's leading technology and consulting companies.
-          </p>
+        <div className="flex flex-col items-center justify-between gap-6 sm:flex-row">
+          <div className="text-center sm:text-left">
+            <span className="font-mono text-sm font-medium uppercase tracking-widest text-primary">
+              Dream Companies
+            </span>
+            <h2 className="mt-4 text-balance text-3xl font-bold text-foreground md:text-4xl">
+              Top 15 MNCs Hiring Now
+            </h2>
+            <p className="mt-2 text-muted-foreground">
+              {totalJobs} open positions across {companies.length} companies
+              <span className="ml-2 inline-flex items-center gap-1 text-green-500">
+                <span className="h-2 w-2 animate-pulse rounded-full bg-green-500" />
+                {newJobs} new this week
+              </span>
+            </p>
+          </div>
+
+          {/* Notifications Bell */}
+          <div className="relative">
+            <Button
+              variant="outline"
+              size="icon"
+              className="relative"
+              onClick={() => {
+                setShowNotifications(!showNotifications)
+                setHasNewNotifications(false)
+              }}
+            >
+              <Bell className="h-5 w-5" />
+              {hasNewNotifications && (
+                <span className="absolute -right-1 -top-1 flex h-3 w-3">
+                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-red-400 opacity-75" />
+                  <span className="relative inline-flex h-3 w-3 rounded-full bg-red-500" />
+                </span>
+              )}
+            </Button>
+
+            {/* Notifications Dropdown */}
+            {showNotifications && (
+              <div className="absolute right-0 top-12 z-50 w-80 rounded-lg border border-border bg-card shadow-xl">
+                <div className="flex items-center justify-between border-b border-border p-4">
+                  <h3 className="font-semibold text-foreground">Job Alerts</h3>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => setShowNotifications(false)}
+                  >
+                    <X className="h-4 w-4" />
+                  </Button>
+                </div>
+                <div className="max-h-80 overflow-y-auto">
+                  {notifications.length === 0 ? (
+                    <div className="p-4 text-center text-sm text-muted-foreground">
+                      <BellOff className="mx-auto mb-2 h-8 w-8 opacity-50" />
+                      <p>No notifications yet</p>
+                      <p className="mt-1 text-xs">Subscribe to companies to get job alerts</p>
+                    </div>
+                  ) : (
+                    notifications.map((notif) => (
+                      <div
+                        key={notif.id}
+                        className="border-b border-border/50 p-3 transition-colors hover:bg-secondary/50"
+                      >
+                        <p className="text-sm font-medium text-foreground">{notif.company}</p>
+                        <p className="text-xs text-muted-foreground">{notif.job}</p>
+                        <p className="mt-1 text-xs text-muted-foreground/70">{notif.time}</p>
+                      </div>
+                    ))
+                  )}
+                </div>
+                {notifications.length > 0 && (
+                  <div className="border-t border-border p-2">
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="w-full text-xs"
+                      onClick={() => setNotifications([])}
+                    >
+                      Clear all notifications
+                    </Button>
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
         </div>
+
+        {/* Subscribed Companies Quick View */}
+        {subscribedCompanies.size > 0 && (
+          <div className="mt-6 rounded-lg border border-primary/20 bg-primary/5 p-4">
+            <div className="flex items-center gap-2 text-sm text-primary">
+              <Bell className="h-4 w-4" />
+              <span className="font-medium">Subscribed to job alerts from:</span>
+            </div>
+            <div className="mt-2 flex flex-wrap gap-2">
+              {Array.from(subscribedCompanies).map((name) => (
+                <Badge
+                  key={name}
+                  variant="secondary"
+                  className="cursor-pointer bg-primary/10 text-primary hover:bg-primary/20"
+                  onClick={() => toggleSubscription(name)}
+                >
+                  {name}
+                  <X className="ml-1 h-3 w-3" />
+                </Badge>
+              ))}
+            </div>
+          </div>
+        )}
 
         {/* Industry Filter */}
         <div className="mt-10 flex flex-wrap justify-center gap-2">
@@ -296,7 +560,12 @@ export function TopCompaniesSection() {
                       </p>
                     </div>
                   </div>
-                  <ChevronRight className="h-5 w-5 text-muted-foreground opacity-0 transition-opacity group-hover:opacity-100" />
+                  <div className="flex items-center gap-2">
+                    {subscribedCompanies.has(company.name) && (
+                      <Bell className="h-4 w-4 text-primary" />
+                    )}
+                    <ChevronRight className="h-5 w-5 text-muted-foreground opacity-0 transition-opacity group-hover:opacity-100" />
+                  </div>
                 </div>
 
                 <p className="mt-4 line-clamp-2 text-sm text-muted-foreground">
@@ -309,10 +578,19 @@ export function TopCompaniesSection() {
                     {company.employees}
                   </span>
                   <span className="flex items-center gap-1">
-                    <MapPin className="h-3.5 w-3.5" />
-                    {company.headquarters.split(",")[0]}
+                    <Briefcase className="h-3.5 w-3.5 text-green-500" />
+                    <span className="text-green-500 font-medium">{company.jobs.length} jobs</span>
                   </span>
                 </div>
+
+                {/* New Jobs Indicator */}
+                {company.jobs.some(j => j.isNew) && (
+                  <div className="mt-3">
+                    <Badge className="bg-green-500/10 text-green-500 border-green-500/20">
+                      {company.jobs.filter(j => j.isNew).length} new opening{company.jobs.filter(j => j.isNew).length > 1 ? 's' : ''}
+                    </Badge>
+                  </div>
+                )}
 
                 <div className="mt-4 flex flex-wrap gap-1.5">
                   {company.openRoles.slice(0, 2).map((role) => (
@@ -335,14 +613,14 @@ export function TopCompaniesSection() {
           ))}
         </div>
 
-        {/* Company Detail Modal */}
+        {/* Company Detail Modal with Jobs */}
         {selectedCompany && (
           <div
             className="fixed inset-0 z-50 flex items-center justify-center bg-background/80 backdrop-blur-sm p-4"
             onClick={() => setSelectedCompany(null)}
           >
             <Card
-              className="w-full max-w-2xl max-h-[90vh] overflow-y-auto border-border/50 bg-card"
+              className="w-full max-w-3xl max-h-[90vh] overflow-y-auto border-border/50 bg-card"
               onClick={(e) => e.stopPropagation()}
             >
               <CardContent className="p-8">
@@ -375,8 +653,23 @@ export function TopCompaniesSection() {
                   </div>
                 </div>
 
+                {/* Notification Toggle */}
+                <div className="mt-6 flex items-center justify-between rounded-lg border border-border/50 bg-secondary/30 p-4">
+                  <div className="flex items-center gap-3">
+                    <Bell className={`h-5 w-5 ${subscribedCompanies.has(selectedCompany.name) ? 'text-primary' : 'text-muted-foreground'}`} />
+                    <div>
+                      <p className="text-sm font-medium text-foreground">Job Alerts</p>
+                      <p className="text-xs text-muted-foreground">Get notified when new jobs are posted</p>
+                    </div>
+                  </div>
+                  <Switch
+                    checked={subscribedCompanies.has(selectedCompany.name)}
+                    onCheckedChange={() => toggleSubscription(selectedCompany.name)}
+                  />
+                </div>
+
                 {/* Stats */}
-                <div className="mt-8 grid grid-cols-2 gap-4">
+                <div className="mt-6 grid grid-cols-3 gap-4">
                   <div className="rounded-lg border border-border/50 bg-secondary/30 p-4">
                     <div className="flex items-center gap-2 text-sm text-muted-foreground">
                       <Users className="h-4 w-4" />
@@ -392,26 +685,67 @@ export function TopCompaniesSection() {
                       Headquarters
                     </div>
                     <p className="mt-1 text-lg font-semibold text-foreground">
-                      {selectedCompany.headquarters}
+                      {selectedCompany.headquarters.split(",")[0]}
+                    </p>
+                  </div>
+                  <div className="rounded-lg border border-border/50 bg-secondary/30 p-4">
+                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                      <Briefcase className="h-4 w-4" />
+                      Open Jobs
+                    </div>
+                    <p className="mt-1 text-lg font-semibold text-green-500">
+                      {selectedCompany.jobs.length}
                     </p>
                   </div>
                 </div>
 
-                {/* Open Roles */}
+                {/* Job Listings */}
                 <div className="mt-8">
                   <h4 className="flex items-center gap-2 text-sm font-medium text-foreground">
                     <Briefcase className="h-4 w-4 text-primary" />
-                    Popular Roles
+                    Current Job Openings
                   </h4>
-                  <div className="mt-3 flex flex-wrap gap-2">
-                    {selectedCompany.openRoles.map((role) => (
-                      <Badge
-                        key={role}
-                        variant="secondary"
-                        className="bg-primary/10 text-primary"
+                  <div className="mt-4 space-y-3">
+                    {selectedCompany.jobs.map((job) => (
+                      <div
+                        key={job.id}
+                        className="group/job rounded-lg border border-border/50 bg-secondary/20 p-4 transition-all hover:border-primary/50 hover:bg-secondary/40"
                       >
-                        {role}
-                      </Badge>
+                        <div className="flex items-start justify-between">
+                          <div>
+                            <div className="flex items-center gap-2">
+                              <h5 className="font-medium text-foreground">{job.title}</h5>
+                              {job.isNew && (
+                                <Badge className="bg-green-500/10 text-green-500 border-green-500/20 text-xs">
+                                  New
+                                </Badge>
+                              )}
+                            </div>
+                            <div className="mt-2 flex flex-wrap items-center gap-3 text-xs text-muted-foreground">
+                              <span className="flex items-center gap-1">
+                                <MapPin className="h-3 w-3" />
+                                {job.location}
+                              </span>
+                              <span className="flex items-center gap-1">
+                                <Clock className="h-3 w-3" />
+                                {job.type}
+                              </span>
+                              <span className="flex items-center gap-1">
+                                <DollarSign className="h-3 w-3" />
+                                {job.salary}
+                              </span>
+                            </div>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <span className="text-xs text-muted-foreground">{job.posted}</span>
+                            <Button size="sm" variant="outline" className="opacity-0 transition-opacity group-hover/job:opacity-100" asChild>
+                              <a href={selectedCompany.careerUrl} target="_blank" rel="noopener noreferrer">
+                                Apply
+                              </a>
+                            </Button>
+                          </div>
+                        </div>
+                      </div>
                     ))}
                   </div>
                 </div>
@@ -429,6 +763,7 @@ export function TopCompaniesSection() {
                         variant="outline"
                         className="border-chart-2/30 text-muted-foreground"
                       >
+                        <Check className="mr-1 h-3 w-3 text-chart-2" />
                         {benefit}
                       </Badge>
                     ))}
@@ -444,7 +779,7 @@ export function TopCompaniesSection() {
                       rel="noopener noreferrer"
                     >
                       <Globe className="h-4 w-4" />
-                      Visit Careers Page
+                      View All Jobs on Careers Page
                       <ExternalLink className="h-3.5 w-3.5" />
                     </a>
                   </Button>
@@ -457,7 +792,7 @@ export function TopCompaniesSection() {
                     }}
                   >
                     <TrendingUp className="h-4 w-4" />
-                    Browse Jobs
+                    Browse All Jobs
                   </Button>
                 </div>
               </CardContent>
