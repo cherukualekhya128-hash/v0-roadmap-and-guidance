@@ -105,6 +105,7 @@ const roleToCategory: Record<string, string> = {
   "Software Engineer": "fullstack",
   "Senior Software Engineer": "fullstack",
   "Associate Software Engineer": "fullstack",
+  "Systems Engineer": "fullstack",
   "SDE": "fullstack",
   "SDE II": "fullstack",
   "SDE III": "fullstack",
@@ -197,8 +198,332 @@ interface Application {
   notes?: string
 }
 
-// Comprehensive Indian company job data
+// Comprehensive job data for all 15 MNCs
 const companies: Company[] = [
+  {
+    name: "Google",
+    logo: "https://logo.clearbit.com/google.com",
+    industry: "Technology",
+    description: "Google LLC is an American multinational technology company focusing on search engine technology, online advertising, cloud computing, computer software, quantum computing, e-commerce, and artificial intelligence.",
+    employees: "190,000+",
+    headquarters: "Mountain View, California",
+    indianOffices: ["Bangalore", "Hyderabad", "Mumbai", "Gurgaon"],
+    benefits: ["Health Insurance", "401(k)", "Free Meals", "Gym Membership", "Parental Leave", "Stock Options", "Learning Budget", "Work from Home"],
+    color: "from-blue-500 to-green-500",
+    bgColor: "bg-blue-500/10",
+    textColor: "text-blue-500",
+    jobs: [
+      { id: "goog1", title: "Software Engineer", location: "Bangalore, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "2-5 years", salary: "25 - 45 LPA", skills: ["Python", "Java", "C++", "Algorithms", "Data Structures"], posted: "1 day ago", isNew: true, category: "fullstack", description: "Join Google's engineering team to build products used by billions.", requirements: ["BS/MS in Computer Science", "Strong coding skills", "System design knowledge"], responsibilities: ["Design and develop software", "Code reviews", "Technical documentation", "Collaborate with teams"] },
+      { id: "goog2", title: "Senior Software Engineer", location: "Hyderabad, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "5-8 years", salary: "40 - 65 LPA", skills: ["Go", "Kubernetes", "Distributed Systems", "Cloud", "gRPC"], posted: "2 days ago", isNew: true, category: "backend", description: "Lead backend development for Google Cloud services.", requirements: ["5+ years experience", "Distributed systems expertise", "Leadership skills"], responsibilities: ["Lead technical projects", "Mentor engineers", "Architecture design", "Performance optimization"] },
+      { id: "goog3", title: "Machine Learning Engineer", location: "Bangalore, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "3-6 years", salary: "35 - 60 LPA", skills: ["TensorFlow", "Python", "Deep Learning", "NLP", "Computer Vision"], posted: "3 days ago", isNew: true, category: "ai", description: "Build ML models powering Google's AI products.", requirements: ["MS/PhD in ML/AI", "Strong ML fundamentals", "Research experience"], responsibilities: ["Develop ML models", "Research new techniques", "Production deployment", "Cross-team collaboration"] },
+      { id: "goog4", title: "Frontend Engineer", location: "Gurgaon, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "2-5 years", salary: "22 - 40 LPA", skills: ["Angular", "TypeScript", "JavaScript", "HTML/CSS", "RxJS"], posted: "4 days ago", isNew: false, category: "frontend", description: "Build beautiful user interfaces for Google products.", requirements: ["2+ years frontend experience", "Angular expertise", "Performance optimization skills"], responsibilities: ["UI development", "Component design", "Testing", "Accessibility implementation"] },
+      { id: "goog5", title: "Site Reliability Engineer", location: "Bangalore, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "4-7 years", salary: "35 - 55 LPA", skills: ["Linux", "Python", "Kubernetes", "Monitoring", "Automation"], posted: "5 days ago", isNew: false, category: "devops", description: "Ensure reliability of Google's infrastructure.", requirements: ["4+ years SRE/DevOps", "Strong Linux skills", "Automation expertise"], responsibilities: ["Incident management", "Automation", "Capacity planning", "On-call rotation"] },
+      { id: "goog6", title: "Data Scientist", location: "Hyderabad, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "3-6 years", salary: "30 - 50 LPA", skills: ["Python", "SQL", "Statistics", "BigQuery", "Machine Learning"], posted: "1 week ago", isNew: false, category: "data", description: "Analyze data to drive product decisions.", requirements: ["MS in Statistics/CS", "Strong analytical skills", "ML knowledge"], responsibilities: ["Data analysis", "A/B testing", "Insights generation", "Stakeholder presentations"] },
+      { id: "goog7", title: "Android Developer", location: "Bangalore, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "3-6 years", salary: "28 - 48 LPA", skills: ["Kotlin", "Android", "Jetpack Compose", "MVVM", "Coroutines"], posted: "3 days ago", isNew: true, category: "mobile", description: "Build Android apps used by billions of users.", requirements: ["3+ years Android experience", "Kotlin expertise", "Published apps"], responsibilities: ["Android development", "Performance optimization", "Code reviews", "Feature development"] },
+      { id: "goog8", title: "Security Engineer", location: "Bangalore, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "4-8 years", salary: "35 - 60 LPA", skills: ["Security", "Penetration Testing", "Python", "Network Security", "Cloud Security"], posted: "6 days ago", isNew: false, category: "security", description: "Protect Google's infrastructure and users.", requirements: ["4+ years security experience", "Security certifications", "Coding skills"], responsibilities: ["Security assessments", "Vulnerability research", "Security tooling", "Incident response"] },
+      { id: "goog9", title: "UX Designer", location: "Mumbai, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "3-6 years", salary: "25 - 42 LPA", skills: ["Figma", "User Research", "Prototyping", "Design Systems", "Accessibility"], posted: "1 week ago", isNew: false, category: "design", description: "Design user experiences for Google products.", requirements: ["3+ years UX experience", "Strong portfolio", "Research skills"], responsibilities: ["User research", "Wireframing", "Prototyping", "Design system contribution"] },
+      { id: "goog10", title: "Cloud Solutions Architect", location: "Gurgaon, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "6-10 years", salary: "45 - 75 LPA", skills: ["GCP", "Architecture", "Kubernetes", "Terraform", "Networking"], posted: "5 days ago", isNew: false, category: "devops", description: "Design cloud solutions for enterprise customers.", requirements: ["6+ years cloud experience", "GCP certifications", "Customer-facing experience"], responsibilities: ["Solution design", "Customer engagement", "Technical presentations", "Best practices"] },
+      { id: "goog11", title: "Technical Program Manager", location: "Bangalore, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "5-9 years", salary: "40 - 65 LPA", skills: ["Program Management", "Technical Background", "Communication", "Agile", "Stakeholder Management"], posted: "4 days ago", isNew: false, category: "fullstack", description: "Drive complex technical programs at Google.", requirements: ["5+ years TPM experience", "Technical background", "Leadership skills"], responsibilities: ["Program planning", "Cross-team coordination", "Risk management", "Stakeholder communication"] },
+      { id: "goog12", title: "Research Scientist", location: "Bangalore, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "PhD", salary: "50 - 80 LPA", skills: ["Machine Learning", "Research", "Python", "Publications", "Deep Learning"], posted: "1 week ago", isNew: false, category: "ai", description: "Conduct cutting-edge AI research at Google.", requirements: ["PhD in ML/AI", "Strong publication record", "Research leadership"], responsibilities: ["Research", "Paper publications", "Prototype development", "Team collaboration"] },
+    ],
+  },
+  {
+    name: "Microsoft",
+    logo: "https://logo.clearbit.com/microsoft.com",
+    industry: "Technology",
+    description: "Microsoft Corporation is an American multinational technology corporation which produces computer software, consumer electronics, personal computers, and related services.",
+    employees: "220,000+",
+    headquarters: "Redmond, Washington",
+    indianOffices: ["Bangalore", "Hyderabad", "Noida", "Pune"],
+    benefits: ["Health Insurance", "401(k)", "Stock Purchase Plan", "Parental Leave", "Wellness Programs", "Learning Opportunities", "Flexible Work", "Employee Discounts"],
+    color: "from-blue-600 to-cyan-500",
+    bgColor: "bg-blue-600/10",
+    textColor: "text-blue-600",
+    jobs: [
+      { id: "ms1", title: "Software Engineer", location: "Hyderabad, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "2-5 years", salary: "22 - 40 LPA", skills: ["C#", ".NET", "Azure", "SQL Server", "REST APIs"], posted: "1 day ago", isNew: true, category: "fullstack", description: "Build enterprise software solutions at Microsoft.", requirements: ["BS in Computer Science", "Strong C# skills", "Cloud experience"], responsibilities: ["Software development", "Code reviews", "Testing", "Documentation"] },
+      { id: "ms2", title: "Azure Cloud Engineer", location: "Bangalore, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "3-6 years", salary: "18 - 32 LPA", skills: ["Azure", "Terraform", "PowerShell", "ARM Templates", "Networking"], posted: "2 days ago", isNew: true, category: "devops", description: "Design and implement Azure cloud solutions.", requirements: ["3+ years Azure experience", "Azure certifications", "IaC experience"], responsibilities: ["Cloud architecture", "Automation", "Cost optimization", "Security implementation"] },
+      { id: "ms3", title: "Senior Software Engineer", location: "Noida, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "5-8 years", salary: "35 - 55 LPA", skills: ["C++", "Windows", "System Programming", "Performance", "Debugging"], posted: "3 days ago", isNew: true, category: "backend", description: "Work on Windows OS and core Microsoft products.", requirements: ["5+ years C++ experience", "System programming", "Performance optimization"], responsibilities: ["Core development", "Bug fixing", "Performance tuning", "Code reviews"] },
+      { id: "ms4", title: "Data Scientist", location: "Bangalore, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "3-6 years", salary: "25 - 45 LPA", skills: ["Python", "Azure ML", "SQL", "Statistics", "Power BI"], posted: "4 days ago", isNew: false, category: "data", description: "Apply data science to improve Microsoft products.", requirements: ["MS in Data Science", "Azure ML experience", "Strong statistics"], responsibilities: ["ML model development", "Data analysis", "Insights generation", "Stakeholder collaboration"] },
+      { id: "ms5", title: "React Developer", location: "Hyderabad, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "2-5 years", salary: "18 - 35 LPA", skills: ["React", "TypeScript", "Redux", "GraphQL", "Jest"], posted: "5 days ago", isNew: false, category: "frontend", description: "Build web applications for Microsoft 365.", requirements: ["2+ years React experience", "TypeScript proficiency", "Testing skills"], responsibilities: ["Frontend development", "Component design", "Testing", "Performance optimization"] },
+      { id: "ms6", title: "AI/ML Engineer", location: "Bangalore, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "3-7 years", salary: "30 - 55 LPA", skills: ["Python", "PyTorch", "Azure ML", "NLP", "Computer Vision"], posted: "1 week ago", isNew: false, category: "ai", description: "Develop AI solutions for Microsoft products.", requirements: ["3+ years ML experience", "Strong Python skills", "Production ML experience"], responsibilities: ["ML model development", "Model deployment", "Research", "Cross-team collaboration"] },
+      { id: "ms7", title: "Product Manager", location: "Bangalore, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "4-8 years", salary: "35 - 60 LPA", skills: ["Product Management", "Analytics", "Agile", "User Research", "Strategy"], posted: "3 days ago", isNew: true, category: "fullstack", description: "Drive product strategy for Microsoft products.", requirements: ["4+ years PM experience", "Technical background", "Leadership skills"], responsibilities: ["Product strategy", "Roadmap planning", "Stakeholder management", "Data-driven decisions"] },
+      { id: "ms8", title: "iOS Developer", location: "Hyderabad, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "3-6 years", salary: "22 - 40 LPA", skills: ["Swift", "iOS", "UIKit", "SwiftUI", "Core Data"], posted: "6 days ago", isNew: false, category: "mobile", description: "Build iOS apps for Microsoft products.", requirements: ["3+ years iOS experience", "Swift expertise", "Published apps"], responsibilities: ["iOS development", "Feature implementation", "Bug fixing", "Code reviews"] },
+      { id: "ms9", title: "Security Engineer", location: "Bangalore, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "4-8 years", salary: "30 - 50 LPA", skills: ["Security", "Azure Security", "Threat Modeling", "Penetration Testing", "SIEM"], posted: "1 week ago", isNew: false, category: "security", description: "Protect Microsoft's cloud infrastructure.", requirements: ["4+ years security experience", "Cloud security expertise", "Security certifications"], responsibilities: ["Security assessments", "Threat modeling", "Incident response", "Security automation"] },
+      { id: "ms10", title: "DevOps Engineer", location: "Pune, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "3-6 years", salary: "18 - 32 LPA", skills: ["Azure DevOps", "Kubernetes", "Docker", "CI/CD", "PowerShell"], posted: "5 days ago", isNew: false, category: "devops", description: "Build and maintain CI/CD pipelines.", requirements: ["3+ years DevOps experience", "Azure DevOps expertise", "Container experience"], responsibilities: ["Pipeline development", "Automation", "Monitoring", "Infrastructure management"] },
+      { id: "ms11", title: "Full Stack Developer", location: "Noida, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "3-6 years", salary: "20 - 38 LPA", skills: ["React", "Node.js", "TypeScript", "SQL Server", "Azure"], posted: "4 days ago", isNew: false, category: "fullstack", description: "Build end-to-end web applications.", requirements: ["3+ years full stack experience", "JavaScript/TypeScript", "Cloud experience"], responsibilities: ["Full stack development", "API design", "Database management", "Testing"] },
+      { id: "ms12", title: "UX Researcher", location: "Bangalore, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "3-6 years", salary: "22 - 38 LPA", skills: ["User Research", "Usability Testing", "Surveys", "Analytics", "Prototyping"], posted: "1 week ago", isNew: false, category: "design", description: "Conduct user research for Microsoft products.", requirements: ["3+ years UX research", "Strong research skills", "Data analysis"], responsibilities: ["User research", "Usability testing", "Insights generation", "Stakeholder presentations"] },
+    ],
+  },
+  {
+    name: "Amazon",
+    logo: "https://logo.clearbit.com/amazon.com",
+    industry: "E-commerce & Cloud",
+    description: "Amazon.com, Inc. is an American multinational technology company focusing on e-commerce, cloud computing, online advertising, digital streaming, and artificial intelligence.",
+    employees: "1,500,000+",
+    headquarters: "Seattle, Washington",
+    indianOffices: ["Bangalore", "Hyderabad", "Chennai", "Pune", "Delhi NCR"],
+    benefits: ["Health Insurance", "401(k)", "Stock Options", "Parental Leave", "Career Development", "Employee Discounts", "Relocation Assistance", "Wellness Programs"],
+    color: "from-orange-500 to-yellow-500",
+    bgColor: "bg-orange-500/10",
+    textColor: "text-orange-500",
+    jobs: [
+      { id: "amz1", title: "SDE I", location: "Bangalore, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "0-2 years", salary: "18 - 28 LPA", skills: ["Java", "Python", "Data Structures", "Algorithms", "AWS"], posted: "1 day ago", isNew: true, category: "fullstack", description: "Start your career as a Software Development Engineer at Amazon.", requirements: ["BS in Computer Science", "Strong DSA skills", "Coding proficiency"], responsibilities: ["Software development", "Code reviews", "Testing", "Documentation"] },
+      { id: "amz2", title: "SDE II", location: "Hyderabad, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "3-5 years", salary: "28 - 45 LPA", skills: ["Java", "AWS", "Microservices", "System Design", "DynamoDB"], posted: "2 days ago", isNew: true, category: "backend", description: "Build scalable systems for Amazon's e-commerce platform.", requirements: ["3+ years experience", "System design skills", "AWS knowledge"], responsibilities: ["System design", "Development", "Mentoring", "On-call"] },
+      { id: "amz3", title: "SDE III", location: "Bangalore, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "6-10 years", salary: "45 - 70 LPA", skills: ["Java", "Distributed Systems", "AWS", "Leadership", "Architecture"], posted: "3 days ago", isNew: true, category: "backend", description: "Lead technical initiatives and mentor teams.", requirements: ["6+ years experience", "Leadership skills", "Strong architecture skills"], responsibilities: ["Technical leadership", "Architecture design", "Mentoring", "Cross-team collaboration"] },
+      { id: "amz4", title: "AWS Solutions Architect", location: "Chennai, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "5-8 years", salary: "35 - 55 LPA", skills: ["AWS", "Architecture", "Networking", "Security", "Terraform"], posted: "4 days ago", isNew: false, category: "devops", description: "Design cloud solutions for enterprise customers.", requirements: ["5+ years AWS experience", "AWS certifications", "Customer-facing experience"], responsibilities: ["Solution design", "Customer engagement", "Technical presentations", "Best practices"] },
+      { id: "amz5", title: "Data Engineer", location: "Hyderabad, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "3-6 years", salary: "25 - 42 LPA", skills: ["Python", "Spark", "AWS", "Redshift", "ETL"], posted: "5 days ago", isNew: false, category: "data", description: "Build data pipelines for Amazon's analytics.", requirements: ["3+ years data engineering", "Big data experience", "AWS knowledge"], responsibilities: ["Pipeline development", "Data modeling", "Performance optimization", "Data quality"] },
+      { id: "amz6", title: "Applied Scientist", location: "Bangalore, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "3-7 years", salary: "35 - 60 LPA", skills: ["Machine Learning", "Python", "Deep Learning", "NLP", "Recommendation Systems"], posted: "1 week ago", isNew: false, category: "ai", description: "Apply ML to improve customer experience.", requirements: ["MS/PhD in ML", "Strong research skills", "Production ML experience"], responsibilities: ["ML model development", "Research", "Experimentation", "Production deployment"] },
+      { id: "amz7", title: "Frontend Engineer", location: "Pune, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "2-5 years", salary: "20 - 35 LPA", skills: ["React", "JavaScript", "TypeScript", "CSS", "Testing"], posted: "3 days ago", isNew: true, category: "frontend", description: "Build user interfaces for Amazon's websites.", requirements: ["2+ years frontend experience", "React proficiency", "Performance optimization"], responsibilities: ["UI development", "Component design", "Testing", "Accessibility"] },
+      { id: "amz8", title: "Android Developer", location: "Bangalore, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "3-6 years", salary: "25 - 42 LPA", skills: ["Kotlin", "Android", "MVVM", "Dagger", "Coroutines"], posted: "6 days ago", isNew: false, category: "mobile", description: "Build Amazon's Android shopping app.", requirements: ["3+ years Android experience", "Kotlin proficiency", "Published apps"], responsibilities: ["Android development", "Feature implementation", "Bug fixing", "Performance optimization"] },
+      { id: "amz9", title: "Security Engineer", location: "Hyderabad, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "4-8 years", salary: "30 - 50 LPA", skills: ["Security", "AWS Security", "Penetration Testing", "Threat Modeling", "Incident Response"], posted: "1 week ago", isNew: false, category: "security", description: "Protect Amazon's infrastructure and customer data.", requirements: ["4+ years security experience", "AWS security knowledge", "Security certifications"], responsibilities: ["Security assessments", "Threat modeling", "Incident response", "Security automation"] },
+      { id: "amz10", title: "DevOps Engineer", location: "Chennai, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "3-6 years", salary: "22 - 38 LPA", skills: ["AWS", "Docker", "Kubernetes", "CI/CD", "Python"], posted: "5 days ago", isNew: false, category: "devops", description: "Build and maintain deployment infrastructure.", requirements: ["3+ years DevOps experience", "AWS expertise", "Container experience"], responsibilities: ["Pipeline development", "Automation", "Monitoring", "Infrastructure management"] },
+      { id: "amz11", title: "Business Analyst", location: "Delhi NCR, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "2-5 years", salary: "15 - 28 LPA", skills: ["SQL", "Excel", "Data Analysis", "Tableau", "Communication"], posted: "4 days ago", isNew: false, category: "data", description: "Analyze business data to drive decisions.", requirements: ["2+ years BA experience", "Strong SQL skills", "Analytical mindset"], responsibilities: ["Data analysis", "Reporting", "Stakeholder presentations", "Process improvement"] },
+      { id: "amz12", title: "Technical Program Manager", location: "Bangalore, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "5-9 years", salary: "40 - 65 LPA", skills: ["Program Management", "Technical Background", "Communication", "Agile", "Risk Management"], posted: "1 week ago", isNew: false, category: "fullstack", description: "Drive complex technical programs at Amazon.", requirements: ["5+ years TPM experience", "Technical background", "Leadership skills"], responsibilities: ["Program planning", "Cross-team coordination", "Risk management", "Stakeholder communication"] },
+    ],
+  },
+  {
+    name: "Apple",
+    logo: "https://logo.clearbit.com/apple.com",
+    industry: "Consumer Electronics",
+    description: "Apple Inc. is an American multinational technology company that designs, develops, and sells consumer electronics, computer software, and online services.",
+    employees: "160,000+",
+    headquarters: "Cupertino, California",
+    indianOffices: ["Bangalore", "Hyderabad"],
+    benefits: ["Health Insurance", "401(k)", "Stock Purchase Plan", "Employee Discount", "Parental Leave", "Wellness Programs", "Learning Opportunities", "Commuter Benefits"],
+    color: "from-gray-700 to-gray-500",
+    bgColor: "bg-gray-500/10",
+    textColor: "text-gray-600",
+    jobs: [
+      { id: "apl1", title: "iOS Developer", location: "Bangalore, India", locationType: "On-site", type: "Full-time", experienceLevel: "3-6 years", salary: "30 - 50 LPA", skills: ["Swift", "iOS", "UIKit", "SwiftUI", "Core Data"], posted: "1 day ago", isNew: true, category: "mobile", description: "Build iOS apps for Apple's ecosystem.", requirements: ["3+ years iOS experience", "Swift expertise", "Deep iOS knowledge"], responsibilities: ["iOS development", "Feature implementation", "Code reviews", "Performance optimization"] },
+      { id: "apl2", title: "Machine Learning Engineer", location: "Bangalore, India", locationType: "On-site", type: "Full-time", experienceLevel: "4-8 years", salary: "40 - 70 LPA", skills: ["Python", "CoreML", "Deep Learning", "NLP", "Computer Vision"], posted: "2 days ago", isNew: true, category: "ai", description: "Build ML models for Apple's products.", requirements: ["4+ years ML experience", "Strong Python skills", "Production ML experience"], responsibilities: ["ML model development", "Research", "Production deployment", "Cross-team collaboration"] },
+      { id: "apl3", title: "Software Engineer", location: "Hyderabad, India", locationType: "On-site", type: "Full-time", experienceLevel: "2-5 years", salary: "25 - 45 LPA", skills: ["C++", "Python", "Algorithms", "System Design", "iOS/macOS"], posted: "3 days ago", isNew: true, category: "fullstack", description: "Work on Apple's software products.", requirements: ["BS in Computer Science", "Strong C++ skills", "System design knowledge"], responsibilities: ["Software development", "Code reviews", "Testing", "Documentation"] },
+      { id: "apl4", title: "Data Scientist", location: "Bangalore, India", locationType: "On-site", type: "Full-time", experienceLevel: "3-7 years", salary: "35 - 55 LPA", skills: ["Python", "SQL", "Machine Learning", "Statistics", "Data Visualization"], posted: "4 days ago", isNew: false, category: "data", description: "Analyze data to improve Apple's services.", requirements: ["MS in Data Science", "Strong analytical skills", "ML knowledge"], responsibilities: ["Data analysis", "ML modeling", "Insights generation", "Stakeholder presentations"] },
+      { id: "apl5", title: "Security Engineer", location: "Bangalore, India", locationType: "On-site", type: "Full-time", experienceLevel: "5-9 years", salary: "40 - 65 LPA", skills: ["Security", "iOS Security", "Cryptography", "Penetration Testing", "Secure Coding"], posted: "5 days ago", isNew: false, category: "security", description: "Protect Apple's products and user data.", requirements: ["5+ years security experience", "iOS security knowledge", "Cryptography skills"], responsibilities: ["Security assessments", "Vulnerability research", "Secure design", "Incident response"] },
+      { id: "apl6", title: "Hardware Engineer", location: "Bangalore, India", locationType: "On-site", type: "Full-time", experienceLevel: "4-8 years", salary: "35 - 60 LPA", skills: ["VLSI", "Verilog", "FPGA", "RTL Design", "Verification"], posted: "1 week ago", isNew: false, category: "fullstack", description: "Design hardware for Apple's products.", requirements: ["4+ years hardware experience", "VLSI knowledge", "Chip design experience"], responsibilities: ["Hardware design", "Verification", "Testing", "Documentation"] },
+      { id: "apl7", title: "SRE", location: "Hyderabad, India", locationType: "On-site", type: "Full-time", experienceLevel: "4-7 years", salary: "30 - 50 LPA", skills: ["Linux", "Python", "Kubernetes", "Monitoring", "Automation"], posted: "3 days ago", isNew: true, category: "devops", description: "Ensure reliability of Apple's services.", requirements: ["4+ years SRE experience", "Strong Linux skills", "Automation expertise"], responsibilities: ["Incident management", "Automation", "Capacity planning", "On-call rotation"] },
+      { id: "apl8", title: "Product Designer", location: "Bangalore, India", locationType: "On-site", type: "Full-time", experienceLevel: "4-8 years", salary: "35 - 55 LPA", skills: ["Sketch", "Figma", "Prototyping", "User Research", "Visual Design"], posted: "6 days ago", isNew: false, category: "design", description: "Design user experiences for Apple products.", requirements: ["4+ years design experience", "Strong portfolio", "User research skills"], responsibilities: ["UI/UX design", "Prototyping", "User research", "Design system"] },
+      { id: "apl9", title: "Backend Engineer", location: "Bangalore, India", locationType: "On-site", type: "Full-time", experienceLevel: "3-6 years", salary: "28 - 48 LPA", skills: ["Java", "Scala", "Distributed Systems", "Kafka", "Cassandra"], posted: "1 week ago", isNew: false, category: "backend", description: "Build backend services for Apple's platforms.", requirements: ["3+ years backend experience", "Distributed systems knowledge", "Strong coding skills"], responsibilities: ["Backend development", "API design", "Performance optimization", "Documentation"] },
+      { id: "apl10", title: "Siri ML Engineer", location: "Bangalore, India", locationType: "On-site", type: "Full-time", experienceLevel: "3-7 years", salary: "38 - 65 LPA", skills: ["NLP", "Deep Learning", "Python", "Speech Recognition", "Transformers"], posted: "5 days ago", isNew: false, category: "ai", description: "Improve Siri's natural language capabilities.", requirements: ["3+ years NLP experience", "Deep learning expertise", "Research experience"], responsibilities: ["NLP model development", "Research", "Experimentation", "Production deployment"] },
+      { id: "apl11", title: "QA Engineer", location: "Hyderabad, India", locationType: "On-site", type: "Full-time", experienceLevel: "2-5 years", salary: "18 - 32 LPA", skills: ["Testing", "Automation", "iOS Testing", "XCUITest", "Python"], posted: "4 days ago", isNew: false, category: "fullstack", description: "Ensure quality of Apple's software products.", requirements: ["2+ years QA experience", "Automation skills", "iOS testing knowledge"], responsibilities: ["Test planning", "Automation", "Bug reporting", "Quality assurance"] },
+      { id: "apl12", title: "DevOps Engineer", location: "Bangalore, India", locationType: "On-site", type: "Full-time", experienceLevel: "3-6 years", salary: "25 - 42 LPA", skills: ["CI/CD", "Kubernetes", "Docker", "Jenkins", "Python"], posted: "1 week ago", isNew: false, category: "devops", description: "Build and maintain CI/CD infrastructure.", requirements: ["3+ years DevOps experience", "CI/CD expertise", "Container experience"], responsibilities: ["Pipeline development", "Automation", "Monitoring", "Infrastructure management"] },
+    ],
+  },
+  {
+    name: "IBM",
+    logo: "https://logo.clearbit.com/ibm.com",
+    industry: "Technology & Consulting",
+    description: "International Business Machines Corporation is an American multinational technology company headquartered in Armonk, New York, with operations in over 171 countries.",
+    employees: "280,000+",
+    headquarters: "Armonk, New York",
+    indianOffices: ["Bangalore", "Hyderabad", "Pune", "Delhi NCR", "Chennai", "Kolkata"],
+    benefits: ["Health Insurance", "401(k)", "Flexible Work", "Learning Programs", "Employee Assistance", "Parental Leave", "Wellness Programs", "Retirement Benefits"],
+    color: "from-blue-700 to-blue-500",
+    bgColor: "bg-blue-700/10",
+    textColor: "text-blue-700",
+    jobs: [
+      { id: "ibm1", title: "Associate Software Engineer", location: "Bangalore, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "Fresher", salary: "4 - 6 LPA", skills: ["Java", "Python", "SQL", "Problem Solving", "Communication"], posted: "1 day ago", isNew: true, category: "fullstack", description: "Start your career at IBM as an Associate Software Engineer.", requirements: ["BE/BTech in CS/IT", "Strong fundamentals", "Good communication"], responsibilities: ["Software development", "Testing", "Documentation", "Team collaboration"] },
+      { id: "ibm2", title: "Cloud Engineer", location: "Hyderabad, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "3-6 years", salary: "12 - 22 LPA", skills: ["IBM Cloud", "AWS", "Kubernetes", "Docker", "Terraform"], posted: "2 days ago", isNew: true, category: "devops", description: "Design and implement cloud solutions on IBM Cloud.", requirements: ["3+ years cloud experience", "Cloud certifications", "IaC experience"], responsibilities: ["Cloud architecture", "Automation", "Migration", "Support"] },
+      { id: "ibm3", title: "Data Scientist", location: "Pune, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "3-6 years", salary: "14 - 25 LPA", skills: ["Python", "Watson", "Machine Learning", "SQL", "Statistics"], posted: "3 days ago", isNew: true, category: "data", description: "Apply data science using IBM Watson.", requirements: ["3+ years data science", "Watson experience", "Strong statistics"], responsibilities: ["ML model development", "Watson integration", "Data analysis", "Client presentations"] },
+      { id: "ibm4", title: "Java Developer", location: "Chennai, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "2-5 years", salary: "8 - 16 LPA", skills: ["Java", "Spring Boot", "Microservices", "REST APIs", "MySQL"], posted: "4 days ago", isNew: false, category: "backend", description: "Develop Java applications for enterprise clients.", requirements: ["2+ years Java experience", "Spring Boot knowledge", "Database experience"], responsibilities: ["Java development", "API development", "Testing", "Code reviews"] },
+      { id: "ibm5", title: "AI Developer", location: "Bangalore, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "3-7 years", salary: "15 - 28 LPA", skills: ["Python", "TensorFlow", "Watson AI", "NLP", "Deep Learning"], posted: "5 days ago", isNew: false, category: "ai", description: "Build AI solutions using IBM Watson.", requirements: ["3+ years AI experience", "Watson knowledge", "Deep learning skills"], responsibilities: ["AI model development", "Watson integration", "Research", "Client solutions"] },
+      { id: "ibm6", title: "Security Consultant", location: "Delhi NCR, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "5-9 years", salary: "18 - 35 LPA", skills: ["Security", "QRadar", "SIEM", "Penetration Testing", "Compliance"], posted: "1 week ago", isNew: false, category: "security", description: "Provide security consulting services to clients.", requirements: ["5+ years security experience", "QRadar knowledge", "Security certifications"], responsibilities: ["Security assessments", "SIEM implementation", "Compliance", "Client consulting"] },
+      { id: "ibm7", title: "React Developer", location: "Kolkata, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "2-4 years", salary: "6 - 12 LPA", skills: ["React", "JavaScript", "TypeScript", "Redux", "HTML/CSS"], posted: "3 days ago", isNew: true, category: "frontend", description: "Build web applications using React.", requirements: ["2+ years React experience", "JavaScript proficiency", "State management"], responsibilities: ["Frontend development", "Component design", "Testing", "Performance optimization"] },
+      { id: "ibm8", title: "DevOps Engineer", location: "Hyderabad, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "3-6 years", salary: "10 - 20 LPA", skills: ["Jenkins", "Docker", "Kubernetes", "Ansible", "Linux"], posted: "6 days ago", isNew: false, category: "devops", description: "Build and maintain CI/CD pipelines.", requirements: ["3+ years DevOps experience", "CI/CD expertise", "Container experience"], responsibilities: ["Pipeline development", "Automation", "Monitoring", "Infrastructure management"] },
+      { id: "ibm9", title: "SAP Consultant", location: "Pune, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "4-8 years", salary: "12 - 25 LPA", skills: ["SAP", "ABAP", "SAP HANA", "SAP Fiori", "Integration"], posted: "1 week ago", isNew: false, category: "backend", description: "Implement SAP solutions for enterprise clients.", requirements: ["4+ years SAP experience", "ABAP knowledge", "S/4HANA experience"], responsibilities: ["SAP implementation", "Customization", "Integration", "Support"] },
+      { id: "ibm10", title: "Blockchain Developer", location: "Bangalore, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "3-6 years", salary: "15 - 28 LPA", skills: ["Hyperledger", "Blockchain", "Smart Contracts", "Node.js", "Go"], posted: "5 days ago", isNew: false, category: "backend", description: "Build blockchain solutions using Hyperledger.", requirements: ["3+ years blockchain experience", "Hyperledger knowledge", "Smart contract development"], responsibilities: ["Blockchain development", "Smart contracts", "Integration", "Documentation"] },
+      { id: "ibm11", title: "UX Designer", location: "Bangalore, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "3-6 years", salary: "10 - 20 LPA", skills: ["Figma", "Sketch", "User Research", "Prototyping", "Design Systems"], posted: "4 days ago", isNew: false, category: "design", description: "Design user experiences for IBM products.", requirements: ["3+ years UX experience", "Strong portfolio", "Research skills"], responsibilities: ["UX design", "User research", "Prototyping", "Design system"] },
+      { id: "ibm12", title: "Mainframe Developer", location: "Chennai, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "3-7 years", salary: "10 - 22 LPA", skills: ["COBOL", "JCL", "DB2", "CICS", "Mainframe"], posted: "1 week ago", isNew: false, category: "backend", description: "Develop and maintain mainframe applications.", requirements: ["3+ years mainframe experience", "COBOL proficiency", "DB2 knowledge"], responsibilities: ["Mainframe development", "Maintenance", "Testing", "Documentation"] },
+    ],
+  },
+  {
+    name: "Intel",
+    logo: "https://logo.clearbit.com/intel.com",
+    industry: "Semiconductors",
+    description: "Intel Corporation is an American multinational corporation and technology company headquartered in Santa Clara, California. It is the world's largest semiconductor chip manufacturer.",
+    employees: "130,000+",
+    headquarters: "Santa Clara, California",
+    indianOffices: ["Bangalore", "Hyderabad"],
+    benefits: ["Health Insurance", "401(k)", "Stock Purchase Plan", "Sabbatical Program", "Parental Leave", "Education Assistance", "Flexible Work", "Wellness Programs"],
+    color: "from-blue-600 to-cyan-400",
+    bgColor: "bg-blue-600/10",
+    textColor: "text-blue-600",
+    jobs: [
+      { id: "int1", title: "Software Engineer", location: "Bangalore, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "2-5 years", salary: "15 - 28 LPA", skills: ["C++", "Python", "Linux", "Algorithms", "System Programming"], posted: "1 day ago", isNew: true, category: "fullstack", description: "Develop software for Intel's platforms.", requirements: ["BS in Computer Science", "Strong C++ skills", "System programming"], responsibilities: ["Software development", "Testing", "Performance optimization", "Documentation"] },
+      { id: "int2", title: "VLSI Design Engineer", location: "Bangalore, India", locationType: "On-site", type: "Full-time", experienceLevel: "3-7 years", salary: "18 - 35 LPA", skills: ["Verilog", "VLSI", "RTL Design", "Synthesis", "Verification"], posted: "2 days ago", isNew: true, category: "fullstack", description: "Design circuits for Intel's processors.", requirements: ["3+ years VLSI experience", "RTL design skills", "Verification knowledge"], responsibilities: ["RTL design", "Verification", "Synthesis", "Timing closure"] },
+      { id: "int3", title: "AI Engineer", location: "Hyderabad, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "3-6 years", salary: "20 - 38 LPA", skills: ["Python", "OpenVINO", "Deep Learning", "Computer Vision", "TensorFlow"], posted: "3 days ago", isNew: true, category: "ai", description: "Optimize AI models for Intel hardware.", requirements: ["3+ years AI experience", "OpenVINO knowledge", "Deep learning skills"], responsibilities: ["AI optimization", "Model deployment", "Performance tuning", "Documentation"] },
+      { id: "int4", title: "Firmware Engineer", location: "Bangalore, India", locationType: "On-site", type: "Full-time", experienceLevel: "3-6 years", salary: "16 - 30 LPA", skills: ["C", "Assembly", "UEFI", "BIOS", "Embedded Systems"], posted: "4 days ago", isNew: false, category: "backend", description: "Develop firmware for Intel platforms.", requirements: ["3+ years firmware experience", "C programming", "BIOS/UEFI knowledge"], responsibilities: ["Firmware development", "Testing", "Debugging", "Documentation"] },
+      { id: "int5", title: "Validation Engineer", location: "Hyderabad, India", locationType: "On-site", type: "Full-time", experienceLevel: "2-5 years", salary: "12 - 24 LPA", skills: ["Validation", "Python", "C++", "Automation", "Testing"], posted: "5 days ago", isNew: false, category: "fullstack", description: "Validate Intel's hardware and software.", requirements: ["2+ years validation experience", "Strong programming", "Automation skills"], responsibilities: ["Test development", "Validation", "Bug reporting", "Automation"] },
+      { id: "int6", title: "Security Researcher", location: "Bangalore, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "4-8 years", salary: "25 - 45 LPA", skills: ["Security", "Reverse Engineering", "Vulnerability Research", "Hardware Security", "Cryptography"], posted: "1 week ago", isNew: false, category: "security", description: "Research security vulnerabilities in Intel products.", requirements: ["4+ years security research", "Hardware security knowledge", "Reverse engineering skills"], responsibilities: ["Security research", "Vulnerability analysis", "Mitigations", "Publications"] },
+      { id: "int7", title: "Data Scientist", location: "Bangalore, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "3-6 years", salary: "18 - 32 LPA", skills: ["Python", "SQL", "Machine Learning", "Statistics", "Data Visualization"], posted: "3 days ago", isNew: true, category: "data", description: "Apply data science to improve Intel's products.", requirements: ["3+ years data science", "Strong statistics", "ML knowledge"], responsibilities: ["Data analysis", "ML modeling", "Insights generation", "Stakeholder presentations"] },
+      { id: "int8", title: "DevOps Engineer", location: "Hyderabad, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "3-6 years", salary: "14 - 26 LPA", skills: ["Jenkins", "Docker", "Kubernetes", "Ansible", "Linux"], posted: "6 days ago", isNew: false, category: "devops", description: "Build and maintain CI/CD infrastructure.", requirements: ["3+ years DevOps experience", "CI/CD expertise", "Container experience"], responsibilities: ["Pipeline development", "Automation", "Monitoring", "Infrastructure management"] },
+      { id: "int9", title: "Graphics Engineer", location: "Bangalore, India", locationType: "On-site", type: "Full-time", experienceLevel: "3-7 years", salary: "20 - 38 LPA", skills: ["C++", "OpenGL", "Vulkan", "Graphics", "GPU Programming"], posted: "1 week ago", isNew: false, category: "fullstack", description: "Develop graphics drivers and software.", requirements: ["3+ years graphics experience", "GPU programming", "Graphics APIs"], responsibilities: ["Driver development", "Performance optimization", "Testing", "Documentation"] },
+      { id: "int10", title: "Technical Lead", location: "Bangalore, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "8-12 years", salary: "35 - 55 LPA", skills: ["Leadership", "Architecture", "C++", "System Design", "Project Management"], posted: "5 days ago", isNew: false, category: "fullstack", description: "Lead technical teams at Intel.", requirements: ["8+ years experience", "Leadership skills", "Strong architecture skills"], responsibilities: ["Technical leadership", "Architecture design", "Mentoring", "Project management"] },
+      { id: "int11", title: "Performance Engineer", location: "Hyderabad, India", locationType: "On-site", type: "Full-time", experienceLevel: "3-6 years", salary: "16 - 30 LPA", skills: ["Performance Analysis", "C++", "Profiling", "Linux", "Optimization"], posted: "4 days ago", isNew: false, category: "backend", description: "Optimize performance of Intel's software.", requirements: ["3+ years performance engineering", "Profiling skills", "Strong C++"], responsibilities: ["Performance analysis", "Optimization", "Benchmarking", "Documentation"] },
+      { id: "int12", title: "Compiler Engineer", location: "Bangalore, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "4-8 years", salary: "22 - 40 LPA", skills: ["LLVM", "Compilers", "C++", "Optimization", "Code Generation"], posted: "1 week ago", isNew: false, category: "backend", description: "Develop compilers for Intel architectures.", requirements: ["4+ years compiler experience", "LLVM knowledge", "Strong C++"], responsibilities: ["Compiler development", "Optimization", "Testing", "Documentation"] },
+    ],
+  },
+  {
+    name: "Oracle",
+    logo: "https://logo.clearbit.com/oracle.com",
+    industry: "Enterprise Software",
+    description: "Oracle Corporation is an American multinational computer technology corporation. The company sells database software and technology, cloud engineered systems, and enterprise software products.",
+    employees: "140,000+",
+    headquarters: "Austin, Texas",
+    indianOffices: ["Bangalore", "Hyderabad", "Pune", "Mumbai", "Delhi NCR"],
+    benefits: ["Health Insurance", "401(k)", "Stock Purchase Plan", "Parental Leave", "Learning Programs", "Employee Assistance", "Flexible Work", "Wellness Programs"],
+    color: "from-red-600 to-red-400",
+    bgColor: "bg-red-600/10",
+    textColor: "text-red-600",
+    jobs: [
+      { id: "ora1", title: "Software Engineer", location: "Bangalore, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "2-5 years", salary: "14 - 26 LPA", skills: ["Java", "Oracle DB", "PL/SQL", "REST APIs", "Microservices"], posted: "1 day ago", isNew: true, category: "fullstack", description: "Develop enterprise software at Oracle.", requirements: ["BS in Computer Science", "Strong Java skills", "Database knowledge"], responsibilities: ["Software development", "Database design", "Testing", "Documentation"] },
+      { id: "ora2", title: "Cloud Engineer", location: "Hyderabad, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "3-6 years", salary: "16 - 30 LPA", skills: ["OCI", "Terraform", "Kubernetes", "Docker", "Linux"], posted: "2 days ago", isNew: true, category: "devops", description: "Build and manage Oracle Cloud Infrastructure.", requirements: ["3+ years cloud experience", "OCI certification", "IaC experience"], responsibilities: ["Cloud architecture", "Automation", "Migration", "Support"] },
+      { id: "ora3", title: "Database Administrator", location: "Pune, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "4-8 years", salary: "18 - 35 LPA", skills: ["Oracle DB", "RAC", "Performance Tuning", "Backup/Recovery", "SQL"], posted: "3 days ago", isNew: true, category: "backend", description: "Manage and optimize Oracle databases.", requirements: ["4+ years DBA experience", "Oracle certification", "Performance tuning skills"], responsibilities: ["Database management", "Performance tuning", "Backup/recovery", "Security"] },
+      { id: "ora4", title: "Java Developer", location: "Mumbai, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "2-5 years", salary: "10 - 20 LPA", skills: ["Java", "Spring Boot", "Hibernate", "REST APIs", "MySQL"], posted: "4 days ago", isNew: false, category: "backend", description: "Develop Java applications for enterprise clients.", requirements: ["2+ years Java experience", "Spring Boot knowledge", "Database experience"], responsibilities: ["Java development", "API development", "Testing", "Code reviews"] },
+      { id: "ora5", title: "Data Engineer", location: "Bangalore, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "3-6 years", salary: "15 - 28 LPA", skills: ["Python", "Oracle DB", "ETL", "Data Warehousing", "SQL"], posted: "5 days ago", isNew: false, category: "data", description: "Build data pipelines using Oracle technologies.", requirements: ["3+ years data engineering", "Oracle DB experience", "ETL skills"], responsibilities: ["Pipeline development", "Data modeling", "Performance optimization", "Data quality"] },
+      { id: "ora6", title: "Full Stack Developer", location: "Delhi NCR, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "3-6 years", salary: "12 - 24 LPA", skills: ["React", "Node.js", "Oracle DB", "JavaScript", "REST APIs"], posted: "1 week ago", isNew: false, category: "fullstack", description: "Build end-to-end web applications.", requirements: ["3+ years full stack experience", "JavaScript proficiency", "Database knowledge"], responsibilities: ["Full stack development", "API design", "Database management", "Testing"] },
+      { id: "ora7", title: "Security Engineer", location: "Hyderabad, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "4-8 years", salary: "20 - 38 LPA", skills: ["Security", "Oracle Security", "IAM", "Encryption", "Compliance"], posted: "3 days ago", isNew: true, category: "security", description: "Implement security for Oracle products.", requirements: ["4+ years security experience", "Oracle security knowledge", "Compliance experience"], responsibilities: ["Security implementation", "IAM management", "Compliance", "Auditing"] },
+      { id: "ora8", title: "AI/ML Engineer", location: "Bangalore, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "3-6 years", salary: "18 - 32 LPA", skills: ["Python", "Oracle AI", "Machine Learning", "Deep Learning", "NLP"], posted: "6 days ago", isNew: false, category: "ai", description: "Develop AI solutions using Oracle AI platform.", requirements: ["3+ years AI experience", "Oracle AI knowledge", "ML skills"], responsibilities: ["AI model development", "Oracle AI integration", "Research", "Client solutions"] },
+      { id: "ora9", title: "Technical Consultant", location: "Pune, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "5-9 years", salary: "20 - 40 LPA", skills: ["Oracle Apps", "ERP", "Consulting", "Implementation", "Support"], posted: "1 week ago", isNew: false, category: "fullstack", description: "Implement Oracle applications for clients.", requirements: ["5+ years Oracle Apps experience", "Consulting experience", "Strong communication"], responsibilities: ["Implementation", "Configuration", "Training", "Support"] },
+      { id: "ora10", title: "DevOps Engineer", location: "Bangalore, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "3-6 years", salary: "14 - 26 LPA", skills: ["OCI", "Jenkins", "Docker", "Kubernetes", "Ansible"], posted: "5 days ago", isNew: false, category: "devops", description: "Build CI/CD pipelines using Oracle Cloud.", requirements: ["3+ years DevOps experience", "OCI knowledge", "CI/CD expertise"], responsibilities: ["Pipeline development", "Automation", "Monitoring", "Infrastructure management"] },
+      { id: "ora11", title: "Frontend Developer", location: "Hyderabad, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "2-4 years", salary: "8 - 16 LPA", skills: ["React", "JavaScript", "TypeScript", "CSS", "Oracle JET"], posted: "4 days ago", isNew: false, category: "frontend", description: "Build user interfaces using Oracle JET.", requirements: ["2+ years frontend experience", "JavaScript proficiency", "Oracle JET knowledge"], responsibilities: ["Frontend development", "Component design", "Testing", "Performance optimization"] },
+      { id: "ora12", title: "QA Engineer", location: "Mumbai, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "2-5 years", salary: "8 - 15 LPA", skills: ["Testing", "Automation", "Selenium", "Java", "Oracle Apps"], posted: "1 week ago", isNew: false, category: "fullstack", description: "Ensure quality of Oracle products.", requirements: ["2+ years QA experience", "Automation skills", "Oracle Apps knowledge"], responsibilities: ["Test planning", "Automation", "Bug reporting", "Quality assurance"] },
+    ],
+  },
+  {
+    name: "Meta",
+    logo: "https://logo.clearbit.com/meta.com",
+    industry: "Social Media & Technology",
+    description: "Meta Platforms, Inc., doing business as Meta, is an American multinational technology conglomerate. The company owns and operates Facebook, Instagram, Threads, and WhatsApp.",
+    employees: "86,000+",
+    headquarters: "Menlo Park, California",
+    indianOffices: ["Bangalore", "Hyderabad", "Gurgaon"],
+    benefits: ["Health Insurance", "401(k)", "Free Meals", "Wellness Programs", "Parental Leave", "Stock Options", "Learning Budget", "Work from Home"],
+    color: "from-blue-500 to-indigo-500",
+    bgColor: "bg-blue-500/10",
+    textColor: "text-blue-500",
+    jobs: [
+      { id: "meta1", title: "Software Engineer", location: "Bangalore, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "2-5 years", salary: "30 - 50 LPA", skills: ["Python", "C++", "Algorithms", "Data Structures", "System Design"], posted: "1 day ago", isNew: true, category: "fullstack", description: "Build products connecting billions of people.", requirements: ["BS in Computer Science", "Strong coding skills", "System design knowledge"], responsibilities: ["Software development", "Code reviews", "Technical documentation", "Team collaboration"] },
+      { id: "meta2", title: "Machine Learning Engineer", location: "Bangalore, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "3-7 years", salary: "40 - 70 LPA", skills: ["PyTorch", "Python", "Deep Learning", "NLP", "Recommendation Systems"], posted: "2 days ago", isNew: true, category: "ai", description: "Build ML systems powering Meta's products.", requirements: ["MS/PhD in ML", "Strong research skills", "Production ML experience"], responsibilities: ["ML model development", "Research", "Experimentation", "Production deployment"] },
+      { id: "meta3", title: "Data Scientist", location: "Hyderabad, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "3-6 years", salary: "35 - 55 LPA", skills: ["Python", "SQL", "Statistics", "A/B Testing", "Machine Learning"], posted: "3 days ago", isNew: true, category: "data", description: "Analyze data to improve user experience.", requirements: ["MS in Statistics/CS", "Strong analytical skills", "ML knowledge"], responsibilities: ["Data analysis", "A/B testing", "Insights generation", "Product recommendations"] },
+      { id: "meta4", title: "Frontend Engineer", location: "Gurgaon, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "2-5 years", salary: "28 - 45 LPA", skills: ["React", "JavaScript", "TypeScript", "GraphQL", "Performance"], posted: "4 days ago", isNew: false, category: "frontend", description: "Build user interfaces for Meta's products.", requirements: ["2+ years frontend experience", "React expertise", "Performance optimization"], responsibilities: ["UI development", "Component design", "Testing", "Accessibility"] },
+      { id: "meta5", title: "iOS Developer", location: "Bangalore, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "3-6 years", salary: "32 - 52 LPA", skills: ["Swift", "iOS", "Objective-C", "UIKit", "Core Data"], posted: "5 days ago", isNew: false, category: "mobile", description: "Build iOS apps for Facebook and Instagram.", requirements: ["3+ years iOS experience", "Swift expertise", "Published apps"], responsibilities: ["iOS development", "Feature implementation", "Code reviews", "Performance optimization"] },
+      { id: "meta6", title: "Security Engineer", location: "Bangalore, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "4-8 years", salary: "40 - 65 LPA", skills: ["Security", "Penetration Testing", "Python", "Network Security", "Incident Response"], posted: "1 week ago", isNew: false, category: "security", description: "Protect Meta's infrastructure and users.", requirements: ["4+ years security experience", "Penetration testing skills", "Incident response"], responsibilities: ["Security assessments", "Vulnerability research", "Incident response", "Security automation"] },
+      { id: "meta7", title: "Production Engineer", location: "Hyderabad, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "3-6 years", salary: "35 - 55 LPA", skills: ["Linux", "Python", "Automation", "Monitoring", "Distributed Systems"], posted: "3 days ago", isNew: true, category: "devops", description: "Ensure reliability of Meta's infrastructure.", requirements: ["3+ years production engineering", "Strong Linux skills", "Automation expertise"], responsibilities: ["Incident management", "Automation", "Capacity planning", "On-call rotation"] },
+      { id: "meta8", title: "Android Developer", location: "Bangalore, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "3-6 years", salary: "30 - 50 LPA", skills: ["Kotlin", "Android", "Java", "MVVM", "Dagger"], posted: "6 days ago", isNew: false, category: "mobile", description: "Build Android apps for Facebook and Instagram.", requirements: ["3+ years Android experience", "Kotlin proficiency", "Published apps"], responsibilities: ["Android development", "Feature implementation", "Bug fixing", "Performance optimization"] },
+      { id: "meta9", title: "AR/VR Engineer", location: "Bangalore, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "3-7 years", salary: "40 - 65 LPA", skills: ["Unity", "C++", "3D Graphics", "AR/VR", "Computer Vision"], posted: "1 week ago", isNew: false, category: "fullstack", description: "Build immersive AR/VR experiences.", requirements: ["3+ years AR/VR experience", "Unity expertise", "3D graphics knowledge"], responsibilities: ["AR/VR development", "Prototyping", "Performance optimization", "Research"] },
+      { id: "meta10", title: "Product Designer", location: "Gurgaon, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "3-7 years", salary: "30 - 50 LPA", skills: ["Figma", "User Research", "Prototyping", "Design Systems", "Interaction Design"], posted: "5 days ago", isNew: false, category: "design", description: "Design products used by billions.", requirements: ["3+ years product design", "Strong portfolio", "User research skills"], responsibilities: ["Product design", "User research", "Prototyping", "Design system contribution"] },
+      { id: "meta11", title: "Backend Engineer", location: "Hyderabad, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "3-6 years", salary: "35 - 55 LPA", skills: ["Python", "C++", "Distributed Systems", "Databases", "APIs"], posted: "4 days ago", isNew: false, category: "backend", description: "Build backend services for Meta's products.", requirements: ["3+ years backend experience", "Distributed systems knowledge", "Strong coding skills"], responsibilities: ["Backend development", "API design", "Performance optimization", "Documentation"] },
+      { id: "meta12", title: "Research Scientist", location: "Bangalore, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "PhD", salary: "55 - 90 LPA", skills: ["Machine Learning", "Research", "Python", "Publications", "Deep Learning"], posted: "1 week ago", isNew: false, category: "ai", description: "Conduct cutting-edge AI research at Meta.", requirements: ["PhD in ML/AI", "Strong publication record", "Research leadership"], responsibilities: ["Research", "Paper publications", "Prototype development", "Team collaboration"] },
+    ],
+  },
+  {
+    name: "NVIDIA",
+    logo: "https://logo.clearbit.com/nvidia.com",
+    industry: "Semiconductors & AI",
+    description: "NVIDIA Corporation is an American multinational technology company. It designs graphics processing units (GPUs) for gaming and professional markets, as well as system on a chip units for mobile computing and automotive markets.",
+    employees: "26,000+",
+    headquarters: "Santa Clara, California",
+    indianOffices: ["Bangalore", "Pune", "Hyderabad"],
+    benefits: ["Health Insurance", "401(k)", "Stock Purchase Plan", "Parental Leave", "Learning Programs", "Wellness Programs", "Employee Discounts", "Flexible Work"],
+    color: "from-green-600 to-green-400",
+    bgColor: "bg-green-600/10",
+    textColor: "text-green-600",
+    jobs: [
+      { id: "nv1", title: "CUDA Engineer", location: "Bangalore, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "3-7 years", salary: "25 - 45 LPA", skills: ["CUDA", "C++", "GPU Programming", "Parallel Computing", "Optimization"], posted: "1 day ago", isNew: true, category: "backend", description: "Develop CUDA libraries for GPU acceleration.", requirements: ["3+ years CUDA experience", "Strong C++ skills", "GPU programming"], responsibilities: ["CUDA development", "Optimization", "Testing", "Documentation"] },
+      { id: "nv2", title: "Deep Learning Engineer", location: "Bangalore, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "3-6 years", salary: "30 - 55 LPA", skills: ["Python", "TensorFlow", "PyTorch", "Deep Learning", "CUDA"], posted: "2 days ago", isNew: true, category: "ai", description: "Build deep learning solutions using NVIDIA GPUs.", requirements: ["3+ years DL experience", "Strong Python skills", "GPU optimization"], responsibilities: ["DL model development", "Optimization", "Research", "Production deployment"] },
+      { id: "nv3", title: "Graphics Engineer", location: "Pune, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "3-7 years", salary: "22 - 40 LPA", skills: ["C++", "OpenGL", "Vulkan", "DirectX", "Graphics Programming"], posted: "3 days ago", isNew: true, category: "fullstack", description: "Develop graphics drivers and software.", requirements: ["3+ years graphics experience", "Graphics APIs", "Strong C++"], responsibilities: ["Driver development", "Performance optimization", "Testing", "Documentation"] },
+      { id: "nv4", title: "AI Research Scientist", location: "Bangalore, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "PhD", salary: "45 - 80 LPA", skills: ["Machine Learning", "Research", "Python", "Publications", "Deep Learning"], posted: "4 days ago", isNew: false, category: "ai", description: "Conduct cutting-edge AI research at NVIDIA.", requirements: ["PhD in ML/AI", "Strong publication record", "Research skills"], responsibilities: ["Research", "Paper publications", "Prototype development", "Collaboration"] },
+      { id: "nv5", title: "Autonomous Vehicle Engineer", location: "Bangalore, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "4-8 years", salary: "35 - 60 LPA", skills: ["C++", "ROS", "Computer Vision", "Deep Learning", "CUDA"], posted: "5 days ago", isNew: false, category: "ai", description: "Build software for autonomous vehicles.", requirements: ["4+ years AV experience", "Computer vision", "Strong C++"], responsibilities: ["AV software development", "Perception algorithms", "Testing", "Integration"] },
+      { id: "nv6", title: "Software Engineer", location: "Hyderabad, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "2-5 years", salary: "18 - 32 LPA", skills: ["C++", "Python", "Linux", "Algorithms", "Data Structures"], posted: "1 week ago", isNew: false, category: "fullstack", description: "Develop software for NVIDIA's platforms.", requirements: ["BS in Computer Science", "Strong C++ skills", "Linux experience"], responsibilities: ["Software development", "Testing", "Documentation", "Code reviews"] },
+      { id: "nv7", title: "VLSI Design Engineer", location: "Bangalore, India", locationType: "On-site", type: "Full-time", experienceLevel: "3-7 years", salary: "22 - 42 LPA", skills: ["Verilog", "VLSI", "RTL Design", "Synthesis", "Verification"], posted: "3 days ago", isNew: true, category: "fullstack", description: "Design circuits for NVIDIA's GPUs.", requirements: ["3+ years VLSI experience", "RTL design skills", "Verification knowledge"], responsibilities: ["RTL design", "Verification", "Synthesis", "Timing closure"] },
+      { id: "nv8", title: "DevOps Engineer", location: "Pune, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "3-6 years", salary: "16 - 30 LPA", skills: ["Jenkins", "Docker", "Kubernetes", "Ansible", "Linux"], posted: "6 days ago", isNew: false, category: "devops", description: "Build CI/CD infrastructure for NVIDIA.", requirements: ["3+ years DevOps experience", "CI/CD expertise", "Container experience"], responsibilities: ["Pipeline development", "Automation", "Monitoring", "Infrastructure management"] },
+      { id: "nv9", title: "Data Scientist", location: "Bangalore, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "3-6 years", salary: "22 - 40 LPA", skills: ["Python", "SQL", "Machine Learning", "RAPIDS", "Data Analysis"], posted: "1 week ago", isNew: false, category: "data", description: "Apply data science using NVIDIA's tools.", requirements: ["3+ years data science", "GPU computing", "Strong analytics"], responsibilities: ["Data analysis", "ML modeling", "RAPIDS development", "Insights generation"] },
+      { id: "nv10", title: "Computer Vision Engineer", location: "Bangalore, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "3-7 years", salary: "28 - 50 LPA", skills: ["Python", "OpenCV", "Deep Learning", "Computer Vision", "CUDA"], posted: "5 days ago", isNew: false, category: "ai", description: "Develop computer vision solutions.", requirements: ["3+ years CV experience", "Deep learning", "CUDA knowledge"], responsibilities: ["CV algorithm development", "Model optimization", "Testing", "Deployment"] },
+      { id: "nv11", title: "Security Engineer", location: "Bangalore, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "4-8 years", salary: "25 - 45 LPA", skills: ["Security", "Hardware Security", "Cryptography", "Penetration Testing", "Secure Coding"], posted: "4 days ago", isNew: false, category: "security", description: "Ensure security of NVIDIA's products.", requirements: ["4+ years security experience", "Hardware security", "Cryptography"], responsibilities: ["Security assessments", "Vulnerability research", "Secure design", "Incident response"] },
+      { id: "nv12", title: "Technical Program Manager", location: "Bangalore, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "5-9 years", salary: "30 - 55 LPA", skills: ["Program Management", "Technical Background", "Communication", "Agile", "Hardware/Software"], posted: "1 week ago", isNew: false, category: "fullstack", description: "Drive complex programs at NVIDIA.", requirements: ["5+ years TPM experience", "Technical background", "Leadership skills"], responsibilities: ["Program planning", "Cross-team coordination", "Risk management", "Stakeholder communication"] },
+    ],
+  },
+  {
+    name: "Tesla",
+    logo: "https://logo.clearbit.com/tesla.com",
+    industry: "Electric Vehicles & Energy",
+    description: "Tesla, Inc. is an American multinational automotive and clean energy company. Tesla designs and manufactures electric vehicles, battery energy storage, solar panels and related products and services.",
+    employees: "130,000+",
+    headquarters: "Austin, Texas",
+    indianOffices: ["Bangalore", "Pune"],
+    benefits: ["Health Insurance", "401(k)", "Stock Options", "Parental Leave", "Employee Discounts", "Wellness Programs", "Learning Opportunities", "Free EV Charging"],
+    color: "from-red-500 to-red-400",
+    bgColor: "bg-red-500/10",
+    textColor: "text-red-500",
+    jobs: [
+      { id: "ts1", title: "Autopilot Engineer", location: "Bangalore, India", locationType: "On-site", type: "Full-time", experienceLevel: "4-8 years", salary: "35 - 60 LPA", skills: ["C++", "Python", "Computer Vision", "Deep Learning", "Autonomous Vehicles"], posted: "1 day ago", isNew: true, category: "ai", description: "Build Tesla's Autopilot system.", requirements: ["4+ years AV experience", "Computer vision", "Deep learning"], responsibilities: ["Autopilot development", "Perception algorithms", "Testing", "Optimization"] },
+      { id: "ts2", title: "Embedded Software Engineer", location: "Bangalore, India", locationType: "On-site", type: "Full-time", experienceLevel: "3-7 years", salary: "25 - 45 LPA", skills: ["C", "C++", "Embedded Systems", "RTOS", "Firmware"], posted: "2 days ago", isNew: true, category: "backend", description: "Develop embedded software for Tesla vehicles.", requirements: ["3+ years embedded experience", "Strong C/C++", "RTOS knowledge"], responsibilities: ["Embedded development", "Firmware", "Testing", "Integration"] },
+      { id: "ts3", title: "Full Stack Developer", location: "Pune, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "3-6 years", salary: "20 - 38 LPA", skills: ["React", "Python", "PostgreSQL", "REST APIs", "AWS"], posted: "3 days ago", isNew: true, category: "fullstack", description: "Build web applications for Tesla.", requirements: ["3+ years full stack experience", "React proficiency", "Backend skills"], responsibilities: ["Full stack development", "API design", "Database management", "Testing"] },
+      { id: "ts4", title: "Data Engineer", location: "Bangalore, India", locationType: "On-site", type: "Full-time", experienceLevel: "3-6 years", salary: "22 - 40 LPA", skills: ["Python", "Spark", "Kafka", "Data Pipelines", "AWS"], posted: "4 days ago", isNew: false, category: "data", description: "Build data pipelines for Tesla's analytics.", requirements: ["3+ years data engineering", "Big data experience", "Python skills"], responsibilities: ["Pipeline development", "Data modeling", "Performance optimization", "Data quality"] },
+      { id: "ts5", title: "Machine Learning Engineer", location: "Bangalore, India", locationType: "On-site", type: "Full-time", experienceLevel: "3-7 years", salary: "30 - 55 LPA", skills: ["Python", "TensorFlow", "PyTorch", "Deep Learning", "Computer Vision"], posted: "5 days ago", isNew: false, category: "ai", description: "Build ML models for Tesla's products.", requirements: ["3+ years ML experience", "Deep learning", "Production ML"], responsibilities: ["ML model development", "Training", "Deployment", "Optimization"] },
+      { id: "ts6", title: "DevOps Engineer", location: "Bangalore, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "3-6 years", salary: "18 - 35 LPA", skills: ["AWS", "Docker", "Kubernetes", "CI/CD", "Terraform"], posted: "1 week ago", isNew: false, category: "devops", description: "Build infrastructure for Tesla's software.", requirements: ["3+ years DevOps experience", "AWS expertise", "Container experience"], responsibilities: ["Infrastructure management", "Automation", "Monitoring", "Security"] },
+      { id: "ts7", title: "Security Engineer", location: "Bangalore, India", locationType: "On-site", type: "Full-time", experienceLevel: "4-8 years", salary: "30 - 52 LPA", skills: ["Security", "Automotive Security", "Penetration Testing", "Cryptography", "Embedded Security"], posted: "3 days ago", isNew: true, category: "security", description: "Ensure security of Tesla's vehicles.", requirements: ["4+ years security experience", "Automotive security", "Embedded systems"], responsibilities: ["Security assessments", "Vulnerability research", "Secure design", "Incident response"] },
+      { id: "ts8", title: "Frontend Developer", location: "Pune, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "2-5 years", salary: "16 - 30 LPA", skills: ["React", "TypeScript", "CSS", "Testing", "Performance"], posted: "6 days ago", isNew: false, category: "frontend", description: "Build user interfaces for Tesla's apps.", requirements: ["2+ years React experience", "TypeScript proficiency", "Testing skills"], responsibilities: ["Frontend development", "Component design", "Testing", "Performance optimization"] },
+      { id: "ts9", title: "Battery Engineer", location: "Bangalore, India", locationType: "On-site", type: "Full-time", experienceLevel: "4-8 years", salary: "28 - 50 LPA", skills: ["Battery Technology", "MATLAB", "Python", "Electrochemistry", "Simulation"], posted: "1 week ago", isNew: false, category: "fullstack", description: "Work on Tesla's battery technology.", requirements: ["4+ years battery experience", "Electrochemistry", "Simulation skills"], responsibilities: ["Battery development", "Testing", "Simulation", "Optimization"] },
+      { id: "ts10", title: "QA Engineer", location: "Pune, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "2-5 years", salary: "14 - 26 LPA", skills: ["Testing", "Automation", "Python", "Selenium", "CI/CD"], posted: "5 days ago", isNew: false, category: "fullstack", description: "Ensure quality of Tesla's software.", requirements: ["2+ years QA experience", "Automation skills", "Python knowledge"], responsibilities: ["Test planning", "Automation", "Bug reporting", "Quality assurance"] },
+      { id: "ts11", title: "Power Electronics Engineer", location: "Bangalore, India", locationType: "On-site", type: "Full-time", experienceLevel: "3-7 years", salary: "22 - 42 LPA", skills: ["Power Electronics", "PCB Design", "MATLAB", "Simulation", "Testing"], posted: "4 days ago", isNew: false, category: "fullstack", description: "Design power electronics for Tesla vehicles.", requirements: ["3+ years power electronics", "PCB design", "Simulation skills"], responsibilities: ["Circuit design", "PCB layout", "Testing", "Documentation"] },
+      { id: "ts12", title: "Robotics Engineer", location: "Bangalore, India", locationType: "On-site", type: "Full-time", experienceLevel: "3-7 years", salary: "28 - 50 LPA", skills: ["ROS", "C++", "Python", "Computer Vision", "Motion Planning"], posted: "1 week ago", isNew: false, category: "ai", description: "Work on Tesla Bot and manufacturing robots.", requirements: ["3+ years robotics experience", "ROS expertise", "Motion planning"], responsibilities: ["Robotics development", "Motion planning", "Testing", "Integration"] },
+    ],
+  },
+  {
+    name: "Accenture",
+    logo: "https://logo.clearbit.com/accenture.com",
+    industry: "Consulting & Technology",
+    description: "Accenture plc is an Irish-American professional services company. A Fortune Global 500 company, it provides consulting, technology, and outsourcing services.",
+    employees: "720,000+",
+    headquarters: "Dublin, Ireland",
+    indianOffices: ["Bangalore", "Mumbai", "Chennai", "Hyderabad", "Pune", "Delhi NCR", "Kolkata"],
+    benefits: ["Health Insurance", "Life Insurance", "Provident Fund", "Stock Purchase Plan", "Parental Leave", "Learning Programs", "Flexible Work", "Wellness Programs"],
+    color: "from-purple-600 to-purple-400",
+    bgColor: "bg-purple-600/10",
+    textColor: "text-purple-600",
+    jobs: [
+      { id: "acc1", title: "Associate Software Engineer", location: "Bangalore, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "Fresher", salary: "4.5 - 6 LPA", skills: ["Java", "Python", "SQL", "Problem Solving", "Communication"], posted: "1 day ago", isNew: true, category: "fullstack", description: "Start your career at Accenture.", requirements: ["BE/BTech in CS/IT", "Strong fundamentals", "Good communication"], responsibilities: ["Software development", "Testing", "Documentation", "Client interaction"] },
+      { id: "acc2", title: "Java Developer", location: "Mumbai, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "2-5 years", salary: "8 - 16 LPA", skills: ["Java", "Spring Boot", "Microservices", "REST APIs", "MySQL"], posted: "2 days ago", isNew: true, category: "backend", description: "Develop Java applications for clients.", requirements: ["2+ years Java experience", "Spring Boot knowledge", "Database experience"], responsibilities: ["Java development", "API development", "Testing", "Code reviews"] },
+      { id: "acc3", title: "Data Analyst", location: "Chennai, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "1-3 years", salary: "5 - 10 LPA", skills: ["SQL", "Python", "Tableau", "Power BI", "Excel"], posted: "3 days ago", isNew: true, category: "data", description: "Analyze data for business insights.", requirements: ["1+ years data analysis", "SQL proficiency", "Visualization skills"], responsibilities: ["Data analysis", "Reporting", "Dashboard creation", "Presentations"] },
+      { id: "acc4", title: "Cloud Engineer", location: "Hyderabad, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "3-6 years", salary: "10 - 20 LPA", skills: ["AWS", "Azure", "Terraform", "Docker", "Kubernetes"], posted: "4 days ago", isNew: false, category: "devops", description: "Build cloud solutions for clients.", requirements: ["3+ years cloud experience", "Cloud certifications", "IaC experience"], responsibilities: ["Cloud architecture", "Migration", "Automation", "Support"] },
+      { id: "acc5", title: "React Developer", location: "Pune, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "2-4 years", salary: "6 - 12 LPA", skills: ["React", "JavaScript", "TypeScript", "Redux", "HTML/CSS"], posted: "5 days ago", isNew: false, category: "frontend", description: "Build web applications using React.", requirements: ["2+ years React experience", "JavaScript proficiency", "State management"], responsibilities: ["Frontend development", "Component design", "Testing", "Performance"] },
+      { id: "acc6", title: "AI/ML Engineer", location: "Bangalore, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "3-6 years", salary: "12 - 24 LPA", skills: ["Python", "TensorFlow", "Machine Learning", "NLP", "Deep Learning"], posted: "1 week ago", isNew: false, category: "ai", description: "Build AI solutions for clients.", requirements: ["3+ years AI experience", "Strong Python", "ML frameworks"], responsibilities: ["ML model development", "Deployment", "Client solutions", "Research"] },
+      { id: "acc7", title: "SAP Consultant", location: "Delhi NCR, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "4-8 years", salary: "12 - 25 LPA", skills: ["SAP", "ABAP", "S/4HANA", "Fiori", "Integration"], posted: "3 days ago", isNew: true, category: "backend", description: "Implement SAP solutions for clients.", requirements: ["4+ years SAP experience", "Module expertise", "Client-facing skills"], responsibilities: ["SAP implementation", "Configuration", "Training", "Support"] },
+      { id: "acc8", title: "Security Consultant", location: "Mumbai, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "4-8 years", salary: "14 - 28 LPA", skills: ["Security", "SIEM", "Penetration Testing", "Compliance", "Risk Assessment"], posted: "6 days ago", isNew: false, category: "security", description: "Provide security consulting to clients.", requirements: ["4+ years security experience", "Security certifications", "Consulting experience"], responsibilities: ["Security assessments", "Compliance", "Risk management", "Client presentations"] },
+      { id: "acc9", title: "Full Stack Developer", location: "Chennai, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "3-6 years", salary: "10 - 18 LPA", skills: ["React", "Node.js", "MongoDB", "Express", "TypeScript"], posted: "1 week ago", isNew: false, category: "fullstack", description: "Build end-to-end applications.", requirements: ["3+ years full stack experience", "MERN stack", "Database skills"], responsibilities: ["Full stack development", "API design", "Database management", "Testing"] },
+      { id: "acc10", title: "DevOps Engineer", location: "Kolkata, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "3-6 years", salary: "9 - 18 LPA", skills: ["Jenkins", "Docker", "Kubernetes", "Ansible", "AWS"], posted: "5 days ago", isNew: false, category: "devops", description: "Build CI/CD pipelines for clients.", requirements: ["3+ years DevOps experience", "CI/CD expertise", "Container experience"], responsibilities: ["Pipeline development", "Automation", "Monitoring", "Infrastructure"] },
+      { id: "acc11", title: "Business Analyst", location: "Pune, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "2-5 years", salary: "7 - 14 LPA", skills: ["Requirements Gathering", "Documentation", "Agile", "SQL", "Communication"], posted: "4 days ago", isNew: false, category: "data", description: "Bridge business and technology.", requirements: ["2+ years BA experience", "Strong communication", "Analytical skills"], responsibilities: ["Requirements gathering", "Documentation", "Stakeholder management", "Process improvement"] },
+      { id: "acc12", title: "Technical Lead", location: "Bangalore, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "8-12 years", salary: "22 - 40 LPA", skills: ["Java", "Architecture", "Leadership", "Agile", "Client Management"], posted: "1 week ago", isNew: false, category: "fullstack", description: "Lead technical teams at Accenture.", requirements: ["8+ years experience", "Leadership skills", "Architecture expertise"], responsibilities: ["Technical leadership", "Architecture", "Mentoring", "Client interaction"] },
+    ],
+  },
+  {
+    name: "Deloitte",
+    logo: "https://logo.clearbit.com/deloitte.com",
+    industry: "Consulting & Professional Services",
+    description: "Deloitte Touche Tohmatsu Limited is a British multinational professional services network. Deloitte is one of the Big Four accounting organizations and the largest professional services network in the world by revenue and number of professionals.",
+    employees: "415,000+",
+    headquarters: "London, UK",
+    indianOffices: ["Bangalore", "Mumbai", "Hyderabad", "Chennai", "Pune", "Delhi NCR", "Kolkata"],
+    benefits: ["Health Insurance", "Life Insurance", "Provident Fund", "Parental Leave", "Learning Programs", "Flexible Work", "Wellness Programs", "Performance Bonus"],
+    color: "from-green-700 to-green-500",
+    bgColor: "bg-green-700/10",
+    textColor: "text-green-700",
+    jobs: [
+      { id: "del1", title: "Analyst", location: "Bangalore, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "Fresher", salary: "6 - 8 LPA", skills: ["Excel", "SQL", "PowerPoint", "Analytics", "Communication"], posted: "1 day ago", isNew: true, category: "data", description: "Start your consulting career at Deloitte.", requirements: ["MBA/BE/BTech", "Strong analytics", "Good communication"], responsibilities: ["Data analysis", "Research", "Presentations", "Client support"] },
+      { id: "del2", title: "Software Engineer", location: "Hyderabad, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "2-5 years", salary: "8 - 16 LPA", skills: ["Java", "Python", "SQL", "Cloud", "Agile"], posted: "2 days ago", isNew: true, category: "fullstack", description: "Build technology solutions for clients.", requirements: ["2+ years experience", "Strong coding skills", "Cloud knowledge"], responsibilities: ["Software development", "Testing", "Documentation", "Client interaction"] },
+      { id: "del3", title: "Data Scientist", location: "Mumbai, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "3-6 years", salary: "12 - 22 LPA", skills: ["Python", "Machine Learning", "SQL", "Statistics", "Visualization"], posted: "3 days ago", isNew: true, category: "data", description: "Apply data science to solve business problems.", requirements: ["3+ years data science", "Strong statistics", "ML expertise"], responsibilities: ["ML model development", "Data analysis", "Client presentations", "Research"] },
+      { id: "del4", title: "Cloud Consultant", location: "Chennai, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "4-8 years", salary: "14 - 28 LPA", skills: ["AWS", "Azure", "GCP", "Architecture", "Migration"], posted: "4 days ago", isNew: false, category: "devops", description: "Provide cloud consulting to clients.", requirements: ["4+ years cloud experience", "Certifications", "Consulting experience"], responsibilities: ["Cloud architecture", "Migration", "Client consulting", "Best practices"] },
+      { id: "del5", title: "Cybersecurity Consultant", location: "Bangalore, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "4-8 years", salary: "14 - 30 LPA", skills: ["Security", "Risk Assessment", "Compliance", "SIEM", "Incident Response"], posted: "5 days ago", isNew: false, category: "security", description: "Provide security consulting to clients.", requirements: ["4+ years security experience", "Certifications", "Consulting skills"], responsibilities: ["Security assessments", "Risk management", "Compliance", "Client presentations"] },
+      { id: "del6", title: "SAP Consultant", location: "Pune, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "4-8 years", salary: "12 - 26 LPA", skills: ["SAP", "S/4HANA", "Module Expertise", "Integration", "Implementation"], posted: "1 week ago", isNew: false, category: "backend", description: "Implement SAP solutions for clients.", requirements: ["4+ years SAP experience", "Module expertise", "Client-facing skills"], responsibilities: ["SAP implementation", "Configuration", "Training", "Support"] },
+      { id: "del7", title: "React Developer", location: "Delhi NCR, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "2-5 years", salary: "7 - 14 LPA", skills: ["React", "JavaScript", "TypeScript", "Redux", "Testing"], posted: "3 days ago", isNew: true, category: "frontend", description: "Build web applications for clients.", requirements: ["2+ years React experience", "JavaScript proficiency", "Testing skills"], responsibilities: ["Frontend development", "Component design", "Testing", "Code reviews"] },
+      { id: "del8", title: "AI Consultant", location: "Bangalore, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "4-8 years", salary: "16 - 32 LPA", skills: ["AI/ML", "Python", "Consulting", "Strategy", "Implementation"], posted: "6 days ago", isNew: false, category: "ai", description: "Provide AI consulting to clients.", requirements: ["4+ years AI experience", "Consulting experience", "Strong communication"], responsibilities: ["AI strategy", "Implementation", "Client presentations", "Research"] },
+      { id: "del9", title: "Business Analyst", location: "Mumbai, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "2-5 years", salary: "8 - 16 LPA", skills: ["Requirements", "Documentation", "Agile", "SQL", "Communication"], posted: "1 week ago", isNew: false, category: "data", description: "Bridge business and technology.", requirements: ["2+ years BA experience", "Strong communication", "Analytical skills"], responsibilities: ["Requirements gathering", "Documentation", "Stakeholder management", "Analysis"] },
+      { id: "del10", title: "DevOps Engineer", location: "Hyderabad, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "3-6 years", salary: "10 - 20 LPA", skills: ["AWS", "Docker", "Kubernetes", "CI/CD", "Terraform"], posted: "5 days ago", isNew: false, category: "devops", description: "Build DevOps solutions for clients.", requirements: ["3+ years DevOps experience", "CI/CD expertise", "Cloud knowledge"], responsibilities: ["Pipeline development", "Automation", "Infrastructure", "Client support"] },
+      { id: "del11", title: "Manager - Technology", location: "Bangalore, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "8-12 years", salary: "25 - 45 LPA", skills: ["Leadership", "Architecture", "Client Management", "Strategy", "Delivery"], posted: "4 days ago", isNew: false, category: "fullstack", description: "Lead technology engagements at Deloitte.", requirements: ["8+ years experience", "Leadership skills", "Client management"], responsibilities: ["Team leadership", "Client management", "Delivery", "Business development"] },
+      { id: "del12", title: "RPA Developer", location: "Chennai, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "2-5 years", salary: "6 - 14 LPA", skills: ["UiPath", "Automation Anywhere", "Blue Prism", "Python", "Process Automation"], posted: "1 week ago", isNew: false, category: "backend", description: "Build RPA solutions for clients.", requirements: ["2+ years RPA experience", "Certification", "Process understanding"], responsibilities: ["RPA development", "Bot deployment", "Maintenance", "Documentation"] },
+    ],
+  },
   {
     name: "TCS",
     logo: "https://logo.clearbit.com/tcs.com",
@@ -249,581 +574,304 @@ const companies: Company[] = [
       { id: "inf8", title: "SAP ABAP Developer", location: "Mumbai, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "3-6 years", salary: "8 - 16 LPA", skills: ["SAP ABAP", "SAP S/4HANA", "ODATA", "Fiori", "HANA DB"], posted: "6 days ago", isNew: false, category: "backend", description: "Develop and maintain SAP solutions for enterprise clients.", requirements: ["3+ years SAP ABAP experience", "S/4HANA knowledge", "Fiori development experience"], responsibilities: ["ABAP development", "SAP customization", "Technical design", "Testing and debugging"] },
       { id: "inf9", title: "AI/ML Developer", location: "Bangalore, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "2-5 years", salary: "8 - 16 LPA", skills: ["Python", "TensorFlow", "PyTorch", "NLP", "Computer Vision"], posted: "2 days ago", isNew: true, category: "ai", description: "Develop AI/ML solutions for various business domains.", requirements: ["2+ years AI/ML experience", "Strong Python skills", "Deep learning knowledge"], responsibilities: ["ML model development", "Data preprocessing", "Model deployment", "Research and prototyping"] },
       { id: "inf10", title: "Technical Lead", location: "Hyderabad, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "8-12 years", salary: "20 - 35 LPA", skills: ["Java", "Microservices", "AWS", "Architecture", "Leadership"], posted: "1 week ago", isNew: false, category: "fullstack", description: "Lead technical teams and drive architecture decisions.", requirements: ["8+ years development experience", "Team leadership experience", "Strong architecture skills"], responsibilities: ["Technical leadership", "Architecture design", "Team mentoring", "Stakeholder management"] },
-      { id: "inf11", title: "Salesforce Developer", location: "Chennai, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "2-5 years", salary: "7 - 14 LPA", skills: ["Salesforce", "Apex", "Lightning", "SOQL", "Integration"], posted: "4 days ago", isNew: false, category: "fullstack", description: "Develop and customize Salesforce solutions.", requirements: ["2+ years Salesforce experience", "Salesforce certifications", "Apex programming"], responsibilities: ["Salesforce development", "Customization", "Integration", "User support"] },
-      { id: "inf12", title: "Network Security Engineer", location: "Bangalore, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "3-6 years", salary: "8 - 16 LPA", skills: ["Network Security", "Firewalls", "SIEM", "Penetration Testing", "CISSP"], posted: "5 days ago", isNew: false, category: "security", description: "Protect network infrastructure and implement security measures.", requirements: ["3+ years network security experience", "Security certifications", "Firewall expertise"], responsibilities: ["Network security", "Threat monitoring", "Incident response", "Security audits"] },
+      { id: "inf11", title: "Automation Tester", location: "Chennai, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "2-5 years", salary: "5 - 10 LPA", skills: ["Selenium", "Java", "TestNG", "Cucumber", "CI/CD"], posted: "5 days ago", isNew: false, category: "fullstack", description: "Develop and maintain automated test suites.", requirements: ["2+ years automation experience", "Selenium proficiency", "Programming skills"], responsibilities: ["Test automation", "Framework development", "CI/CD integration", "Test reporting"] },
+      { id: "inf12", title: "Blockchain Developer", location: "Bangalore, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "3-6 years", salary: "12 - 22 LPA", skills: ["Blockchain", "Solidity", "Ethereum", "Smart Contracts", "Web3"], posted: "1 week ago", isNew: false, category: "backend", description: "Build blockchain solutions for enterprise clients.", requirements: ["3+ years blockchain experience", "Smart contract development", "Web3 knowledge"], responsibilities: ["Blockchain development", "Smart contract coding", "Integration", "Documentation"] },
     ],
   },
   {
     name: "Wipro",
     logo: "https://logo.clearbit.com/wipro.com",
     industry: "IT Services & Consulting",
-    description: "Wipro Limited is an Indian multinational corporation that provides IT, consulting and business process services. It is headquartered in Bangalore and is one of the Big Three IT services companies in India.",
+    description: "Wipro Limited is an Indian multinational corporation that provides information technology, consulting and business process services. It is headquartered in Bangalore, Karnataka, India.",
     employees: "250,000+",
     headquarters: "Bangalore, India",
-    indianOffices: ["Bangalore", "Chennai", "Hyderabad", "Pune", "Mumbai", "Kolkata", "Delhi NCR", "Kochi"],
-    benefits: ["Health Insurance", "Life Insurance", "Provident Fund", "ESOP", "Learning Programs", "Wellness Benefits", "Flexible Hours", "Career Growth"],
-    color: "from-purple-600 to-purple-400",
-    bgColor: "bg-purple-600/10",
-    textColor: "text-purple-600",
+    indianOffices: ["Bangalore", "Hyderabad", "Chennai", "Pune", "Mumbai", "Delhi NCR", "Kolkata", "Kochi"],
+    benefits: ["Health Insurance", "Life Insurance", "Provident Fund", "Stock Options", "Learning Programs", "Flexible Work", "Wellness Programs", "Parental Leave"],
+    color: "from-purple-500 to-purple-400",
+    bgColor: "bg-purple-500/10",
+    textColor: "text-purple-500",
     jobs: [
-      { id: "wip1", title: "Project Engineer", location: "Bangalore, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "Fresher", salary: "3.5 - 4.0 LPA", skills: ["Java", "Python", "SQL", "Aptitude", "Communication"], posted: "1 day ago", isNew: true, category: "fullstack", description: "Begin your career journey with Wipro as a Project Engineer.", requirements: ["B.Tech/BE/MCA", "60% aggregate", "No backlogs"], responsibilities: ["Software development", "Testing", "Learning new technologies", "Team work"] },
-      { id: "wip2", title: "Senior Software Engineer", location: "Chennai, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "4-7 years", salary: "10 - 18 LPA", skills: ["Java", "Spring", "Microservices", "Docker", "Kubernetes"], posted: "2 days ago", isNew: true, category: "backend", description: "Work on enterprise-level software solutions.", requirements: ["4+ years Java experience", "Microservices expertise", "Container knowledge"], responsibilities: ["Software development", "Code reviews", "Technical design", "Mentoring juniors"] },
-      { id: "wip3", title: "Cloud Data Engineer", location: "Hyderabad, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "3-6 years", salary: "10 - 18 LPA", skills: ["Azure", "Databricks", "Spark", "Python", "SQL"], posted: "3 days ago", isNew: true, category: "data", description: "Build and maintain data pipelines on cloud platforms.", requirements: ["3+ years data engineering experience", "Azure/AWS experience", "Big data tools knowledge"], responsibilities: ["Data pipeline development", "ETL processes", "Data modeling", "Performance optimization"] },
-      { id: "wip4", title: "Vue.js Developer", location: "Pune, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "2-5 years", salary: "5 - 12 LPA", skills: ["Vue.js", "JavaScript", "Vuex", "HTML/CSS", "REST APIs"], posted: "4 days ago", isNew: false, category: "frontend", description: "Build modern web applications using Vue.js framework.", requirements: ["2+ years Vue.js experience", "JavaScript proficiency", "Frontend best practices"], responsibilities: ["Vue.js development", "Component design", "API integration", "Testing"] },
-      { id: "wip5", title: "ServiceNow Developer", location: "Mumbai, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "2-5 years", salary: "6 - 14 LPA", skills: ["ServiceNow", "JavaScript", "ITSM", "Workflow", "Integration"], posted: "5 days ago", isNew: false, category: "fullstack", description: "Develop and configure ServiceNow solutions.", requirements: ["2+ years ServiceNow experience", "ServiceNow certifications", "JavaScript skills"], responsibilities: ["ServiceNow development", "Customization", "Workflow design", "User support"] },
-      { id: "wip6", title: "DevSecOps Engineer", location: "Bangalore, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "3-6 years", salary: "10 - 18 LPA", skills: ["DevOps", "Security", "AWS", "Docker", "Kubernetes", "CI/CD"], posted: "1 week ago", isNew: false, category: "devops", description: "Implement security practices in DevOps pipelines.", requirements: ["3+ years DevOps experience", "Security knowledge", "Cloud expertise"], responsibilities: ["DevSecOps implementation", "Security automation", "Pipeline security", "Vulnerability management"] },
-      { id: "wip7", title: "iOS Developer", location: "Chennai, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "2-5 years", salary: "6 - 14 LPA", skills: ["Swift", "iOS SDK", "Xcode", "Core Data", "REST APIs"], posted: "3 days ago", isNew: true, category: "mobile", description: "Develop iOS applications for various clients.", requirements: ["2+ years iOS experience", "Swift proficiency", "Published apps preferred"], responsibilities: ["iOS development", "UI implementation", "App store deployment", "Bug fixing"] },
-      { id: "wip8", title: "Big Data Engineer", location: "Hyderabad, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "3-6 years", salary: "10 - 18 LPA", skills: ["Hadoop", "Spark", "Hive", "Python", "Kafka"], posted: "6 days ago", isNew: false, category: "data", description: "Build and maintain big data infrastructure.", requirements: ["3+ years big data experience", "Hadoop ecosystem knowledge", "Programming skills"], responsibilities: ["Big data development", "Data processing", "Infrastructure maintenance", "Performance tuning"] },
-      { id: "wip9", title: "NLP Engineer", location: "Bangalore, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "2-5 years", salary: "10 - 18 LPA", skills: ["Python", "NLP", "BERT", "Transformers", "spaCy"], posted: "2 days ago", isNew: true, category: "ai", description: "Develop NLP solutions for text processing and understanding.", requirements: ["2+ years NLP experience", "Deep learning knowledge", "Python expertise"], responsibilities: ["NLP model development", "Text processing", "Model training", "API development"] },
-      { id: "wip10", title: "Scrum Master", location: "Pune, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "5-8 years", salary: "14 - 22 LPA", skills: ["Scrum", "Agile", "JIRA", "Kanban", "Team Management"], posted: "1 week ago", isNew: false, category: "fullstack", description: "Lead agile teams and ensure successful project delivery.", requirements: ["5+ years Scrum Master experience", "CSM certification", "Team leadership"], responsibilities: ["Sprint planning", "Daily standups", "Retrospectives", "Impediment removal"] },
-      { id: "wip11", title: "Pega Developer", location: "Chennai, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "2-5 years", salary: "7 - 15 LPA", skills: ["Pega", "Java", "BPM", "Case Management", "Integration"], posted: "4 days ago", isNew: false, category: "fullstack", description: "Develop workflow solutions using Pega platform.", requirements: ["2+ years Pega experience", "Pega certifications", "BPM knowledge"], responsibilities: ["Pega development", "Workflow design", "Integration", "Testing"] },
-      { id: "wip12", title: "Application Security Engineer", location: "Bangalore, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "3-6 years", salary: "10 - 18 LPA", skills: ["Application Security", "OWASP", "Penetration Testing", "SAST", "DAST"], posted: "5 days ago", isNew: false, category: "security", description: "Ensure security of applications throughout the development lifecycle.", requirements: ["3+ years app security experience", "Security certifications", "Penetration testing skills"], responsibilities: ["Security assessments", "Code reviews", "Vulnerability management", "Security training"] },
-    ],
-  },
-  {
-    name: "Accenture",
-    logo: "https://logo.clearbit.com/accenture.com",
-    industry: "Consulting & Technology",
-    description: "Accenture is a global professional services company specializing in IT services and consulting. With strong presence in India, it offers services across strategy, consulting, digital, technology and operations.",
-    employees: "700,000+",
-    headquarters: "Dublin, Ireland (India HQ: Mumbai)",
-    indianOffices: ["Mumbai", "Bangalore", "Chennai", "Hyderabad", "Pune", "Gurgaon", "Kolkata", "Coimbatore"],
-    benefits: ["Competitive Salary", "Health Insurance", "Provident Fund", "Performance Bonus", "Learning Opportunities", "Global Exposure", "Flexible Working", "Employee Assistance Program"],
-    color: "from-violet-600 to-fuchsia-500",
-    bgColor: "bg-violet-600/10",
-    textColor: "text-violet-600",
-    jobs: [
-      { id: "acc1", title: "Associate Software Engineer", location: "Bangalore, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "Fresher", salary: "4.5 - 5.5 LPA", skills: ["Java", "Python", "SQL", "Agile", "Problem Solving"], posted: "1 day ago", isNew: true, category: "fullstack", description: "Join Accenture as an Associate Software Engineer and work with global teams.", requirements: ["B.Tech/BE/MCA", "65% aggregate", "Strong communication"], responsibilities: ["Software development", "Client interaction", "Agile practices", "Continuous learning"] },
-      { id: "acc2", title: "Full Stack Developer", location: "Mumbai, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "3-6 years", salary: "10 - 18 LPA", skills: ["React", "Node.js", "MongoDB", "AWS", "TypeScript"], posted: "2 days ago", isNew: true, category: "fullstack", description: "Build end-to-end solutions for enterprise clients.", requirements: ["3+ years full stack experience", "MERN/MEAN stack", "Cloud experience"], responsibilities: ["Full stack development", "Architecture design", "Code reviews", "Client demos"] },
-      { id: "acc3", title: "Data Engineer", location: "Chennai, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "3-6 years", salary: "10 - 18 LPA", skills: ["Python", "Spark", "AWS", "Snowflake", "Airflow"], posted: "3 days ago", isNew: true, category: "data", description: "Build robust data pipelines for analytics solutions.", requirements: ["3+ years data engineering", "Cloud data platforms", "ETL expertise"], responsibilities: ["Pipeline development", "Data modeling", "Performance optimization", "Data quality"] },
-      { id: "acc4", title: "Consultant - Technology", location: "Gurgaon, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "5-8 years", salary: "18 - 28 LPA", skills: ["Architecture", "Cloud", "Microservices", "Consulting", "Leadership"], posted: "4 days ago", isNew: false, category: "fullstack", description: "Provide technology consulting to global clients.", requirements: ["5+ years technology experience", "Consulting background", "Client management skills"], responsibilities: ["Technology consulting", "Solution design", "Client presentations", "Team leadership"] },
-      { id: "acc5", title: "RPA Developer", location: "Hyderabad, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "2-5 years", salary: "6 - 14 LPA", skills: ["UiPath", "Blue Prism", "Automation Anywhere", "Python", "SQL"], posted: "5 days ago", isNew: false, category: "fullstack", description: "Develop robotic process automation solutions.", requirements: ["2+ years RPA experience", "RPA tool certifications", "Process understanding"], responsibilities: ["RPA development", "Process analysis", "Bot maintenance", "Documentation"] },
-      { id: "acc6", title: "Google Cloud Engineer", location: "Bangalore, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "3-6 years", salary: "12 - 20 LPA", skills: ["GCP", "BigQuery", "Kubernetes", "Terraform", "Python"], posted: "1 week ago", isNew: false, category: "devops", description: "Design and implement solutions on Google Cloud Platform.", requirements: ["3+ years GCP experience", "GCP certifications", "IaC experience"], responsibilities: ["GCP architecture", "Infrastructure management", "Cost optimization", "Security implementation"] },
-      { id: "acc7", title: "Product Designer", location: "Pune, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "3-6 years", salary: "10 - 18 LPA", skills: ["Figma", "User Research", "Design Thinking", "Prototyping", "Usability Testing"], posted: "3 days ago", isNew: true, category: "design", description: "Design user-centered digital products and experiences.", requirements: ["3+ years product design", "Strong portfolio", "Design thinking expertise"], responsibilities: ["Product design", "User research", "Prototyping", "Design systems"] },
-      { id: "acc8", title: "Blockchain Developer", location: "Mumbai, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "2-5 years", salary: "10 - 20 LPA", skills: ["Blockchain", "Solidity", "Ethereum", "Smart Contracts", "Web3.js"], posted: "6 days ago", isNew: false, category: "backend", description: "Develop blockchain solutions for enterprise use cases.", requirements: ["2+ years blockchain experience", "Smart contract development", "Cryptocurrency knowledge"], responsibilities: ["Blockchain development", "Smart contracts", "Integration", "Security audits"] },
-      { id: "acc9", title: "Computer Vision Engineer", location: "Bangalore, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "3-6 years", salary: "14 - 24 LPA", skills: ["Python", "OpenCV", "Deep Learning", "TensorFlow", "YOLO"], posted: "2 days ago", isNew: true, category: "ai", description: "Build computer vision solutions for various applications.", requirements: ["3+ years CV experience", "Deep learning expertise", "Image processing knowledge"], responsibilities: ["CV model development", "Image processing", "Model optimization", "Research"] },
-      { id: "acc10", title: "Manager - Data Science", location: "Chennai, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "8-12 years", salary: "25 - 40 LPA", skills: ["Data Science", "Machine Learning", "Team Management", "Strategy", "Python"], posted: "1 week ago", isNew: false, category: "data", description: "Lead data science teams and drive analytics strategy.", requirements: ["8+ years data science", "Team management experience", "Business acumen"], responsibilities: ["Team leadership", "Strategy development", "Stakeholder management", "Project delivery"] },
-      { id: "acc11", title: "Flutter Developer", location: "Hyderabad, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "2-5 years", salary: "6 - 14 LPA", skills: ["Flutter", "Dart", "Firebase", "REST APIs", "State Management"], posted: "4 days ago", isNew: false, category: "mobile", description: "Build cross-platform mobile applications using Flutter.", requirements: ["2+ years Flutter experience", "Published apps", "Dart proficiency"], responsibilities: ["Flutter development", "UI implementation", "API integration", "Testing"] },
-      { id: "acc12", title: "Cyber Security Consultant", location: "Gurgaon, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "5-8 years", salary: "15 - 28 LPA", skills: ["Cybersecurity", "Risk Assessment", "Compliance", "SIEM", "Incident Response"], posted: "5 days ago", isNew: false, category: "security", description: "Provide cybersecurity consulting to enterprise clients.", requirements: ["5+ years security experience", "Security certifications", "Consulting background"], responsibilities: ["Security consulting", "Risk assessments", "Compliance audits", "Incident management"] },
-    ],
-  },
-  {
-    name: "Deloitte",
-    logo: "https://logo.clearbit.com/deloitte.com",
-    industry: "Consulting & Professional Services",
-    description: "Deloitte is a multinational professional services network. The Indian practice offers audit, consulting, financial advisory, risk advisory, tax and related services to clients across various industries.",
-    employees: "450,000+",
-    headquarters: "London, UK (India HQ: Mumbai)",
-    indianOffices: ["Mumbai", "Bangalore", "Chennai", "Hyderabad", "Pune", "Delhi NCR", "Kolkata", "Ahmedabad"],
-    benefits: ["Competitive Pay", "Health Insurance", "Retirement Benefits", "Learning & Development", "Flexible Work", "Wellness Programs", "Global Opportunities", "Performance Bonus"],
-    color: "from-green-600 to-emerald-500",
-    bgColor: "bg-green-600/10",
-    textColor: "text-green-600",
-    jobs: [
-      { id: "del1", title: "Analyst - Technology Consulting", location: "Mumbai, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "Fresher", salary: "6 - 8 LPA", skills: ["Problem Solving", "Communication", "Technology", "Analytics", "Presentation"], posted: "1 day ago", isNew: true, category: "fullstack", description: "Join Deloitte's Technology Consulting practice as an Analyst.", requirements: ["B.Tech/MBA", "Strong academics", "Analytical mindset"], responsibilities: ["Client projects", "Research", "Analysis", "Documentation"] },
-      { id: "del2", title: "Senior Consultant - SAP", location: "Bangalore, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "5-8 years", salary: "16 - 26 LPA", skills: ["SAP S/4HANA", "SAP FICO", "SAP MM", "Implementation", "Business Process"], posted: "2 days ago", isNew: true, category: "backend", description: "Lead SAP implementation projects for enterprise clients.", requirements: ["5+ years SAP experience", "S/4HANA implementation", "Client-facing experience"], responsibilities: ["SAP implementation", "Business process design", "Client management", "Team guidance"] },
-      { id: "del3", title: "Data Analyst", location: "Hyderabad, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "2-4 years", salary: "6 - 12 LPA", skills: ["Python", "SQL", "Tableau", "Power BI", "Statistics"], posted: "3 days ago", isNew: true, category: "data", description: "Analyze data to provide business insights for clients.", requirements: ["2+ years data analysis", "Visualization skills", "Strong SQL"], responsibilities: ["Data analysis", "Report creation", "Dashboards", "Presentations"] },
-      { id: "del4", title: "Java Microservices Developer", location: "Chennai, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "4-7 years", salary: "12 - 20 LPA", skills: ["Java", "Spring Boot", "Microservices", "Docker", "Kubernetes", "Kafka"], posted: "4 days ago", isNew: false, category: "backend", description: "Build microservices-based solutions for enterprise clients.", requirements: ["4+ years Java experience", "Microservices architecture", "Container orchestration"], responsibilities: ["Microservices development", "API design", "Code reviews", "Technical documentation"] },
-      { id: "del5", title: "Oracle Functional Consultant", location: "Pune, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "3-6 years", salary: "10 - 18 LPA", skills: ["Oracle EBS", "Oracle Cloud", "Finance", "SCM", "Implementation"], posted: "5 days ago", isNew: false, category: "backend", description: "Implement Oracle solutions for finance and supply chain.", requirements: ["3+ years Oracle experience", "EBS/Cloud implementation", "Functional knowledge"], responsibilities: ["Oracle implementation", "Configuration", "Testing", "User training"] },
-      { id: "del6", title: "Azure Data Engineer", location: "Bangalore, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "3-6 years", salary: "12 - 20 LPA", skills: ["Azure", "Data Factory", "Synapse", "Databricks", "Python", "SQL"], posted: "1 week ago", isNew: false, category: "data", description: "Build data solutions on Microsoft Azure platform.", requirements: ["3+ years Azure data experience", "Azure certifications", "ETL expertise"], responsibilities: ["Data pipeline development", "Azure architecture", "Data modeling", "Performance optimization"] },
-      { id: "del7", title: "Interaction Designer", location: "Mumbai, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "2-5 years", salary: "8 - 15 LPA", skills: ["Figma", "Sketch", "Interaction Design", "Motion Design", "Prototyping"], posted: "3 days ago", isNew: true, category: "design", description: "Design interactive digital experiences for clients.", requirements: ["2+ years interaction design", "Strong portfolio", "Motion design skills"], responsibilities: ["Interaction design", "Prototyping", "Motion design", "User testing"] },
-      { id: "del8", title: "Workday Consultant", location: "Hyderabad, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "3-6 years", salary: "12 - 22 LPA", skills: ["Workday", "HCM", "Integration", "Reporting", "Configuration"], posted: "6 days ago", isNew: false, category: "fullstack", description: "Implement Workday HCM solutions for clients.", requirements: ["3+ years Workday experience", "Workday certifications", "HCM knowledge"], responsibilities: ["Workday implementation", "Configuration", "Integration", "Support"] },
-      { id: "del9", title: "AI Strategy Consultant", location: "Bangalore, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "5-8 years", salary: "20 - 35 LPA", skills: ["AI/ML", "Strategy", "Business Development", "Consulting", "Python"], posted: "2 days ago", isNew: true, category: "ai", description: "Help clients develop and implement AI strategies.", requirements: ["5+ years AI/consulting experience", "Strategy development", "Client management"], responsibilities: ["AI strategy", "Client consulting", "Solution design", "Business development"] },
-      { id: "del10", title: "Manager - Cyber Risk", location: "Delhi NCR, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "8-12 years", salary: "25 - 40 LPA", skills: ["Cybersecurity", "Risk Management", "Compliance", "Team Leadership", "Strategy"], posted: "1 week ago", isNew: false, category: "security", description: "Lead cyber risk engagements and manage client relationships.", requirements: ["8+ years security experience", "Management experience", "Risk expertise"], responsibilities: ["Team leadership", "Client management", "Risk assessments", "Strategy development"] },
-      { id: "del11", title: "React Developer", location: "Chennai, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "2-5 years", salary: "6 - 14 LPA", skills: ["React", "JavaScript", "TypeScript", "Redux", "GraphQL"], posted: "4 days ago", isNew: false, category: "frontend", description: "Build modern web applications using React.", requirements: ["2+ years React experience", "JavaScript expertise", "State management knowledge"], responsibilities: ["React development", "Component design", "Testing", "Performance optimization"] },
-      { id: "del12", title: "Site Reliability Engineer", location: "Pune, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "3-6 years", salary: "12 - 20 LPA", skills: ["SRE", "Kubernetes", "Monitoring", "Automation", "Python", "Go"], posted: "5 days ago", isNew: false, category: "devops", description: "Ensure reliability and performance of systems.", requirements: ["3+ years SRE experience", "Kubernetes expertise", "Monitoring tools knowledge"], responsibilities: ["System reliability", "Automation", "Incident management", "Capacity planning"] },
-    ],
-  },
-  {
-    name: "Google India",
-    logo: "https://logo.clearbit.com/google.com",
-    industry: "Technology",
-    description: "Google India is the local arm of Google LLC, providing services in search, advertising, cloud computing, and various consumer products. Google has major engineering centers in Bangalore and Hyderabad.",
-    employees: "10,000+ in India",
-    headquarters: "Mountain View, CA (India HQ: Bangalore)",
-    indianOffices: ["Bangalore", "Hyderabad", "Gurgaon", "Mumbai"],
-    benefits: ["Top-tier Compensation", "RSUs", "Health Insurance", "Free Meals", "On-site Gym", "Learning Budget", "Parental Leave", "Mental Health Support"],
-    color: "from-blue-500 to-green-500",
-    bgColor: "bg-blue-500/10",
-    textColor: "text-blue-500",
-    jobs: [
-      { id: "goo1", title: "Software Engineer III", location: "Bangalore, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "4-7 years", salary: "35 - 55 LPA", skills: ["Java", "Python", "C++", "Distributed Systems", "Data Structures"], posted: "1 day ago", isNew: true, category: "fullstack", description: "Work on Google's core products and infrastructure.", requirements: ["4+ years software engineering", "Strong CS fundamentals", "System design skills"], responsibilities: ["Product development", "Code reviews", "Technical design", "Mentoring"] },
-      { id: "goo2", title: "Senior ML Engineer", location: "Hyderabad, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "5-8 years", salary: "45 - 70 LPA", skills: ["Python", "TensorFlow", "PyTorch", "LLMs", "Deep Learning"], posted: "2 days ago", isNew: true, category: "ai", description: "Build ML systems for Google products at scale.", requirements: ["5+ years ML experience", "PhD preferred", "Publications a plus"], responsibilities: ["ML system design", "Model development", "Research", "Production deployment"] },
-      { id: "goo3", title: "Cloud Solutions Architect", location: "Gurgaon, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "6-10 years", salary: "40 - 60 LPA", skills: ["GCP", "Architecture", "Kubernetes", "BigQuery", "Terraform"], posted: "3 days ago", isNew: true, category: "devops", description: "Design cloud solutions for enterprise customers.", requirements: ["6+ years cloud architecture", "GCP certifications", "Customer-facing experience"], responsibilities: ["Architecture design", "Customer engagement", "Technical leadership", "Best practices"] },
-      { id: "goo4", title: "Frontend Engineer", location: "Bangalore, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "3-6 years", salary: "30 - 50 LPA", skills: ["JavaScript", "TypeScript", "Angular", "React", "Web Performance"], posted: "4 days ago", isNew: false, category: "frontend", description: "Build world-class user experiences for Google products.", requirements: ["3+ years frontend experience", "JavaScript expertise", "Performance optimization skills"], responsibilities: ["Frontend development", "UX implementation", "Performance optimization", "Code quality"] },
-      { id: "goo5", title: "Data Scientist - YouTube", location: "Hyderabad, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "3-6 years", salary: "35 - 55 LPA", skills: ["Python", "SQL", "Machine Learning", "Statistics", "A/B Testing"], posted: "5 days ago", isNew: false, category: "data", description: "Drive data-driven decisions for YouTube.", requirements: ["3+ years data science", "Strong statistics", "ML experience"], responsibilities: ["Data analysis", "ML modeling", "Experimentation", "Insights generation"] },
-      { id: "goo6", title: "SRE - Cloud", location: "Bangalore, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "4-8 years", salary: "35 - 55 LPA", skills: ["SRE", "Kubernetes", "Go", "Python", "Linux", "Monitoring"], posted: "1 week ago", isNew: false, category: "devops", description: "Ensure reliability of Google Cloud infrastructure.", requirements: ["4+ years SRE experience", "Strong Linux skills", "Automation expertise"], responsibilities: ["System reliability", "Automation", "Incident response", "Capacity planning"] },
-      { id: "goo7", title: "UX Designer", location: "Bangalore, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "3-6 years", salary: "30 - 50 LPA", skills: ["Figma", "User Research", "Prototyping", "Design Systems", "Accessibility"], posted: "3 days ago", isNew: true, category: "design", description: "Design user experiences for Google products.", requirements: ["3+ years UX design", "Strong portfolio", "User research skills"], responsibilities: ["UX design", "User research", "Prototyping", "Accessibility"] },
-      { id: "goo8", title: "Android Engineer", location: "Hyderabad, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "4-7 years", salary: "35 - 55 LPA", skills: ["Android", "Kotlin", "Java", "Jetpack", "Architecture Components"], posted: "6 days ago", isNew: false, category: "mobile", description: "Build Android applications and features for Google apps.", requirements: ["4+ years Android", "Kotlin expertise", "Strong architecture skills"], responsibilities: ["Android development", "Feature implementation", "Code quality", "Performance"] },
-      { id: "goo9", title: "Research Scientist - AI", location: "Bangalore, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "PhD + 2 years", salary: "50 - 80 LPA", skills: ["Deep Learning", "NLP", "Computer Vision", "Research", "Python"], posted: "2 days ago", isNew: true, category: "ai", description: "Conduct cutting-edge AI research.", requirements: ["PhD in ML/AI", "Publications required", "Strong research background"], responsibilities: ["AI research", "Paper publication", "Prototyping", "Collaboration"] },
-      { id: "goo10", title: "Security Engineer", location: "Bangalore, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "4-8 years", salary: "40 - 60 LPA", skills: ["Security", "Penetration Testing", "Code Review", "Cryptography", "Cloud Security"], posted: "1 week ago", isNew: false, category: "security", description: "Protect Google's infrastructure and products.", requirements: ["4+ years security experience", "Strong technical skills", "Security certifications a plus"], responsibilities: ["Security analysis", "Penetration testing", "Code reviews", "Incident response"] },
-      { id: "goo11", title: "Backend Engineer - Ads", location: "Gurgaon, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "4-7 years", salary: "35 - 55 LPA", skills: ["Java", "C++", "Distributed Systems", "Ad Tech", "Low Latency"], posted: "4 days ago", isNew: false, category: "backend", description: "Build backend systems for Google Ads.", requirements: ["4+ years backend experience", "Distributed systems", "Ad tech experience a plus"], responsibilities: ["Backend development", "System optimization", "Performance tuning", "Technical design"] },
-      { id: "goo12", title: "Technical Program Manager", location: "Bangalore, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "6-10 years", salary: "40 - 65 LPA", skills: ["Program Management", "Technical Background", "Leadership", "Communication", "Agile"], posted: "5 days ago", isNew: false, category: "fullstack", description: "Drive complex technical programs across teams.", requirements: ["6+ years TPM experience", "Technical background", "Strong leadership"], responsibilities: ["Program management", "Cross-team coordination", "Risk management", "Stakeholder communication"] },
-    ],
-  },
-  {
-    name: "Microsoft India",
-    logo: "https://logo.clearbit.com/microsoft.com",
-    industry: "Technology",
-    description: "Microsoft India Development Center (IDC) is one of Microsoft's largest R&D centers outside the US. It works on core products like Azure, Microsoft 365, Bing, LinkedIn, and various enterprise solutions.",
-    employees: "15,000+ in India",
-    headquarters: "Redmond, WA (India HQ: Hyderabad)",
-    indianOffices: ["Hyderabad", "Bangalore", "Noida", "Mumbai", "Pune"],
-    benefits: ["Competitive Salary", "RSUs", "Health Benefits", "401(k)", "Parental Leave", "Learning Budget", "Wellness Programs", "Hybrid Work"],
-    color: "from-blue-600 to-cyan-500",
-    bgColor: "bg-blue-600/10",
-    textColor: "text-blue-600",
-    jobs: [
-      { id: "ms1", title: "Software Engineer II", location: "Hyderabad, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "3-6 years", salary: "25 - 40 LPA", skills: ["C#", ".NET", "Azure", "Distributed Systems", "SQL"], posted: "1 day ago", isNew: true, category: "fullstack", description: "Work on Azure and Microsoft 365 products.", requirements: ["3+ years software engineering", "Strong .NET skills", "Cloud experience"], responsibilities: ["Product development", "Feature implementation", "Code reviews", "Testing"] },
-      { id: "ms2", title: "Principal Engineer", location: "Bangalore, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "10+ years", salary: "55 - 85 LPA", skills: ["Architecture", "Leadership", "Cloud", "Distributed Systems", "Mentoring"], posted: "2 days ago", isNew: true, category: "fullstack", description: "Lead technical strategy and architecture.", requirements: ["10+ years experience", "Architecture expertise", "Technical leadership"], responsibilities: ["Technical leadership", "Architecture design", "Mentoring", "Strategy"] },
-      { id: "ms3", title: "Data & Applied Scientist", location: "Hyderabad, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "4-7 years", salary: "35 - 55 LPA", skills: ["Python", "Machine Learning", "Deep Learning", "NLP", "Statistics"], posted: "3 days ago", isNew: true, category: "ai", description: "Build ML solutions for Microsoft products.", requirements: ["4+ years ML experience", "Strong math background", "Research experience preferred"], responsibilities: ["ML development", "Research", "Prototyping", "Production deployment"] },
-      { id: "ms4", title: "Azure Cloud Engineer", location: "Noida, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "3-6 years", salary: "20 - 35 LPA", skills: ["Azure", "Kubernetes", "DevOps", "Terraform", "PowerShell"], posted: "4 days ago", isNew: false, category: "devops", description: "Design and implement Azure solutions.", requirements: ["3+ years Azure experience", "Azure certifications", "DevOps experience"], responsibilities: ["Azure architecture", "Infrastructure management", "Automation", "Customer support"] },
-      { id: "ms5", title: "Frontend Engineer - Teams", location: "Bangalore, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "3-6 years", salary: "25 - 40 LPA", skills: ["React", "TypeScript", "Node.js", "Web Performance", "Accessibility"], posted: "5 days ago", isNew: false, category: "frontend", description: "Build features for Microsoft Teams.", requirements: ["3+ years frontend experience", "React expertise", "Performance optimization skills"], responsibilities: ["Frontend development", "Feature implementation", "Performance optimization", "Accessibility"] },
-      { id: "ms6", title: "SQL Server Developer", location: "Hyderabad, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "4-7 years", salary: "25 - 40 LPA", skills: ["SQL Server", "T-SQL", "Azure SQL", "Performance Tuning", "Database Design"], posted: "1 week ago", isNew: false, category: "data", description: "Work on SQL Server and Azure SQL products.", requirements: ["4+ years SQL Server experience", "Strong database skills", "Performance tuning expertise"], responsibilities: ["Database development", "Performance optimization", "Feature development", "Testing"] },
-      { id: "ms7", title: "Product Designer", location: "Bangalore, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "4-7 years", salary: "25 - 45 LPA", skills: ["Figma", "User Research", "Design Systems", "Accessibility", "Prototyping"], posted: "3 days ago", isNew: true, category: "design", description: "Design experiences for Microsoft products.", requirements: ["4+ years product design", "Strong portfolio", "Design systems experience"], responsibilities: ["Product design", "User research", "Design systems", "Prototyping"] },
-      { id: "ms8", title: "iOS Engineer - Outlook", location: "Hyderabad, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "3-6 years", salary: "25 - 40 LPA", skills: ["Swift", "iOS", "Objective-C", "UIKit", "REST APIs"], posted: "6 days ago", isNew: false, category: "mobile", description: "Build features for Outlook iOS app.", requirements: ["3+ years iOS experience", "Swift expertise", "Published apps"], responsibilities: ["iOS development", "Feature implementation", "Code reviews", "Testing"] },
-      { id: "ms9", title: "Applied Scientist - NLP", location: "Bangalore, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "PhD + 2 years", salary: "45 - 70 LPA", skills: ["NLP", "Deep Learning", "Transformers", "Python", "Research"], posted: "2 days ago", isNew: true, category: "ai", description: "Build NLP solutions for Microsoft products.", requirements: ["PhD in NLP/ML", "Publications", "Strong research background"], responsibilities: ["NLP research", "Model development", "Paper publication", "Product integration"] },
-      { id: "ms10", title: "Security Response Engineer", location: "Hyderabad, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "4-8 years", salary: "30 - 50 LPA", skills: ["Incident Response", "Threat Analysis", "Forensics", "Security Tools", "Automation"], posted: "1 week ago", isNew: false, category: "security", description: "Respond to security incidents across Microsoft.", requirements: ["4+ years security experience", "IR experience", "Forensics skills"], responsibilities: ["Incident response", "Threat analysis", "Automation", "Documentation"] },
-      { id: "ms11", title: "Backend Engineer - LinkedIn", location: "Bangalore, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "3-6 years", salary: "30 - 50 LPA", skills: ["Java", "Scala", "Kafka", "Microservices", "REST APIs"], posted: "4 days ago", isNew: false, category: "backend", description: "Build backend services for LinkedIn.", requirements: ["3+ years backend experience", "Java/Scala expertise", "Distributed systems knowledge"], responsibilities: ["Backend development", "API design", "Performance optimization", "Code reviews"] },
-      { id: "ms12", title: "Program Manager", location: "Hyderabad, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "5-8 years", salary: "30 - 50 LPA", skills: ["Product Management", "Technical Background", "Communication", "Agile", "Data Analysis"], posted: "5 days ago", isNew: false, category: "fullstack", description: "Drive product development for Azure.", requirements: ["5+ years PM experience", "Technical background", "Strong communication"], responsibilities: ["Product management", "Feature planning", "Stakeholder management", "Data analysis"] },
-    ],
-  },
-  {
-    name: "Amazon India",
-    logo: "https://logo.clearbit.com/amazon.com",
-    industry: "E-commerce & Cloud",
-    description: "Amazon India includes both the retail marketplace and Amazon Web Services (AWS). It has major development centers in Bangalore, Hyderabad, Chennai, and other cities working on core Amazon and AWS products.",
-    employees: "100,000+ in India",
-    headquarters: "Seattle, WA (India HQ: Bangalore)",
-    indianOffices: ["Bangalore", "Hyderabad", "Chennai", "Pune", "Delhi NCR", "Mumbai"],
-    benefits: ["Competitive Pay", "RSUs", "Sign-on Bonus", "Health Benefits", "Career Choice", "Parental Leave", "Employee Discounts", "Learning Programs"],
-    color: "from-orange-500 to-yellow-500",
-    bgColor: "bg-orange-500/10",
-    textColor: "text-orange-500",
-    jobs: [
-      { id: "amz1", title: "SDE I", location: "Bangalore, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "0-2 years", salary: "18 - 28 LPA", skills: ["Java", "Data Structures", "Algorithms", "Problem Solving", "OOP"], posted: "1 day ago", isNew: true, category: "fullstack", description: "Start your career at Amazon as a Software Development Engineer.", requirements: ["B.Tech/MS in CS", "Strong DS/Algo", "Coding proficiency"], responsibilities: ["Software development", "Code reviews", "Testing", "Documentation"] },
-      { id: "amz2", title: "SDE II", location: "Hyderabad, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "3-6 years", salary: "30 - 50 LPA", skills: ["Java", "Distributed Systems", "AWS", "System Design", "Microservices"], posted: "2 days ago", isNew: true, category: "fullstack", description: "Build scalable systems for Amazon.", requirements: ["3+ years experience", "System design skills", "AWS knowledge"], responsibilities: ["System design", "Development", "Mentoring", "Code reviews"] },
-      { id: "amz3", title: "SDE III - AWS", location: "Bangalore, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "6-10 years", salary: "45 - 70 LPA", skills: ["Java", "Architecture", "AWS Services", "Leadership", "System Design"], posted: "3 days ago", isNew: true, category: "fullstack", description: "Lead engineering for AWS services.", requirements: ["6+ years experience", "AWS expertise", "Technical leadership"], responsibilities: ["Technical leadership", "Architecture", "Mentoring", "Cross-team collaboration"] },
-      { id: "amz4", title: "Applied Scientist", location: "Bangalore, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "PhD + 2 years", salary: "50 - 80 LPA", skills: ["Machine Learning", "Deep Learning", "Python", "Research", "Statistics"], posted: "4 days ago", isNew: false, category: "ai", description: "Build ML solutions for Amazon products.", requirements: ["PhD in ML/AI", "Publications", "Strong research background"], responsibilities: ["ML research", "Model development", "Production deployment", "Paper publication"] },
-      { id: "amz5", title: "Data Engineer", location: "Chennai, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "3-6 years", salary: "25 - 40 LPA", skills: ["Python", "Spark", "AWS", "Redshift", "ETL"], posted: "5 days ago", isNew: false, category: "data", description: "Build data pipelines for Amazon.", requirements: ["3+ years data engineering", "AWS data services", "Big data experience"], responsibilities: ["Pipeline development", "Data modeling", "ETL processes", "Performance optimization"] },
-      { id: "amz6", title: "Solutions Architect - AWS", location: "Mumbai, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "5-8 years", salary: "35 - 55 LPA", skills: ["AWS", "Architecture", "Customer Facing", "Solution Design", "Cloud Migration"], posted: "1 week ago", isNew: false, category: "devops", description: "Design cloud solutions for AWS customers.", requirements: ["5+ years architecture", "AWS certifications", "Customer-facing experience"], responsibilities: ["Solution design", "Customer engagement", "Technical leadership", "Best practices"] },
-      { id: "amz7", title: "UX Designer", location: "Bangalore, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "3-6 years", salary: "25 - 40 LPA", skills: ["Figma", "User Research", "E-commerce", "Prototyping", "A/B Testing"], posted: "3 days ago", isNew: true, category: "design", description: "Design experiences for Amazon retail.", requirements: ["3+ years UX design", "E-commerce experience preferred", "Strong portfolio"], responsibilities: ["UX design", "User research", "A/B testing", "Prototyping"] },
-      { id: "amz8", title: "Android Developer", location: "Hyderabad, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "3-6 years", salary: "25 - 40 LPA", skills: ["Android", "Kotlin", "Java", "MVVM", "Performance"], posted: "6 days ago", isNew: false, category: "mobile", description: "Build Android features for Amazon Shopping app.", requirements: ["3+ years Android", "Kotlin expertise", "Published apps"], responsibilities: ["Android development", "Feature implementation", "Performance optimization", "Testing"] },
-      { id: "amz9", title: "ML Engineer - Alexa", location: "Bangalore, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "4-7 years", salary: "40 - 60 LPA", skills: ["Python", "NLP", "Deep Learning", "TensorFlow", "Speech Recognition"], posted: "2 days ago", isNew: true, category: "ai", description: "Build ML models for Alexa.", requirements: ["4+ years ML experience", "NLP expertise", "Deep learning skills"], responsibilities: ["ML development", "NLP modeling", "Production deployment", "Research"] },
-      { id: "amz10", title: "Security Engineer", location: "Bangalore, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "4-8 years", salary: "35 - 55 LPA", skills: ["AWS Security", "Cloud Security", "IAM", "Security Automation", "Threat Modeling"], posted: "1 week ago", isNew: false, category: "security", description: "Protect Amazon's infrastructure and services.", requirements: ["4+ years security experience", "AWS security expertise", "Strong technical skills"], responsibilities: ["Security engineering", "Threat modeling", "Security automation", "Incident response"] },
-      { id: "amz11", title: "Frontend Engineer", location: "Chennai, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "2-5 years", salary: "20 - 35 LPA", skills: ["React", "JavaScript", "TypeScript", "Web Performance", "A11y"], posted: "4 days ago", isNew: false, category: "frontend", description: "Build frontend for Amazon retail.", requirements: ["2+ years frontend", "React expertise", "Performance skills"], responsibilities: ["Frontend development", "Performance optimization", "Accessibility", "Testing"] },
-      { id: "amz12", title: "Technical Program Manager", location: "Hyderabad, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "5-8 years", salary: "35 - 55 LPA", skills: ["Program Management", "Technical Background", "Leadership", "AWS", "Agile"], posted: "5 days ago", isNew: false, category: "fullstack", description: "Drive complex programs across AWS teams.", requirements: ["5+ years TPM experience", "Technical background", "Strong leadership"], responsibilities: ["Program management", "Cross-team coordination", "Risk management", "Delivery"] },
-    ],
-  },
-  {
-    name: "IBM India",
-    logo: "https://logo.clearbit.com/ibm.com",
-    industry: "Technology & Consulting",
-    description: "IBM India is one of the largest subsidiaries of IBM, engaged in software development, IT services, consulting, and research. IBM India Software Labs is the largest IBM software lab outside the US.",
-    employees: "130,000+ in India",
-    headquarters: "Armonk, NY (India HQ: Bangalore)",
-    indianOffices: ["Bangalore", "Hyderabad", "Pune", "Chennai", "Delhi NCR", "Mumbai", "Kolkata"],
-    benefits: ["Health Insurance", "Retirement Benefits", "Learning Programs", "Flexible Work", "Employee Stock Purchase", "Wellness Programs", "Global Opportunities", "Parental Leave"],
-    color: "from-blue-700 to-blue-500",
-    bgColor: "bg-blue-700/10",
-    textColor: "text-blue-700",
-    jobs: [
-      { id: "ibm1", title: "Associate Developer", location: "Bangalore, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "Fresher", salary: "4 - 6 LPA", skills: ["Java", "Python", "SQL", "Problem Solving", "Communication"], posted: "1 day ago", isNew: true, category: "fullstack", description: "Start your career with IBM as an Associate Developer.", requirements: ["B.Tech/BE", "Strong fundamentals", "Good communication"], responsibilities: ["Development", "Testing", "Documentation", "Learning"] },
-      { id: "ibm2", title: "Watson AI Developer", location: "Bangalore, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "3-6 years", salary: "12 - 22 LPA", skills: ["Watson", "Python", "NLP", "Machine Learning", "APIs"], posted: "2 days ago", isNew: true, category: "ai", description: "Build AI solutions using IBM Watson.", requirements: ["3+ years AI experience", "Watson platform knowledge", "Python expertise"], responsibilities: ["AI development", "Watson integration", "Model training", "API development"] },
-      { id: "ibm3", title: "Cloud Pak Developer", location: "Hyderabad, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "3-6 years", salary: "12 - 20 LPA", skills: ["Kubernetes", "OpenShift", "Docker", "Cloud Pak", "Java"], posted: "3 days ago", isNew: true, category: "devops", description: "Develop solutions on IBM Cloud Pak.", requirements: ["3+ years container experience", "Kubernetes expertise", "OpenShift knowledge"], responsibilities: ["Cloud Pak development", "Container orchestration", "Migration", "Support"] },
-      { id: "ibm4", title: "Mainframe Developer", location: "Chennai, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "2-5 years", salary: "6 - 14 LPA", skills: ["COBOL", "JCL", "DB2", "CICS", "Mainframe"], posted: "4 days ago", isNew: false, category: "backend", description: "Maintain and modernize mainframe applications.", requirements: ["2+ years mainframe experience", "COBOL proficiency", "DB2 knowledge"], responsibilities: ["Mainframe development", "Code modernization", "Testing", "Documentation"] },
-      { id: "ibm5", title: "Data Scientist - Analytics", location: "Pune, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "3-6 years", salary: "12 - 22 LPA", skills: ["Python", "R", "Machine Learning", "Statistics", "SQL"], posted: "5 days ago", isNew: false, category: "data", description: "Build analytics solutions for clients.", requirements: ["3+ years data science", "Statistical modeling", "Business analytics"], responsibilities: ["Data analysis", "Model development", "Insights generation", "Client presentations"] },
-      { id: "ibm6", title: "Quantum Computing Researcher", location: "Bangalore, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "PhD", salary: "25 - 45 LPA", skills: ["Quantum Computing", "Python", "Qiskit", "Physics", "Research"], posted: "1 week ago", isNew: false, category: "ai", description: "Research quantum computing applications.", requirements: ["PhD in Physics/CS", "Quantum computing knowledge", "Research experience"], responsibilities: ["Research", "Algorithm development", "Paper publication", "Collaboration"] },
-      { id: "ibm7", title: "UX Researcher", location: "Bangalore, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "3-6 years", salary: "10 - 18 LPA", skills: ["User Research", "Usability Testing", "Interviews", "Data Analysis", "Presentation"], posted: "3 days ago", isNew: true, category: "design", description: "Conduct user research for IBM products.", requirements: ["3+ years UX research", "Strong portfolio", "Research methods expertise"], responsibilities: ["User research", "Usability testing", "Data analysis", "Insights presentation"] },
-      { id: "ibm8", title: "Security Consultant", location: "Delhi NCR, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "5-8 years", salary: "16 - 28 LPA", skills: ["Cybersecurity", "Risk Assessment", "Compliance", "SIEM", "Consulting"], posted: "6 days ago", isNew: false, category: "security", description: "Provide security consulting to enterprise clients.", requirements: ["5+ years security experience", "Consulting background", "Security certifications"], responsibilities: ["Security consulting", "Risk assessments", "Compliance audits", "Client management"] },
-      { id: "ibm9", title: "Full Stack Developer", location: "Hyderabad, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "3-6 years", salary: "10 - 18 LPA", skills: ["React", "Node.js", "Java", "MongoDB", "REST APIs"], posted: "2 days ago", isNew: true, category: "fullstack", description: "Build full stack applications for clients.", requirements: ["3+ years full stack", "Frontend and backend skills", "Database knowledge"], responsibilities: ["Full stack development", "API design", "Database design", "Testing"] },
-      { id: "ibm10", title: "Blockchain Developer", location: "Bangalore, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "2-5 years", salary: "10 - 20 LPA", skills: ["Hyperledger", "Blockchain", "Go", "Node.js", "Smart Contracts"], posted: "1 week ago", isNew: false, category: "backend", description: "Develop blockchain solutions using Hyperledger.", requirements: ["2+ years blockchain", "Hyperledger knowledge", "Smart contract development"], responsibilities: ["Blockchain development", "Smart contracts", "Integration", "Testing"] },
-      { id: "ibm11", title: "iOS Developer", location: "Pune, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "2-5 years", salary: "8 - 16 LPA", skills: ["Swift", "iOS", "UIKit", "Core Data", "REST APIs"], posted: "4 days ago", isNew: false, category: "mobile", description: "Develop iOS applications for enterprise.", requirements: ["2+ years iOS", "Swift expertise", "Enterprise app experience"], responsibilities: ["iOS development", "Feature implementation", "Testing", "App store deployment"] },
-      { id: "ibm12", title: "Technical Architect", location: "Bangalore, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "10+ years", salary: "30 - 50 LPA", skills: ["Architecture", "Cloud", "Microservices", "Leadership", "Solution Design"], posted: "5 days ago", isNew: false, category: "fullstack", description: "Lead technical architecture for large projects.", requirements: ["10+ years experience", "Architecture expertise", "Technical leadership"], responsibilities: ["Architecture design", "Technical leadership", "Client engagement", "Team guidance"] },
-    ],
-  },
-  {
-    name: "HCL Technologies",
-    logo: "https://logo.clearbit.com/hcltech.com",
-    industry: "IT Services & Consulting",
-    description: "HCL Technologies is a next-generation global technology company that helps enterprises reimagine their businesses for the digital age. It operates across infrastructure, digital, consulting, and software services.",
-    employees: "220,000+",
-    headquarters: "Noida, India",
-    indianOffices: ["Noida", "Chennai", "Bangalore", "Hyderabad", "Pune", "Mumbai", "Lucknow", "Nagpur"],
-    benefits: ["Health Insurance", "Life Insurance", "Provident Fund", "ESOP", "Learning Programs", "Wellness Benefits", "Flexible Work", "Career Development"],
-    color: "from-indigo-600 to-indigo-400",
-    bgColor: "bg-indigo-600/10",
-    textColor: "text-indigo-600",
-    jobs: [
-      { id: "hcl1", title: "Graduate Engineer Trainee", location: "Noida, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "Fresher", salary: "3.5 - 4.25 LPA", skills: ["Programming", "SQL", "Problem Solving", "Communication", "Aptitude"], posted: "1 day ago", isNew: true, category: "fullstack", description: "Begin your IT career with HCL Technologies.", requirements: ["B.Tech/BE/MCA", "60% aggregate", "Good communication"], responsibilities: ["Training", "Development", "Testing", "Team collaboration"] },
-      { id: "hcl2", title: "Java Full Stack Developer", location: "Chennai, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "3-6 years", salary: "8 - 16 LPA", skills: ["Java", "Spring Boot", "Angular", "Microservices", "AWS"], posted: "2 days ago", isNew: true, category: "fullstack", description: "Build enterprise applications using Java stack.", requirements: ["3+ years Java experience", "Full stack skills", "Cloud experience"], responsibilities: ["Full stack development", "API design", "Code reviews", "Mentoring"] },
-      { id: "hcl3", title: "Salesforce Admin", location: "Bangalore, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "2-4 years", salary: "6 - 12 LPA", skills: ["Salesforce", "Admin", "Configuration", "Workflows", "Reports"], posted: "3 days ago", isNew: true, category: "fullstack", description: "Manage and configure Salesforce for clients.", requirements: ["2+ years Salesforce admin", "Salesforce certifications", "Configuration expertise"], responsibilities: ["Salesforce administration", "Configuration", "User support", "Reporting"] },
-      { id: "hcl4", title: "SAP BW Consultant", location: "Hyderabad, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "4-7 years", salary: "12 - 22 LPA", skills: ["SAP BW", "SAP HANA", "BOBJ", "Data Modeling", "ETL"], posted: "4 days ago", isNew: false, category: "data", description: "Implement SAP BW solutions for data analytics.", requirements: ["4+ years SAP BW", "HANA experience", "Data modeling skills"], responsibilities: ["SAP BW implementation", "Data modeling", "ETL development", "Reporting"] },
-      { id: "hcl5", title: "Network Engineer", location: "Pune, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "2-5 years", salary: "5 - 10 LPA", skills: ["Networking", "Cisco", "Routing", "Switching", "Firewall"], posted: "5 days ago", isNew: false, category: "devops", description: "Manage network infrastructure for clients.", requirements: ["2+ years networking", "CCNA/CCNP", "Firewall experience"], responsibilities: ["Network management", "Troubleshooting", "Configuration", "Monitoring"] },
-      { id: "hcl6", title: "DXP Developer", location: "Noida, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "3-6 years", salary: "10 - 18 LPA", skills: ["AEM", "Adobe Experience Manager", "Java", "JavaScript", "HTML/CSS"], posted: "1 week ago", isNew: false, category: "frontend", description: "Build digital experiences using Adobe AEM.", requirements: ["3+ years AEM experience", "Java skills", "Frontend expertise"], responsibilities: ["AEM development", "Component development", "Integration", "Support"] },
-      { id: "hcl7", title: "Product Owner", location: "Chennai, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "5-8 years", salary: "16 - 28 LPA", skills: ["Product Management", "Agile", "Scrum", "Backlog Management", "Stakeholder Management"], posted: "3 days ago", isNew: true, category: "fullstack", description: "Own product backlog and drive delivery.", requirements: ["5+ years product ownership", "Agile expertise", "Domain knowledge"], responsibilities: ["Backlog management", "Sprint planning", "Stakeholder management", "Feature prioritization"] },
-      { id: "hcl8", title: "AI/ML Engineer", location: "Bangalore, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "3-6 years", salary: "12 - 22 LPA", skills: ["Python", "Machine Learning", "TensorFlow", "PyTorch", "NLP"], posted: "6 days ago", isNew: false, category: "ai", description: "Build AI/ML solutions for enterprise clients.", requirements: ["3+ years AI/ML", "Python expertise", "Deep learning knowledge"], responsibilities: ["ML development", "Model training", "Deployment", "Research"] },
-      { id: "hcl9", title: "QA Automation Engineer", location: "Hyderabad, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "2-5 years", salary: "6 - 12 LPA", skills: ["Selenium", "Java", "TestNG", "API Testing", "CI/CD"], posted: "2 days ago", isNew: true, category: "fullstack", description: "Build and maintain test automation frameworks.", requirements: ["2+ years automation", "Selenium expertise", "Java skills"], responsibilities: ["Test automation", "Framework development", "CI/CD integration", "Test execution"] },
-      { id: "hcl10", title: "ServiceNow Developer", location: "Pune, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "2-5 years", salary: "7 - 14 LPA", skills: ["ServiceNow", "JavaScript", "ITSM", "ITOM", "Integration"], posted: "1 week ago", isNew: false, category: "fullstack", description: "Develop ServiceNow solutions for IT operations.", requirements: ["2+ years ServiceNow", "ITSM/ITOM experience", "JavaScript skills"], responsibilities: ["ServiceNow development", "Configuration", "Integration", "Support"] },
-      { id: "hcl11", title: "React Native Developer", location: "Chennai, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "2-5 years", salary: "7 - 14 LPA", skills: ["React Native", "JavaScript", "Redux", "Native Modules", "REST APIs"], posted: "4 days ago", isNew: false, category: "mobile", description: "Build cross-platform mobile apps.", requirements: ["2+ years React Native", "Published apps", "Native development knowledge"], responsibilities: ["Mobile development", "Cross-platform coding", "API integration", "Testing"] },
-      { id: "hcl12", title: "Cloud Security Engineer", location: "Noida, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "4-7 years", salary: "14 - 24 LPA", skills: ["Cloud Security", "AWS", "Azure", "IAM", "Compliance"], posted: "5 days ago", isNew: false, category: "security", description: "Implement security for cloud environments.", requirements: ["4+ years cloud security", "Multi-cloud experience", "Security certifications"], responsibilities: ["Cloud security", "IAM management", "Compliance", "Security automation"] },
-    ],
-  },
-  {
-    name: "Tech Mahindra",
-    logo: "https://logo.clearbit.com/techmahindra.com",
-    industry: "IT Services & Consulting",
-    description: "Tech Mahindra is an Indian multinational technology company, providing IT and business process outsourcing services. It is part of the Mahindra Group and specializes in digital transformation and consulting services.",
-    employees: "150,000+",
-    headquarters: "Pune, India",
-    indianOffices: ["Pune", "Bangalore", "Hyderabad", "Chennai", "Mumbai", "Noida", "Kolkata", "Bhubaneswar"],
-    benefits: ["Health Insurance", "Life Insurance", "Provident Fund", "Performance Bonus", "Learning Programs", "Flexible Hours", "Employee Discounts", "Wellness Programs"],
-    color: "from-rose-600 to-red-500",
-    bgColor: "bg-rose-600/10",
-    textColor: "text-rose-600",
-    jobs: [
-      { id: "tm1", title: "Associate Software Engineer", location: "Pune, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "Fresher", salary: "3.25 - 4 LPA", skills: ["Java", "Python", "C++", "SQL", "Aptitude"], posted: "1 day ago", isNew: true, category: "fullstack", description: "Start your career with Tech Mahindra.", requirements: ["B.Tech/BE/MCA", "60% aggregate", "Strong fundamentals"], responsibilities: ["Development", "Testing", "Learning", "Team collaboration"] },
-      { id: "tm2", title: "5G Network Engineer", location: "Bangalore, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "3-6 years", salary: "10 - 18 LPA", skills: ["5G", "LTE", "Network Architecture", "Telecom", "Python"], posted: "2 days ago", isNew: true, category: "devops", description: "Work on 5G network solutions for telecom clients.", requirements: ["3+ years telecom experience", "5G knowledge", "Network architecture"], responsibilities: ["5G implementation", "Network optimization", "Troubleshooting", "Documentation"] },
-      { id: "tm3", title: "Python Developer", location: "Hyderabad, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "2-5 years", salary: "6 - 12 LPA", skills: ["Python", "Django", "FastAPI", "PostgreSQL", "REST APIs"], posted: "3 days ago", isNew: true, category: "backend", description: "Build backend services using Python.", requirements: ["2+ years Python", "Django/FastAPI", "Database experience"], responsibilities: ["Python development", "API design", "Database management", "Testing"] },
-      { id: "tm4", title: "Tibco Developer", location: "Chennai, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "3-6 years", salary: "8 - 16 LPA", skills: ["TIBCO", "BW", "EMS", "Integration", "XML"], posted: "4 days ago", isNew: false, category: "backend", description: "Develop integration solutions using TIBCO.", requirements: ["3+ years TIBCO", "BW expertise", "Integration experience"], responsibilities: ["TIBCO development", "Integration design", "Testing", "Support"] },
-      { id: "tm5", title: "Tableau Developer", location: "Pune, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "2-5 years", salary: "6 - 12 LPA", skills: ["Tableau", "SQL", "Data Visualization", "Python", "ETL"], posted: "5 days ago", isNew: false, category: "data", description: "Build data visualizations and dashboards.", requirements: ["2+ years Tableau", "Strong SQL", "Visualization skills"], responsibilities: ["Dashboard development", "Data analysis", "Report creation", "Stakeholder interaction"] },
-      { id: "tm6", title: "Azure DevOps Engineer", location: "Noida, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "3-6 years", salary: "10 - 18 LPA", skills: ["Azure DevOps", "CI/CD", "ARM Templates", "PowerShell", "Docker"], posted: "1 week ago", isNew: false, category: "devops", description: "Build and manage Azure DevOps pipelines.", requirements: ["3+ years Azure DevOps", "CI/CD experience", "Azure certifications"], responsibilities: ["Pipeline development", "Infrastructure management", "Automation", "Support"] },
-      { id: "tm7", title: "UI Developer", location: "Mumbai, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "2-4 years", salary: "5 - 10 LPA", skills: ["HTML", "CSS", "JavaScript", "Bootstrap", "jQuery"], posted: "3 days ago", isNew: true, category: "frontend", description: "Build user interfaces for web applications.", requirements: ["2+ years frontend", "Strong HTML/CSS", "JavaScript knowledge"], responsibilities: ["UI development", "Responsive design", "Cross-browser compatibility", "Testing"] },
-      { id: "tm8", title: "Conversational AI Developer", location: "Bangalore, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "2-5 years", salary: "8 - 16 LPA", skills: ["Chatbots", "NLP", "Dialogflow", "Python", "APIs"], posted: "6 days ago", isNew: false, category: "ai", description: "Build conversational AI solutions.", requirements: ["2+ years chatbot development", "NLP knowledge", "Python skills"], responsibilities: ["Chatbot development", "NLP implementation", "Integration", "Training"] },
-      { id: "tm9", title: "Appian Developer", location: "Hyderabad, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "2-5 years", salary: "7 - 14 LPA", skills: ["Appian", "BPM", "Low-code", "Integration", "SQL"], posted: "2 days ago", isNew: true, category: "fullstack", description: "Build low-code applications using Appian.", requirements: ["2+ years Appian", "Appian certifications", "BPM knowledge"], responsibilities: ["Appian development", "Workflow design", "Integration", "Support"] },
-      { id: "tm10", title: "Ethical Hacker", location: "Chennai, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "3-6 years", salary: "10 - 18 LPA", skills: ["Penetration Testing", "VAPT", "Kali Linux", "OWASP", "Security Tools"], posted: "1 week ago", isNew: false, category: "security", description: "Conduct security assessments and penetration testing.", requirements: ["3+ years security testing", "CEH/OSCP certification", "VAPT expertise"], responsibilities: ["Penetration testing", "Vulnerability assessment", "Security reporting", "Remediation guidance"] },
-      { id: "tm11", title: "Kotlin Developer", location: "Bangalore, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "2-5 years", salary: "8 - 15 LPA", skills: ["Kotlin", "Android", "Coroutines", "MVVM", "Jetpack"], posted: "4 days ago", isNew: false, category: "mobile", description: "Build Android applications using Kotlin.", requirements: ["2+ years Kotlin", "Android expertise", "Published apps"], responsibilities: ["Android development", "Feature implementation", "Code quality", "Testing"] },
-      { id: "tm12", title: "Business Analyst", location: "Pune, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "3-6 years", salary: "8 - 16 LPA", skills: ["Business Analysis", "Requirements", "Agile", "SQL", "Documentation"], posted: "5 days ago", isNew: false, category: "data", description: "Gather and analyze business requirements.", requirements: ["3+ years BA experience", "Strong documentation", "Domain knowledge"], responsibilities: ["Requirements gathering", "Analysis", "Documentation", "Stakeholder management"] },
+      { id: "wip1", title: "Project Engineer", location: "Bangalore, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "Fresher", salary: "3.5 - 4.5 LPA", skills: ["Java", "Python", "SQL", "Problem Solving", "Communication"], posted: "1 day ago", isNew: true, category: "fullstack", description: "Start your career at Wipro as a Project Engineer.", requirements: ["B.Tech/BE/MCA", "Strong fundamentals", "Good communication"], responsibilities: ["Software development", "Testing", "Documentation", "Team collaboration"] },
+      { id: "wip2", title: ".NET Developer", location: "Hyderabad, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "2-5 years", salary: "6 - 12 LPA", skills: [".NET", "C#", "ASP.NET", "SQL Server", "Azure"], posted: "2 days ago", isNew: true, category: "backend", description: "Develop .NET applications for enterprise clients.", requirements: ["2+ years .NET experience", "C# proficiency", "Database skills"], responsibilities: [".NET development", "API development", "Testing", "Code reviews"] },
+      { id: "wip3", title: "Data Engineer", location: "Chennai, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "3-6 years", salary: "8 - 16 LPA", skills: ["Python", "Spark", "Hadoop", "SQL", "ETL"], posted: "3 days ago", isNew: true, category: "data", description: "Build data pipelines for analytics.", requirements: ["3+ years data engineering", "Big data experience", "Python skills"], responsibilities: ["Pipeline development", "Data modeling", "Performance optimization", "Data quality"] },
+      { id: "wip4", title: "ServiceNow Developer", location: "Pune, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "2-5 years", salary: "6 - 14 LPA", skills: ["ServiceNow", "JavaScript", "ITSM", "ITOM", "Workflow"], posted: "4 days ago", isNew: false, category: "fullstack", description: "Develop ServiceNow solutions for clients.", requirements: ["2+ years ServiceNow experience", "JavaScript skills", "ITSM knowledge"], responsibilities: ["ServiceNow development", "Customization", "Integration", "Support"] },
+      { id: "wip5", title: "Salesforce Developer", location: "Mumbai, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "2-5 years", salary: "7 - 15 LPA", skills: ["Salesforce", "Apex", "Lightning", "SOQL", "Integration"], posted: "5 days ago", isNew: false, category: "backend", description: "Build Salesforce solutions for clients.", requirements: ["2+ years Salesforce experience", "Apex proficiency", "Lightning development"], responsibilities: ["Salesforce development", "Customization", "Integration", "Support"] },
+      { id: "wip6", title: "Cloud Engineer", location: "Bangalore, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "3-6 years", salary: "10 - 18 LPA", skills: ["AWS", "Azure", "Terraform", "Docker", "Kubernetes"], posted: "1 week ago", isNew: false, category: "devops", description: "Build cloud solutions for clients.", requirements: ["3+ years cloud experience", "Certifications", "IaC experience"], responsibilities: ["Cloud architecture", "Migration", "Automation", "Support"] },
+      { id: "wip7", title: "Angular Developer", location: "Delhi NCR, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "2-4 years", salary: "5 - 10 LPA", skills: ["Angular", "TypeScript", "RxJS", "HTML/CSS", "REST APIs"], posted: "3 days ago", isNew: true, category: "frontend", description: "Build web applications using Angular.", requirements: ["2+ years Angular experience", "TypeScript proficiency", "REST API knowledge"], responsibilities: ["Frontend development", "Component design", "Testing", "Performance optimization"] },
+      { id: "wip8", title: "Cybersecurity Analyst", location: "Hyderabad, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "2-5 years", salary: "6 - 14 LPA", skills: ["Security", "SIEM", "Vulnerability Assessment", "Incident Response", "Compliance"], posted: "6 days ago", isNew: false, category: "security", description: "Protect client infrastructure from threats.", requirements: ["2+ years security experience", "Security tools knowledge", "Certifications preferred"], responsibilities: ["Security monitoring", "Incident response", "Vulnerability assessments", "Reporting"] },
+      { id: "wip9", title: "AI Developer", location: "Bangalore, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "3-6 years", salary: "10 - 20 LPA", skills: ["Python", "TensorFlow", "Machine Learning", "NLP", "Deep Learning"], posted: "1 week ago", isNew: false, category: "ai", description: "Build AI solutions for clients.", requirements: ["3+ years AI experience", "Strong Python", "ML frameworks"], responsibilities: ["AI model development", "Deployment", "Client solutions", "Research"] },
+      { id: "wip10", title: "Full Stack Developer", location: "Kolkata, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "3-6 years", salary: "8 - 15 LPA", skills: ["React", "Node.js", "MongoDB", "Express", "TypeScript"], posted: "5 days ago", isNew: false, category: "fullstack", description: "Build end-to-end applications.", requirements: ["3+ years full stack experience", "MERN stack", "Database skills"], responsibilities: ["Full stack development", "API design", "Database management", "Testing"] },
+      { id: "wip11", title: "QA Lead", location: "Chennai, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "5-8 years", salary: "12 - 22 LPA", skills: ["Test Management", "Automation", "Selenium", "Agile", "Leadership"], posted: "4 days ago", isNew: false, category: "fullstack", description: "Lead QA teams and ensure quality.", requirements: ["5+ years QA experience", "Leadership skills", "Automation expertise"], responsibilities: ["QA leadership", "Test strategy", "Team management", "Process improvement"] },
+      { id: "wip12", title: "iOS Developer", location: "Kochi, India", locationType: "Hybrid", type: "Full-time", experienceLevel: "2-5 years", salary: "6 - 14 LPA", skills: ["Swift", "iOS", "UIKit", "Core Data", "REST APIs"], posted: "1 week ago", isNew: false, category: "mobile", description: "Develop iOS applications for clients.", requirements: ["2+ years iOS experience", "Swift proficiency", "Published apps preferred"], responsibilities: ["iOS development", "Feature implementation", "Bug fixing", "App Store deployment"] },
     ],
   },
 ]
 
-// Get all jobs from all companies
-const getAllJobs = () => {
-  const allJobs: (CompanyJob & { companyName: string; companyLogo: string; companyColor: string })[] = []
-  companies.forEach((company) => {
-    company.jobs.forEach((job) => {
-      allJobs.push({
-        ...job,
-        companyName: company.name,
-        companyLogo: company.logo,
-        companyColor: company.textColor,
-      })
-    })
-  })
-  return allJobs
-}
-
 export function TopCompaniesSection() {
-  const [activeCategory, setActiveCategory] = useState("all")
-  const [activeIndustry, setActiveIndustry] = useState("all")
-  const [searchQuery, setSearchQuery] = useState("")
   const [selectedCompany, setSelectedCompany] = useState<Company | null>(null)
   const [selectedJob, setSelectedJob] = useState<CompanyJob | null>(null)
-  const [selectedJobCompany, setSelectedJobCompany] = useState<Company | null>(null)
+  const [activeSkillFilter, setActiveSkillFilter] = useState("all")
+  const [activeIndustryFilter, setActiveIndustryFilter] = useState("all")
+  const [searchQuery, setSearchQuery] = useState("")
   const [subscribedCompanies, setSubscribedCompanies] = useState<Set<string>>(new Set())
-  const [notifications, setNotifications] = useState<{ id: string; company: string; job: string; time: Date }[]>([])
+  const [notifications, setNotifications] = useState<Array<{ id: string; company: string; job: string; location: string; time: Date; read: boolean }>>([])
   const [showNotifications, setShowNotifications] = useState(false)
   const [applications, setApplications] = useState<Application[]>([])
-  const [showApplications, setShowApplications] = useState(false)
-  const [applyingJob, setApplyingJob] = useState<{ job: CompanyJob; company: Company } | null>(null)
+  const [showApplicationModal, setShowApplicationModal] = useState(false)
   const [applicationStep, setApplicationStep] = useState(1)
   const [applicationForm, setApplicationForm] = useState({
-    name: "",
+    fullName: "",
     email: "",
     phone: "",
-    resume: null as File | null,
-    coverLetter: "",
+    linkedin: "",
     portfolio: "",
-    linkedIn: "",
+    experience: "",
+    currentCompany: "",
+    currentCTC: "",
+    expectedCTC: "",
     noticePeriod: "",
-    expectedSalary: "",
+    coverLetter: "",
+    resume: null as File | null,
   })
-  const [isSubmitting, setIsSubmitting] = useState(false)
-  const [interviewScheduling, setInterviewScheduling] = useState<Application | null>(null)
+  const [showInterviewScheduler, setShowInterviewScheduler] = useState(false)
   const [interviewDate, setInterviewDate] = useState<Date | undefined>(undefined)
   const [interviewTime, setInterviewTime] = useState("")
   const [interviewType, setInterviewType] = useState<"video" | "phone" | "onsite">("video")
+  const [showMyApplications, setShowMyApplications] = useState(false)
 
   // Get unique industries
-  const industries = ["all", ...Array.from(new Set(companies.map((c) => c.industry)))]
+  const industries = Array.from(new Set(companies.map(c => c.industry)))
 
   // Filter companies
-  const filteredCompanies = companies.filter((company) => {
-    const matchesIndustry = activeIndustry === "all" || company.industry === activeIndustry
-    const matchesSearch =
-      searchQuery === "" ||
+  const filteredCompanies = companies.filter(company => {
+    const matchesIndustry = activeIndustryFilter === "all" || company.industry === activeIndustryFilter
+    const matchesSearch = searchQuery === "" || 
       company.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      company.jobs.some(
-        (job) =>
-          job.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          job.skills.some((skill) => skill.toLowerCase().includes(searchQuery.toLowerCase()))
+      company.jobs.some(job => 
+        job.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        job.skills.some(skill => skill.toLowerCase().includes(searchQuery.toLowerCase()))
       )
     return matchesIndustry && matchesSearch
   })
 
-  // Get jobs for selected company with category filter
-  const getFilteredJobs = (company: Company) => {
-    return company.jobs.filter((job) => {
-      const matchesCategory = activeCategory === "all" || job.category === activeCategory
-      const matchesSearch =
-        searchQuery === "" ||
-        job.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        job.skills.some((skill) => skill.toLowerCase().includes(searchQuery.toLowerCase()))
-      return matchesCategory && matchesSearch
-    })
-  }
+  // Get total jobs count
+  const totalJobs = companies.reduce((acc, company) => acc + company.jobs.length, 0)
+  const newJobsCount = companies.reduce((acc, company) => acc + company.jobs.filter(j => j.isNew).length, 0)
 
-  // Toggle subscription
-  const toggleSubscription = (companyName: string) => {
-    setSubscribedCompanies((prev) => {
+  // Toggle company subscription
+  const toggleSubscription = useCallback((companyName: string) => {
+    setSubscribedCompanies(prev => {
       const newSet = new Set(prev)
       if (newSet.has(companyName)) {
         newSet.delete(companyName)
       } else {
         newSet.add(companyName)
-        // Add notification
-        const company = companies.find((c) => c.name === companyName)
-        if (company && company.jobs.length > 0) {
-          const randomJob = company.jobs[Math.floor(Math.random() * company.jobs.length)]
-          setNotifications((prev) => [
-            { id: Date.now().toString(), company: companyName, job: randomJob.title, time: new Date() },
-            ...prev,
-          ])
-        }
       }
       return newSet
     })
-  }
+  }, [])
 
   // Simulate new job notifications for subscribed companies
   useEffect(() => {
+    if (subscribedCompanies.size === 0) return
+
     const interval = setInterval(() => {
-      subscribedCompanies.forEach((companyName) => {
-        const company = companies.find((c) => c.name === companyName)
-        if (company && Math.random() > 0.7) {
-          const randomJob = company.jobs[Math.floor(Math.random() * company.jobs.length)]
-          setNotifications((prev) => [
-            { id: Date.now().toString(), company: companyName, job: randomJob.title, time: new Date() },
-            ...prev.slice(0, 9),
-          ])
-        }
-      })
-    }, 45000) // Every 45 seconds
+      const subscribedList = Array.from(subscribedCompanies)
+      const randomCompanyName = subscribedList[Math.floor(Math.random() * subscribedList.length)]
+      const company = companies.find(c => c.name === randomCompanyName)
+      if (company) {
+        const randomJob = company.jobs[Math.floor(Math.random() * company.jobs.length)]
+        setNotifications(prev => [{
+          id: `notif-${Date.now()}`,
+          company: company.name,
+          job: randomJob.title,
+          location: randomJob.location,
+          time: new Date(),
+          read: false,
+        }, ...prev.slice(0, 9)])
+      }
+    }, 30000) // Every 30 seconds for demo
 
     return () => clearInterval(interval)
   }, [subscribedCompanies])
 
-  // Calculate stats
-  const totalJobs = companies.reduce((sum, company) => sum + company.jobs.length, 0)
-  const newJobs = companies.reduce((sum, company) => sum + company.jobs.filter((j) => j.isNew).length, 0)
+  // Get unread notification count
+  const unreadCount = notifications.filter(n => !n.read).length
 
-  // Handle job application
-  const handleApplyJob = (job: CompanyJob, company: Company) => {
-    setApplyingJob({ job, company })
-    setApplicationStep(1)
-    setApplicationForm({
-      name: "",
-      email: "",
-      phone: "",
-      resume: null,
-      coverLetter: "",
-      portfolio: "",
-      linkedIn: "",
-      noticePeriod: "",
-      expectedSalary: "",
+  // Mark all notifications as read
+  const markAllRead = () => {
+    setNotifications(prev => prev.map(n => ({ ...n, read: true })))
+  }
+
+  // Filter jobs within a company
+  const getFilteredJobs = (company: Company) => {
+    return company.jobs.filter(job => {
+      const matchesSkill = activeSkillFilter === "all" || job.category === activeSkillFilter
+      return matchesSkill
     })
   }
 
+  // Handle job application
+  const handleApply = (job: CompanyJob, company: Company) => {
+    setSelectedJob(job)
+    setSelectedCompany(company)
+    setShowApplicationModal(true)
+    setApplicationStep(1)
+  }
+
   // Submit application
-  const submitApplication = async () => {
-    if (!applyingJob) return
-
-    setIsSubmitting(true)
-
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 2000))
+  const submitApplication = () => {
+    if (!selectedJob || !selectedCompany) return
 
     const newApplication: Application = {
-      id: Date.now().toString(),
-      jobId: applyingJob.job.id,
-      companyName: applyingJob.company.name,
-      jobTitle: applyingJob.job.title,
+      id: `app-${Date.now()}`,
+      jobId: selectedJob.id,
+      companyName: selectedCompany.name,
+      jobTitle: selectedJob.title,
       status: "applied",
       appliedDate: new Date(),
     }
 
-    setApplications((prev) => [newApplication, ...prev])
-    setIsSubmitting(false)
-    setApplicationStep(4) // Success step
+    setApplications(prev => [newApplication, ...prev])
+    setShowApplicationModal(false)
+    setApplicationStep(1)
+    setApplicationForm({
+      fullName: "",
+      email: "",
+      phone: "",
+      linkedin: "",
+      portfolio: "",
+      experience: "",
+      currentCompany: "",
+      currentCTC: "",
+      expectedCTC: "",
+      noticePeriod: "",
+      coverLetter: "",
+      resume: null,
+    })
+
+    // Show success notification
+    setNotifications(prev => [{
+      id: `notif-${Date.now()}`,
+      company: selectedCompany.name,
+      job: `Application submitted for ${selectedJob.title}`,
+      location: selectedJob.location,
+      time: new Date(),
+      read: false,
+    }, ...prev])
   }
 
   // Schedule interview
-  const scheduleInterview = () => {
-    if (!interviewScheduling || !interviewDate || !interviewTime) return
+  const scheduleInterview = (applicationId: string) => {
+    if (!interviewDate || !interviewTime) return
 
-    setApplications((prev) =>
-      prev.map((app) =>
-        app.id === interviewScheduling.id
-          ? {
-              ...app,
-              status: "interview_scheduled",
-              interviewDate,
-              interviewTime,
-              interviewType,
-            }
-          : app
-      )
-    )
+    setApplications(prev => prev.map(app => {
+      if (app.id === applicationId) {
+        return {
+          ...app,
+          status: "interview_scheduled",
+          interviewDate,
+          interviewTime,
+          interviewType,
+        }
+      }
+      return app
+    }))
 
-    setInterviewScheduling(null)
+    setShowInterviewScheduler(false)
     setInterviewDate(undefined)
     setInterviewTime("")
   }
 
-  // Get application status color
-  const getStatusColor = (status: Application["status"]) => {
-    switch (status) {
-      case "applied":
-        return "bg-blue-500/10 text-blue-500"
-      case "screening":
-        return "bg-yellow-500/10 text-yellow-500"
-      case "interview_scheduled":
-        return "bg-purple-500/10 text-purple-500"
-      case "interview_completed":
-        return "bg-cyan-500/10 text-cyan-500"
-      case "offer":
-        return "bg-green-500/10 text-green-500"
-      case "rejected":
-        return "bg-red-500/10 text-red-500"
-      default:
-        return "bg-gray-500/10 text-gray-500"
-    }
-  }
-
-  // Get status label
-  const getStatusLabel = (status: Application["status"]) => {
-    switch (status) {
-      case "applied":
-        return "Applied"
-      case "screening":
-        return "Under Review"
-      case "interview_scheduled":
-        return "Interview Scheduled"
-      case "interview_completed":
-        return "Interview Completed"
-      case "offer":
-        return "Offer Received"
-      case "rejected":
-        return "Not Selected"
-      default:
-        return status
-    }
-  }
-
   return (
-    <section id="top-companies" className="bg-background py-20">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="top-companies" className="relative overflow-hidden bg-background py-24">
+      {/* Background Elements */}
+      <div className="pointer-events-none absolute inset-0">
+        <div className="absolute left-1/4 top-1/4 h-96 w-96 rounded-full bg-primary/5 blur-3xl" />
+        <div className="absolute bottom-1/4 right-1/4 h-96 w-96 rounded-full bg-primary/5 blur-3xl" />
+      </div>
+
+      <div className="container relative mx-auto px-4">
         {/* Header */}
-        <div className="mb-12 flex flex-col items-start justify-between gap-6 lg:flex-row lg:items-center">
-          <div>
-            <Badge className="mb-4 border-primary/30 bg-primary/10 text-primary">
-              <Building2 className="mr-1 h-3 w-3" />
-              Top Indian Companies
-            </Badge>
-            <h2 className="text-3xl font-bold text-foreground md:text-4xl">
-              Jobs at Leading <span className="text-primary">Indian Companies</span>
-            </h2>
-            <p className="mt-3 max-w-2xl text-muted-foreground">
-              Explore {totalJobs}+ job opportunities across {companies.length} top Indian IT companies.
-              Apply directly and schedule interviews.
-            </p>
-          </div>
+        <div className="mb-12 text-center">
+          <Badge variant="outline" className="mb-4 border-primary/20 bg-primary/5 px-4 py-1.5 text-primary">
+            <Building2 className="mr-2 h-4 w-4" />
+            Top 15 MNCs Hiring Now
+          </Badge>
+          <h2 className="mb-4 text-3xl font-bold tracking-tight text-foreground md:text-4xl lg:text-5xl">
+            Dream Companies, Real Opportunities
+          </h2>
+          <p className="mx-auto max-w-2xl text-lg text-muted-foreground">
+            Explore {totalJobs}+ job openings from the world&apos;s leading companies. Apply directly and track your applications.
+          </p>
 
-          {/* Stats & Actions */}
-          <div className="flex items-center gap-4">
-            {/* Stats */}
-            <div className="flex items-center gap-6 rounded-xl border border-border/50 bg-card/50 p-4">
-              <div className="text-center">
-                <p className="text-2xl font-bold text-foreground">{totalJobs}</p>
-                <p className="text-xs text-muted-foreground">Open Jobs</p>
-              </div>
-              <div className="h-8 w-px bg-border" />
-              <div className="text-center">
-                <div className="flex items-center justify-center gap-1">
-                  <p className="text-2xl font-bold text-green-500">{newJobs}</p>
-                  <span className="relative flex h-2 w-2">
-                    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-75" />
-                    <span className="relative inline-flex h-2 w-2 rounded-full bg-green-500" />
-                  </span>
-                </div>
-                <p className="text-xs text-muted-foreground">New This Week</p>
-              </div>
+          {/* Stats */}
+          <div className="mt-6 flex flex-wrap items-center justify-center gap-6">
+            <div className="flex items-center gap-2 text-muted-foreground">
+              <Building2 className="h-5 w-5 text-primary" />
+              <span className="font-semibold text-foreground">{companies.length}</span> Companies
             </div>
-
-            {/* My Applications */}
+            <div className="flex items-center gap-2 text-muted-foreground">
+              <Briefcase className="h-5 w-5 text-primary" />
+              <span className="font-semibold text-foreground">{totalJobs}</span> Open Positions
+            </div>
+            <div className="flex items-center gap-2 text-muted-foreground">
+              <Sparkles className="h-5 w-5 text-green-500" />
+              <span className="font-semibold text-foreground">{newJobsCount}</span> New This Week
+            </div>
             <Button
               variant="outline"
+              size="sm"
               className="gap-2"
-              onClick={() => setShowApplications(true)}
+              onClick={() => setShowMyApplications(true)}
             >
               <FileText className="h-4 w-4" />
-              My Applications
-              {applications.length > 0 && (
-                <Badge variant="secondary" className="ml-1">
-                  {applications.length}
-                </Badge>
-              )}
+              My Applications ({applications.length})
             </Button>
-
-            {/* Notifications */}
+            {/* Notifications Bell */}
             <div className="relative">
               <Button
-                variant="outline"
+                variant="ghost"
                 size="icon"
-                onClick={() => setShowNotifications(!showNotifications)}
                 className="relative"
+                onClick={() => setShowNotifications(!showNotifications)}
               >
-                <Bell className="h-4 w-4" />
-                {notifications.length > 0 && (
-                  <span className="absolute -right-1 -top-1 flex h-4 w-4 items-center justify-center rounded-full bg-primary text-[10px] text-primary-foreground">
-                    {notifications.length > 9 ? "9+" : notifications.length}
+                <Bell className="h-5 w-5" />
+                {unreadCount > 0 && (
+                  <span className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-xs font-bold text-white">
+                    {unreadCount}
                   </span>
                 )}
               </Button>
 
+              {/* Notifications Dropdown */}
               {showNotifications && (
-                <Card className="absolute right-0 top-full z-50 mt-2 w-80 border-border/50 bg-card shadow-xl">
-                  <CardHeader className="pb-2">
-                    <CardTitle className="flex items-center justify-between text-sm">
-                      Job Alerts
-                      <Button variant="ghost" size="icon" className="h-6 w-6" onClick={() => setShowNotifications(false)}>
-                        <X className="h-3 w-3" />
+                <Card className="absolute right-0 top-full z-50 mt-2 w-80 border-border/50 bg-background shadow-lg">
+                  <CardHeader className="flex flex-row items-center justify-between pb-2">
+                    <CardTitle className="text-sm font-medium">Notifications</CardTitle>
+                    {unreadCount > 0 && (
+                      <Button variant="ghost" size="sm" onClick={markAllRead}>
+                        Mark all read
                       </Button>
-                    </CardTitle>
+                    )}
                   </CardHeader>
-                  <CardContent>
-                    <ScrollArea className="h-64">
-                      {notifications.length === 0 ? (
-                        <p className="py-8 text-center text-sm text-muted-foreground">
-                          No notifications yet. Subscribe to companies to receive job alerts.
-                        </p>
-                      ) : (
-                        <div className="space-y-2">
-                          {notifications.map((notif) => (
-                            <div
-                              key={notif.id}
-                              className="rounded-lg border border-border/50 bg-secondary/30 p-3"
-                            >
-                              <p className="text-sm font-medium text-foreground">{notif.job}</p>
-                              <p className="text-xs text-muted-foreground">
-                                {notif.company} - {notif.time.toLocaleTimeString()}
-                              </p>
-                            </div>
-                          ))}
+                  <CardContent className="max-h-80 overflow-y-auto p-0">
+                    {notifications.length === 0 ? (
+                      <p className="p-4 text-center text-sm text-muted-foreground">
+                        No notifications yet. Subscribe to companies to get job alerts!
+                      </p>
+                    ) : (
+                      notifications.map(notif => (
+                        <div
+                          key={notif.id}
+                          className={`border-b border-border/50 p-3 last:border-0 ${!notif.read ? "bg-primary/5" : ""}`}
+                        >
+                          <p className="text-sm font-medium">{notif.company}</p>
+                          <p className="text-xs text-muted-foreground">{notif.job}</p>
+                          <p className="text-xs text-muted-foreground">{notif.location}</p>
                         </div>
-                      )}
-                    </ScrollArea>
+                      ))
+                    )}
                   </CardContent>
                 </Card>
               )}
@@ -834,123 +882,136 @@ export function TopCompaniesSection() {
         {/* Filters */}
         <div className="mb-8 space-y-4">
           {/* Search */}
-          <div className="relative max-w-md">
-            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-            <Input
-              placeholder="Search companies, jobs, or skills..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-10"
-            />
+          <div className="flex flex-wrap gap-4">
+            <div className="relative flex-1">
+              <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+              <Input
+                placeholder="Search companies, jobs, or skills..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="pl-10"
+              />
+            </div>
+            <Select value={activeIndustryFilter} onValueChange={setActiveIndustryFilter}>
+              <SelectTrigger className="w-48">
+                <Filter className="mr-2 h-4 w-4" />
+                <SelectValue placeholder="Industry" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All Industries</SelectItem>
+                {industries.map(industry => (
+                  <SelectItem key={industry} value={industry}>{industry}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
 
-          {/* Industry Filter */}
+          {/* Skill Filters */}
           <div className="flex flex-wrap gap-2">
-            {industries.map((industry) => (
+            {skillCategories.map(cat => (
               <Button
-                key={industry}
-                variant={activeIndustry === industry ? "default" : "outline"}
+                key={cat.id}
+                variant={activeSkillFilter === cat.id ? "default" : "outline"}
                 size="sm"
-                onClick={() => setActiveIndustry(industry)}
-                className="capitalize"
+                className="gap-2"
+                onClick={() => setActiveSkillFilter(cat.id)}
               >
-                {industry === "all" ? "All Industries" : industry}
-              </Button>
-            ))}
-          </div>
-
-          {/* Skill Category Filter */}
-          <div className="flex flex-wrap gap-2">
-            {skillCategories.map((category) => (
-              <Button
-                key={category.id}
-                variant={activeCategory === category.id ? "default" : "outline"}
-                size="sm"
-                onClick={() => setActiveCategory(category.id)}
-                className="gap-1"
-              >
-                <category.icon className="h-3 w-3" />
-                {category.name}
+                <cat.icon className="h-4 w-4" />
+                {cat.name}
               </Button>
             ))}
           </div>
         </div>
 
         {/* Companies Grid */}
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {filteredCompanies.map((company) => {
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          {filteredCompanies.map(company => {
             const filteredJobs = getFilteredJobs(company)
-            const newJobsCount = filteredJobs.filter((j) => j.isNew).length
+            const newJobsInCompany = filteredJobs.filter(j => j.isNew).length
 
             return (
               <Card
                 key={company.name}
-                className="group cursor-pointer border-border/50 bg-card transition-all hover:border-primary/50 hover:shadow-lg"
+                className="group cursor-pointer border-border/50 bg-card/50 backdrop-blur-sm transition-all duration-300 hover:border-primary/50 hover:shadow-lg"
                 onClick={() => setSelectedCompany(company)}
               >
-                <CardContent className="p-6">
-                  {/* Company Header */}
-                  <div className="mb-4 flex items-start justify-between">
+                <CardHeader className="pb-2">
+                  <div className="flex items-start justify-between">
                     <div className="flex items-center gap-3">
                       <div className={`flex h-12 w-12 items-center justify-center rounded-xl ${company.bgColor}`}>
                         <img
                           src={company.logo}
                           alt={company.name}
-                          className="h-8 w-8 rounded object-contain"
+                          className="h-8 w-8 object-contain"
                           onError={(e) => {
-                            e.currentTarget.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(company.name)}&background=random`
+                            (e.target as HTMLImageElement).src = `https://ui-avatars.com/api/?name=${company.name}&background=random`
                           }}
                         />
                       </div>
                       <div>
-                        <h3 className="font-semibold text-foreground">{company.name}</h3>
+                        <CardTitle className="text-lg">{company.name}</CardTitle>
                         <p className="text-xs text-muted-foreground">{company.industry}</p>
                       </div>
                     </div>
-                    {subscribedCompanies.has(company.name) && (
-                      <Bell className="h-4 w-4 text-primary" />
-                    )}
-                  </div>
-
-                  {/* Stats */}
-                  <div className="mb-4 flex items-center gap-4 text-sm text-muted-foreground">
-                    <span className="flex items-center gap-1">
-                      <Briefcase className="h-3 w-3" />
-                      {filteredJobs.length} Jobs
-                    </span>
-                    {newJobsCount > 0 && (
-                      <Badge variant="secondary" className="bg-green-500/10 text-green-500">
-                        {newJobsCount} New
-                      </Badge>
-                    )}
-                  </div>
-
-                  {/* Sample Jobs */}
-                  <div className="space-y-2">
-                    {filteredJobs.slice(0, 3).map((job) => (
-                      <div
-                        key={job.id}
-                        className="flex items-center justify-between rounded-lg bg-secondary/30 p-2 text-sm"
+                    <div className="flex items-center gap-2">
+                      {newJobsInCompany > 0 && (
+                        <Badge className="bg-green-500/10 text-green-500">
+                          {newJobsInCompany} New
+                        </Badge>
+                      )}
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="h-8 w-8"
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          toggleSubscription(company.name)
+                        }}
                       >
-                        <span className="truncate text-foreground">{job.title}</span>
-                        {job.isNew && (
-                          <Badge variant="secondary" className="ml-2 shrink-0 bg-green-500/10 text-green-500 text-[10px]">
-                            New
-                          </Badge>
+                        {subscribedCompanies.has(company.name) ? (
+                          <BellOff className="h-4 w-4 text-muted-foreground" />
+                        ) : (
+                          <Bell className="h-4 w-4" />
                         )}
-                      </div>
-                    ))}
-                    {filteredJobs.length > 3 && (
-                      <p className="text-center text-xs text-muted-foreground">
-                        +{filteredJobs.length - 3} more jobs
-                      </p>
-                    )}
+                      </Button>
+                    </div>
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  <div className="mb-3 flex flex-wrap gap-2 text-xs text-muted-foreground">
+                    <span className="flex items-center gap-1">
+                      <Users className="h-3 w-3" />
+                      {company.employees}
+                    </span>
+                    <span className="flex items-center gap-1">
+                      <MapPin className="h-3 w-3" />
+                      {company.indianOffices.slice(0, 3).join(", ")}
+                      {company.indianOffices.length > 3 && ` +${company.indianOffices.length - 3}`}
+                    </span>
                   </div>
 
-                  {/* View Button */}
-                  <Button variant="outline" className="mt-4 w-full gap-2 group-hover:border-primary group-hover:text-primary">
+                  <div className="mb-3">
+                    <p className="text-sm font-medium text-foreground">
+                      {filteredJobs.length} Open Positions
+                    </p>
+                    <div className="mt-2 space-y-1">
+                      {filteredJobs.slice(0, 3).map(job => (
+                        <div key={job.id} className="flex items-center justify-between text-xs">
+                          <span className="truncate text-muted-foreground">{job.title}</span>
+                          <span className="ml-2 text-primary">{job.salary}</span>
+                        </div>
+                      ))}
+                      {filteredJobs.length > 3 && (
+                        <p className="text-xs text-primary">
+                          +{filteredJobs.length - 3} more positions
+                        </p>
+                      )}
+                    </div>
+                  </div>
+
+                  <Button className="w-full gap-2" size="sm">
                     View All Jobs
-                    <ChevronRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                    <ChevronRight className="h-4 w-4" />
                   </Button>
                 </CardContent>
               </Card>
@@ -958,257 +1019,174 @@ export function TopCompaniesSection() {
           })}
         </div>
 
-        {/* Company Detail Dialog */}
-        <Dialog open={!!selectedCompany} onOpenChange={(open) => !open && setSelectedCompany(null)}>
-          <DialogContent className="max-h-[90vh] max-w-4xl overflow-y-auto border-border/50 bg-background">
+        {/* Company Detail Modal */}
+        <Dialog open={!!selectedCompany && !showApplicationModal} onOpenChange={(open) => !open && setSelectedCompany(null)}>
+          <DialogContent className="max-h-[90vh] max-w-4xl overflow-y-auto">
             {selectedCompany && (
               <>
                 <DialogHeader>
-                  <div className="flex items-start justify-between">
-                    <div className="flex items-center gap-4">
-                      <div className={`flex h-16 w-16 items-center justify-center rounded-2xl ${selectedCompany.bgColor}`}>
-                        <img
-                          src={selectedCompany.logo}
-                          alt={selectedCompany.name}
-                          className="h-10 w-10 rounded object-contain"
-                          onError={(e) => {
-                            e.currentTarget.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(selectedCompany.name)}&background=random`
-                          }}
-                        />
-                      </div>
-                      <div>
-                        <DialogTitle className="text-2xl">{selectedCompany.name}</DialogTitle>
-                        <p className="text-sm text-muted-foreground">{selectedCompany.industry}</p>
-                        <div className="mt-1 flex items-center gap-3 text-xs text-muted-foreground">
-                          <span className="flex items-center gap-1">
-                            <Users className="h-3 w-3" />
-                            {selectedCompany.employees}
-                          </span>
-                          <span className="flex items-center gap-1">
-                            <MapPin className="h-3 w-3" />
-                            {selectedCompany.headquarters}
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <div className="flex items-center gap-2">
-                        <span className="text-sm text-muted-foreground">Job Alerts</span>
-                        <Switch
-                          checked={subscribedCompanies.has(selectedCompany.name)}
-                          onCheckedChange={() => toggleSubscription(selectedCompany.name)}
-                        />
-                      </div>
-                    </div>
-                  </div>
-                  <DialogDescription className="mt-4 text-muted-foreground">
-                    {selectedCompany.description}
-                  </DialogDescription>
-                </DialogHeader>
-
-                {/* Indian Offices */}
-                <div className="mt-4">
-                  <h4 className="mb-2 text-sm font-medium">Offices in India</h4>
-                  <div className="flex flex-wrap gap-2">
-                    {selectedCompany.indianOffices.map((office) => (
-                      <Badge key={office} variant="outline" className="gap-1">
-                        <MapPin className="h-3 w-3" />
-                        {office}
-                      </Badge>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Benefits */}
-                <div className="mt-4">
-                  <h4 className="mb-2 text-sm font-medium">Employee Benefits</h4>
-                  <div className="flex flex-wrap gap-2">
-                    {selectedCompany.benefits.map((benefit) => (
-                      <Badge key={benefit} variant="secondary">
-                        {benefit}
-                      </Badge>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Jobs List */}
-                <div className="mt-6">
-                  <div className="mb-4 flex items-center justify-between">
-                    <h4 className="text-lg font-semibold">
-                      Open Positions ({getFilteredJobs(selectedCompany).length})
-                    </h4>
-                  </div>
-
-                  <ScrollArea className="h-[400px]">
-                    <div className="space-y-3 pr-4">
-                      {getFilteredJobs(selectedCompany).map((job) => (
-                        <Card
-                          key={job.id}
-                          className="cursor-pointer border-border/50 transition-all hover:border-primary/50"
-                          onClick={(e) => {
-                            e.stopPropagation()
-                            setSelectedJob(job)
-                            setSelectedJobCompany(selectedCompany)
-                          }}
-                        >
-                          <CardContent className="p-4">
-                            <div className="flex items-start justify-between gap-4">
-                              <div className="min-w-0 flex-1">
-                                <div className="flex items-center gap-2">
-                                  <h5 className="font-semibold text-foreground">{job.title}</h5>
-                                  {job.isNew && (
-                                    <Badge className="bg-green-500/10 text-green-500">New</Badge>
-                                  )}
-                                </div>
-                                <div className="mt-1 flex flex-wrap items-center gap-3 text-sm text-muted-foreground">
-                                  <span className="flex items-center gap-1">
-                                    <MapPin className="h-3 w-3" />
-                                    {job.location}
-                                  </span>
-                                  <span className="flex items-center gap-1">
-                                    <Briefcase className="h-3 w-3" />
-                                    {job.type}
-                                  </span>
-                                  <span className="flex items-center gap-1">
-                                    <Clock className="h-3 w-3" />
-                                    {job.posted}
-                                  </span>
-                                </div>
-                                <div className="mt-2 flex items-center gap-2">
-                                  <Badge variant="outline" className="gap-1">
-                                    <IndianRupee className="h-3 w-3" />
-                                    {job.salary}
-                                  </Badge>
-                                  <Badge variant="secondary">{job.locationType}</Badge>
-                                  <Badge variant="secondary">{job.experienceLevel}</Badge>
-                                </div>
-                                <div className="mt-2 flex flex-wrap gap-1">
-                                  {job.skills.slice(0, 4).map((skill) => (
-                                    <Badge
-                                      key={skill}
-                                      variant="outline"
-                                      className="text-xs bg-primary/5 text-primary"
-                                    >
-                                      {skill}
-                                    </Badge>
-                                  ))}
-                                  {job.skills.length > 4 && (
-                                    <Badge variant="outline" className="text-xs">
-                                      +{job.skills.length - 4}
-                                    </Badge>
-                                  )}
-                                </div>
-                              </div>
-                              <Button
-                                onClick={(e) => {
-                                  e.stopPropagation()
-                                  handleApplyJob(job, selectedCompany)
-                                }}
-                                className="shrink-0"
-                              >
-                                Apply Now
-                              </Button>
-                            </div>
-                          </CardContent>
-                        </Card>
-                      ))}
-                    </div>
-                  </ScrollArea>
-                </div>
-              </>
-            )}
-          </DialogContent>
-        </Dialog>
-
-        {/* Job Detail Dialog */}
-        <Dialog open={!!selectedJob} onOpenChange={(open) => !open && setSelectedJob(null)}>
-          <DialogContent className="max-h-[90vh] max-w-2xl overflow-y-auto border-border/50 bg-background">
-            {selectedJob && selectedJobCompany && (
-              <>
-                <DialogHeader>
-                  <div className="flex items-start gap-4">
-                    <div className={`flex h-12 w-12 items-center justify-center rounded-xl ${selectedJobCompany.bgColor}`}>
+                  <div className="flex items-center gap-4">
+                    <div className={`flex h-16 w-16 items-center justify-center rounded-2xl ${selectedCompany.bgColor}`}>
                       <img
-                        src={selectedJobCompany.logo}
-                        alt={selectedJobCompany.name}
-                        className="h-8 w-8 rounded object-contain"
+                        src={selectedCompany.logo}
+                        alt={selectedCompany.name}
+                        className="h-10 w-10 object-contain"
                         onError={(e) => {
-                          e.currentTarget.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(selectedJobCompany.name)}&background=random`
+                          (e.target as HTMLImageElement).src = `https://ui-avatars.com/api/?name=${selectedCompany.name}&background=random`
                         }}
                       />
                     </div>
                     <div>
-                      <DialogTitle className="text-xl">{selectedJob.title}</DialogTitle>
-                      <p className="text-sm text-muted-foreground">{selectedJobCompany.name}</p>
+                      <DialogTitle className="text-2xl">{selectedCompany.name}</DialogTitle>
+                      <DialogDescription>{selectedCompany.industry}</DialogDescription>
                     </div>
                   </div>
                 </DialogHeader>
 
-                <div className="mt-4 space-y-4">
-                  {/* Job Details */}
-                  <div className="flex flex-wrap gap-2">
-                    <Badge variant="outline" className="gap-1">
-                      <MapPin className="h-3 w-3" />
-                      {selectedJob.location}
-                    </Badge>
-                    <Badge variant="outline" className="gap-1">
-                      <Briefcase className="h-3 w-3" />
-                      {selectedJob.type}
-                    </Badge>
-                    <Badge variant="outline" className="gap-1">
-                      <IndianRupee className="h-3 w-3" />
-                      {selectedJob.salary}
-                    </Badge>
-                    <Badge variant="secondary">{selectedJob.locationType}</Badge>
-                    <Badge variant="secondary">{selectedJob.experienceLevel}</Badge>
-                  </div>
+                <Tabs defaultValue="jobs" className="mt-4">
+                  <TabsList className="grid w-full grid-cols-3">
+                    <TabsTrigger value="jobs">Jobs ({getFilteredJobs(selectedCompany).length})</TabsTrigger>
+                    <TabsTrigger value="about">About</TabsTrigger>
+                    <TabsTrigger value="benefits">Benefits</TabsTrigger>
+                  </TabsList>
 
-                  {/* Description */}
-                  <div>
-                    <h4 className="mb-2 font-semibold">Description</h4>
-                    <p className="text-sm text-muted-foreground">{selectedJob.description}</p>
-                  </div>
-
-                  {/* Requirements */}
-                  <div>
-                    <h4 className="mb-2 font-semibold">Requirements</h4>
-                    <ul className="list-inside list-disc space-y-1 text-sm text-muted-foreground">
-                      {selectedJob.requirements.map((req, i) => (
-                        <li key={i}>{req}</li>
-                      ))}
-                    </ul>
-                  </div>
-
-                  {/* Responsibilities */}
-                  <div>
-                    <h4 className="mb-2 font-semibold">Responsibilities</h4>
-                    <ul className="list-inside list-disc space-y-1 text-sm text-muted-foreground">
-                      {selectedJob.responsibilities.map((resp, i) => (
-                        <li key={i}>{resp}</li>
-                      ))}
-                    </ul>
-                  </div>
-
-                  {/* Skills */}
-                  <div>
-                    <h4 className="mb-2 font-semibold">Required Skills</h4>
-                    <div className="flex flex-wrap gap-2">
-                      {selectedJob.skills.map((skill) => (
-                        <Badge key={skill} variant="secondary" className="bg-primary/10 text-primary">
-                          {skill}
-                        </Badge>
+                  <TabsContent value="jobs" className="mt-4">
+                    {/* Skill Filter for Jobs */}
+                    <div className="mb-4 flex flex-wrap gap-2">
+                      {skillCategories.map(cat => (
+                        <Button
+                          key={cat.id}
+                          variant={activeSkillFilter === cat.id ? "default" : "outline"}
+                          size="sm"
+                          className="gap-1 text-xs"
+                          onClick={() => setActiveSkillFilter(cat.id)}
+                        >
+                          <cat.icon className="h-3 w-3" />
+                          {cat.name}
+                        </Button>
                       ))}
                     </div>
-                  </div>
 
-                  {/* Apply Button */}
+                    <ScrollArea className="h-[400px]">
+                      <div className="space-y-3 pr-4">
+                        {getFilteredJobs(selectedCompany).map(job => (
+                          <Card key={job.id} className="border-border/50">
+                            <CardContent className="p-4">
+                              <div className="flex items-start justify-between">
+                                <div className="flex-1">
+                                  <div className="flex items-center gap-2">
+                                    <h4 className="font-semibold">{job.title}</h4>
+                                    {job.isNew && (
+                                      <Badge className="bg-green-500/10 text-green-500">New</Badge>
+                                    )}
+                                  </div>
+                                  <div className="mt-1 flex flex-wrap gap-3 text-xs text-muted-foreground">
+                                    <span className="flex items-center gap-1">
+                                      <MapPin className="h-3 w-3" />
+                                      {job.location}
+                                    </span>
+                                    <span className="flex items-center gap-1">
+                                      <Briefcase className="h-3 w-3" />
+                                      {job.type}
+                                    </span>
+                                    <span className="flex items-center gap-1">
+                                      <GraduationCap className="h-3 w-3" />
+                                      {job.experienceLevel}
+                                    </span>
+                                    <span className="flex items-center gap-1">
+                                      <IndianRupee className="h-3 w-3" />
+                                      {job.salary}
+                                    </span>
+                                  </div>
+                                  <div className="mt-2 flex flex-wrap gap-1">
+                                    {job.skills.slice(0, 5).map(skill => (
+                                      <Badge key={skill} variant="secondary" className="text-xs">
+                                        {skill}
+                                      </Badge>
+                                    ))}
+                                    {job.skills.length > 5 && (
+                                      <Badge variant="secondary" className="text-xs">
+                                        +{job.skills.length - 5}
+                                      </Badge>
+                                    )}
+                                  </div>
+                                  <p className="mt-2 text-xs text-muted-foreground">
+                                    Posted {job.posted}
+                                  </p>
+                                </div>
+                                <Button
+                                  size="sm"
+                                  className="ml-4 gap-1"
+                                  onClick={() => handleApply(job, selectedCompany)}
+                                >
+                                  Apply Now
+                                  <ArrowRight className="h-3 w-3" />
+                                </Button>
+                              </div>
+                            </CardContent>
+                          </Card>
+                        ))}
+                      </div>
+                    </ScrollArea>
+                  </TabsContent>
+
+                  <TabsContent value="about" className="mt-4">
+                    <div className="space-y-4">
+                      <p className="text-muted-foreground">{selectedCompany.description}</p>
+                      <div className="grid gap-4 sm:grid-cols-2">
+                        <div>
+                          <h4 className="font-semibold">Headquarters</h4>
+                          <p className="text-sm text-muted-foreground">{selectedCompany.headquarters}</p>
+                        </div>
+                        <div>
+                          <h4 className="font-semibold">Employees</h4>
+                          <p className="text-sm text-muted-foreground">{selectedCompany.employees}</p>
+                        </div>
+                        <div className="sm:col-span-2">
+                          <h4 className="font-semibold">Indian Offices</h4>
+                          <div className="mt-2 flex flex-wrap gap-2">
+                            {selectedCompany.indianOffices.map(office => (
+                              <Badge key={office} variant="secondary">{office}</Badge>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </TabsContent>
+
+                  <TabsContent value="benefits" className="mt-4">
+                    <div className="grid gap-3 sm:grid-cols-2">
+                      {selectedCompany.benefits.map(benefit => (
+                        <div key={benefit} className="flex items-center gap-2 rounded-lg border border-border/50 p-3">
+                          <CheckCircle className="h-5 w-5 text-green-500" />
+                          <span className="text-sm">{benefit}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </TabsContent>
+                </Tabs>
+
+                <div className="mt-4 flex items-center justify-between border-t border-border/50 pt-4">
                   <Button
-                    className="w-full gap-2"
-                    size="lg"
-                    onClick={() => handleApplyJob(selectedJob, selectedJobCompany)}
+                    variant="outline"
+                    className="gap-2"
+                    onClick={() => toggleSubscription(selectedCompany.name)}
                   >
-                    <Send className="h-4 w-4" />
-                    Apply for this Position
+                    {subscribedCompanies.has(selectedCompany.name) ? (
+                      <>
+                        <BellOff className="h-4 w-4" />
+                        Unsubscribe from Alerts
+                      </>
+                    ) : (
+                      <>
+                        <Bell className="h-4 w-4" />
+                        Subscribe to Job Alerts
+                      </>
+                    )}
+                  </Button>
+                  <Button variant="ghost" onClick={() => setSelectedCompany(null)}>
+                    <X className="mr-2 h-4 w-4" />
+                    Close
                   </Button>
                 </div>
               </>
@@ -1216,349 +1194,384 @@ export function TopCompaniesSection() {
           </DialogContent>
         </Dialog>
 
-        {/* Application Dialog */}
-        <Dialog open={!!applyingJob} onOpenChange={(open) => !open && setApplyingJob(null)}>
-          <DialogContent className="max-h-[90vh] max-w-xl overflow-y-auto border-border/50 bg-background">
-            {applyingJob && (
-              <>
-                <DialogHeader>
-                  <DialogTitle>
-                    {applicationStep === 4 ? "Application Submitted!" : `Apply for ${applyingJob.job.title}`}
-                  </DialogTitle>
-                  <DialogDescription>
-                    {applicationStep === 4
-                      ? `Your application has been submitted to ${applyingJob.company.name}.`
-                      : `${applyingJob.company.name} - Step ${applicationStep} of 3`}
-                  </DialogDescription>
-                </DialogHeader>
-
-                {/* Progress */}
-                {applicationStep < 4 && (
-                  <div className="mt-4">
-                    <Progress value={(applicationStep / 3) * 100} className="h-2" />
-                    <div className="mt-2 flex justify-between text-xs text-muted-foreground">
-                      <span className={applicationStep >= 1 ? "text-primary" : ""}>Personal Info</span>
-                      <span className={applicationStep >= 2 ? "text-primary" : ""}>Documents</span>
-                      <span className={applicationStep >= 3 ? "text-primary" : ""}>Review</span>
-                    </div>
-                  </div>
-                )}
-
-                {/* Step 1: Personal Info */}
-                {applicationStep === 1 && (
-                  <div className="mt-4 space-y-4">
-                    <div className="space-y-2">
-                      <Label htmlFor="name">Full Name *</Label>
-                      <Input
-                        id="name"
-                        value={applicationForm.name}
-                        onChange={(e) => setApplicationForm({ ...applicationForm, name: e.target.value })}
-                        placeholder="Enter your full name"
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="email">Email *</Label>
-                      <Input
-                        id="email"
-                        type="email"
-                        value={applicationForm.email}
-                        onChange={(e) => setApplicationForm({ ...applicationForm, email: e.target.value })}
-                        placeholder="Enter your email"
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="phone">Phone Number *</Label>
-                      <Input
-                        id="phone"
-                        value={applicationForm.phone}
-                        onChange={(e) => setApplicationForm({ ...applicationForm, phone: e.target.value })}
-                        placeholder="Enter your phone number"
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="linkedin">LinkedIn Profile</Label>
-                      <Input
-                        id="linkedin"
-                        value={applicationForm.linkedIn}
-                        onChange={(e) => setApplicationForm({ ...applicationForm, linkedIn: e.target.value })}
-                        placeholder="https://linkedin.com/in/yourprofile"
-                      />
-                    </div>
-                    <Button
-                      className="w-full"
-                      onClick={() => setApplicationStep(2)}
-                      disabled={!applicationForm.name || !applicationForm.email || !applicationForm.phone}
-                    >
-                      Continue
-                    </Button>
-                  </div>
-                )}
-
-                {/* Step 2: Documents */}
-                {applicationStep === 2 && (
-                  <div className="mt-4 space-y-4">
-                    <div className="space-y-2">
-                      <Label htmlFor="resume">Resume *</Label>
-                      <Input
-                        id="resume"
-                        type="file"
-                        accept=".pdf,.doc,.docx"
-                        onChange={(e) => setApplicationForm({ ...applicationForm, resume: e.target.files?.[0] || null })}
-                      />
-                      <p className="text-xs text-muted-foreground">PDF, DOC, or DOCX (Max 5MB)</p>
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="coverLetter">Cover Letter</Label>
-                      <Textarea
-                        id="coverLetter"
-                        value={applicationForm.coverLetter}
-                        onChange={(e) => setApplicationForm({ ...applicationForm, coverLetter: e.target.value })}
-                        placeholder="Write a brief cover letter..."
-                        rows={4}
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="portfolio">Portfolio URL</Label>
-                      <Input
-                        id="portfolio"
-                        value={applicationForm.portfolio}
-                        onChange={(e) => setApplicationForm({ ...applicationForm, portfolio: e.target.value })}
-                        placeholder="https://yourportfolio.com"
-                      />
-                    </div>
-                    <div className="grid grid-cols-2 gap-4">
-                      <div className="space-y-2">
-                        <Label htmlFor="noticePeriod">Notice Period</Label>
-                        <Select
-                          value={applicationForm.noticePeriod}
-                          onValueChange={(value) => setApplicationForm({ ...applicationForm, noticePeriod: value })}
-                        >
-                          <SelectTrigger>
-                            <SelectValue placeholder="Select" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="immediate">Immediate</SelectItem>
-                            <SelectItem value="15days">15 Days</SelectItem>
-                            <SelectItem value="30days">30 Days</SelectItem>
-                            <SelectItem value="60days">60 Days</SelectItem>
-                            <SelectItem value="90days">90 Days</SelectItem>
-                          </SelectContent>
-                        </Select>
-                      </div>
-                      <div className="space-y-2">
-                        <Label htmlFor="expectedSalary">Expected Salary</Label>
-                        <Input
-                          id="expectedSalary"
-                          value={applicationForm.expectedSalary}
-                          onChange={(e) => setApplicationForm({ ...applicationForm, expectedSalary: e.target.value })}
-                          placeholder="e.g., 10 LPA"
-                        />
-                      </div>
-                    </div>
-                    <div className="flex gap-2">
-                      <Button variant="outline" onClick={() => setApplicationStep(1)} className="flex-1">
-                        Back
-                      </Button>
-                      <Button className="flex-1" onClick={() => setApplicationStep(3)} disabled={!applicationForm.resume}>
-                        Continue
-                      </Button>
-                    </div>
-                  </div>
-                )}
-
-                {/* Step 3: Review */}
-                {applicationStep === 3 && (
-                  <div className="mt-4 space-y-4">
-                    <Card className="border-border/50">
-                      <CardContent className="p-4 space-y-3">
-                        <h4 className="font-semibold">Application Summary</h4>
-                        <div className="grid grid-cols-2 gap-2 text-sm">
-                          <span className="text-muted-foreground">Name:</span>
-                          <span>{applicationForm.name}</span>
-                          <span className="text-muted-foreground">Email:</span>
-                          <span>{applicationForm.email}</span>
-                          <span className="text-muted-foreground">Phone:</span>
-                          <span>{applicationForm.phone}</span>
-                          <span className="text-muted-foreground">Resume:</span>
-                          <span>{applicationForm.resume?.name}</span>
-                          <span className="text-muted-foreground">Notice Period:</span>
-                          <span>{applicationForm.noticePeriod || "Not specified"}</span>
-                          <span className="text-muted-foreground">Expected Salary:</span>
-                          <span>{applicationForm.expectedSalary || "Not specified"}</span>
-                        </div>
-                      </CardContent>
-                    </Card>
-                    <div className="flex gap-2">
-                      <Button variant="outline" onClick={() => setApplicationStep(2)} className="flex-1">
-                        Back
-                      </Button>
-                      <Button className="flex-1 gap-2" onClick={submitApplication} disabled={isSubmitting}>
-                        {isSubmitting ? (
-                          <>
-                            <Loader2 className="h-4 w-4 animate-spin" />
-                            Submitting...
-                          </>
-                        ) : (
-                          <>
-                            <Send className="h-4 w-4" />
-                            Submit Application
-                          </>
-                        )}
-                      </Button>
-                    </div>
-                  </div>
-                )}
-
-                {/* Step 4: Success */}
-                {applicationStep === 4 && (
-                  <div className="mt-4 space-y-4 text-center">
-                    <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-green-500/10">
-                      <CheckCircle className="h-8 w-8 text-green-500" />
-                    </div>
-                    <div>
-                      <h3 className="text-lg font-semibold">Application Submitted Successfully!</h3>
-                      <p className="mt-2 text-sm text-muted-foreground">
-                        Your application for <strong>{applyingJob.job.title}</strong> at{" "}
-                        <strong>{applyingJob.company.name}</strong> has been submitted.
-                        You can track your application status in "My Applications".
-                      </p>
-                    </div>
-                    <div className="flex gap-2">
-                      <Button variant="outline" onClick={() => setApplyingJob(null)} className="flex-1">
-                        Close
-                      </Button>
-                      <Button
-                        className="flex-1"
-                        onClick={() => {
-                          setApplyingJob(null)
-                          setShowApplications(true)
-                        }}
-                      >
-                        View Applications
-                      </Button>
-                    </div>
-                  </div>
-                )}
-              </>
-            )}
-          </DialogContent>
-        </Dialog>
-
-        {/* My Applications Dialog */}
-        <Dialog open={showApplications} onOpenChange={setShowApplications}>
-          <DialogContent className="max-h-[90vh] max-w-3xl overflow-y-auto border-border/50 bg-background">
+        {/* Application Modal */}
+        <Dialog open={showApplicationModal} onOpenChange={setShowApplicationModal}>
+          <DialogContent className="max-h-[90vh] max-w-2xl overflow-y-auto">
             <DialogHeader>
-              <DialogTitle>My Applications</DialogTitle>
-              <DialogDescription>Track your job applications and schedule interviews</DialogDescription>
-            </DialogHeader>
-
-            <div className="mt-4">
-              {applications.length === 0 ? (
-                <div className="py-12 text-center">
-                  <FileText className="mx-auto h-12 w-12 text-muted-foreground/50" />
-                  <p className="mt-4 text-muted-foreground">No applications yet. Start applying to jobs!</p>
-                </div>
-              ) : (
-                <ScrollArea className="h-[500px]">
-                  <div className="space-y-3 pr-4">
-                    {applications.map((app) => (
-                      <Card key={app.id} className="border-border/50">
-                        <CardContent className="p-4">
-                          <div className="flex items-start justify-between gap-4">
-                            <div>
-                              <h4 className="font-semibold text-foreground">{app.jobTitle}</h4>
-                              <p className="text-sm text-muted-foreground">{app.companyName}</p>
-                              <p className="mt-1 text-xs text-muted-foreground">
-                                Applied on {app.appliedDate.toLocaleDateString()}
-                              </p>
-                              {app.interviewDate && (
-                                <div className="mt-2 flex items-center gap-2 text-sm">
-                                  <CalendarIcon className="h-4 w-4 text-primary" />
-                                  <span>
-                                    Interview: {app.interviewDate.toLocaleDateString()} at {app.interviewTime}
-                                  </span>
-                                  <Badge variant="outline" className="ml-2">
-                                    {app.interviewType === "video" ? (
-                                      <Video className="mr-1 h-3 w-3" />
-                                    ) : app.interviewType === "phone" ? (
-                                      <MessageSquare className="mr-1 h-3 w-3" />
-                                    ) : (
-                                      <Building2 className="mr-1 h-3 w-3" />
-                                    )}
-                                    {app.interviewType}
-                                  </Badge>
-                                </div>
-                              )}
-                            </div>
-                            <div className="flex flex-col items-end gap-2">
-                              <Badge className={getStatusColor(app.status)}>{getStatusLabel(app.status)}</Badge>
-                              {app.status === "screening" && (
-                                <Button
-                                  size="sm"
-                                  variant="outline"
-                                  onClick={() => setInterviewScheduling(app)}
-                                  className="gap-1"
-                                >
-                                  <CalendarIcon className="h-3 w-3" />
-                                  Schedule Interview
-                                </Button>
-                              )}
-                              {app.status === "interview_scheduled" && (
-                                <Button size="sm" variant="default" className="gap-1">
-                                  <Video className="h-3 w-3" />
-                                  Join Interview
-                                </Button>
-                              )}
-                            </div>
-                          </div>
-                        </CardContent>
-                      </Card>
-                    ))}
-                  </div>
-                </ScrollArea>
-              )}
-            </div>
-          </DialogContent>
-        </Dialog>
-
-        {/* Interview Scheduling Dialog */}
-        <Dialog open={!!interviewScheduling} onOpenChange={(open) => !open && setInterviewScheduling(null)}>
-          <DialogContent className="max-w-md border-border/50 bg-background">
-            <DialogHeader>
-              <DialogTitle>Schedule Interview</DialogTitle>
+              <DialogTitle>
+                Apply for {selectedJob?.title}
+              </DialogTitle>
               <DialogDescription>
-                Choose a date and time for your interview at{" "}
-                {interviewScheduling?.companyName}
+                {selectedCompany?.name} - {selectedJob?.location}
               </DialogDescription>
             </DialogHeader>
 
-            <div className="mt-4 space-y-4">
+            {/* Progress */}
+            <div className="mb-6">
+              <div className="flex justify-between text-sm">
+                <span className={applicationStep >= 1 ? "text-primary" : "text-muted-foreground"}>Personal Info</span>
+                <span className={applicationStep >= 2 ? "text-primary" : "text-muted-foreground"}>Documents</span>
+                <span className={applicationStep >= 3 ? "text-primary" : "text-muted-foreground"}>Review</span>
+              </div>
+              <Progress value={(applicationStep / 3) * 100} className="mt-2" />
+            </div>
+
+            {applicationStep === 1 && (
+              <div className="space-y-4">
+                <div className="grid gap-4 sm:grid-cols-2">
+                  <div className="space-y-2">
+                    <Label>Full Name *</Label>
+                    <Input
+                      value={applicationForm.fullName}
+                      onChange={(e) => setApplicationForm(prev => ({ ...prev, fullName: e.target.value }))}
+                      placeholder="John Doe"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label>Email *</Label>
+                    <Input
+                      type="email"
+                      value={applicationForm.email}
+                      onChange={(e) => setApplicationForm(prev => ({ ...prev, email: e.target.value }))}
+                      placeholder="john@example.com"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label>Phone *</Label>
+                    <Input
+                      value={applicationForm.phone}
+                      onChange={(e) => setApplicationForm(prev => ({ ...prev, phone: e.target.value }))}
+                      placeholder="+91 9876543210"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label>LinkedIn Profile</Label>
+                    <Input
+                      value={applicationForm.linkedin}
+                      onChange={(e) => setApplicationForm(prev => ({ ...prev, linkedin: e.target.value }))}
+                      placeholder="linkedin.com/in/johndoe"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label>Total Experience *</Label>
+                    <Select
+                      value={applicationForm.experience}
+                      onValueChange={(value) => setApplicationForm(prev => ({ ...prev, experience: value }))}
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select experience" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="fresher">Fresher</SelectItem>
+                        <SelectItem value="1-2">1-2 years</SelectItem>
+                        <SelectItem value="2-4">2-4 years</SelectItem>
+                        <SelectItem value="4-6">4-6 years</SelectItem>
+                        <SelectItem value="6-8">6-8 years</SelectItem>
+                        <SelectItem value="8-10">8-10 years</SelectItem>
+                        <SelectItem value="10+">10+ years</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div className="space-y-2">
+                    <Label>Notice Period *</Label>
+                    <Select
+                      value={applicationForm.noticePeriod}
+                      onValueChange={(value) => setApplicationForm(prev => ({ ...prev, noticePeriod: value }))}
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select notice period" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="immediate">Immediate</SelectItem>
+                        <SelectItem value="15-days">15 Days</SelectItem>
+                        <SelectItem value="30-days">30 Days</SelectItem>
+                        <SelectItem value="60-days">60 Days</SelectItem>
+                        <SelectItem value="90-days">90 Days</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div className="space-y-2">
+                    <Label>Current CTC (LPA)</Label>
+                    <Input
+                      value={applicationForm.currentCTC}
+                      onChange={(e) => setApplicationForm(prev => ({ ...prev, currentCTC: e.target.value }))}
+                      placeholder="e.g., 8"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label>Expected CTC (LPA) *</Label>
+                    <Input
+                      value={applicationForm.expectedCTC}
+                      onChange={(e) => setApplicationForm(prev => ({ ...prev, expectedCTC: e.target.value }))}
+                      placeholder="e.g., 12"
+                    />
+                  </div>
+                </div>
+                <Button
+                  className="w-full"
+                  onClick={() => setApplicationStep(2)}
+                  disabled={!applicationForm.fullName || !applicationForm.email || !applicationForm.phone || !applicationForm.experience || !applicationForm.noticePeriod || !applicationForm.expectedCTC}
+                >
+                  Continue
+                  <ArrowRight className="ml-2 h-4 w-4" />
+                </Button>
+              </div>
+            )}
+
+            {applicationStep === 2 && (
+              <div className="space-y-4">
+                <div className="space-y-2">
+                  <Label>Resume *</Label>
+                  <div className="flex items-center justify-center rounded-lg border-2 border-dashed border-border p-8">
+                    <div className="text-center">
+                      <FileText className="mx-auto h-12 w-12 text-muted-foreground" />
+                      <p className="mt-2 text-sm text-muted-foreground">
+                        Drag and drop your resume or click to browse
+                      </p>
+                      <Input
+                        type="file"
+                        accept=".pdf,.doc,.docx"
+                        className="mt-4"
+                        onChange={(e) => {
+                          if (e.target.files?.[0]) {
+                            setApplicationForm(prev => ({ ...prev, resume: e.target.files![0] }))
+                          }
+                        }}
+                      />
+                      {applicationForm.resume && (
+                        <p className="mt-2 text-sm text-green-500">
+                          Selected: {applicationForm.resume.name}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                </div>
+                <div className="space-y-2">
+                  <Label>Cover Letter (Optional)</Label>
+                  <Textarea
+                    value={applicationForm.coverLetter}
+                    onChange={(e) => setApplicationForm(prev => ({ ...prev, coverLetter: e.target.value }))}
+                    placeholder="Tell us why you're a great fit for this role..."
+                    rows={5}
+                  />
+                </div>
+                <div className="flex gap-4">
+                  <Button variant="outline" onClick={() => setApplicationStep(1)}>
+                    Back
+                  </Button>
+                  <Button
+                    className="flex-1"
+                    onClick={() => setApplicationStep(3)}
+                    disabled={!applicationForm.resume}
+                  >
+                    Continue
+                    <ArrowRight className="ml-2 h-4 w-4" />
+                  </Button>
+                </div>
+              </div>
+            )}
+
+            {applicationStep === 3 && (
+              <div className="space-y-4">
+                <Card className="border-border/50">
+                  <CardContent className="p-4">
+                    <h4 className="font-semibold">Application Summary</h4>
+                    <div className="mt-4 space-y-2 text-sm">
+                      <div className="flex justify-between">
+                        <span className="text-muted-foreground">Name:</span>
+                        <span>{applicationForm.fullName}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-muted-foreground">Email:</span>
+                        <span>{applicationForm.email}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-muted-foreground">Phone:</span>
+                        <span>{applicationForm.phone}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-muted-foreground">Experience:</span>
+                        <span>{applicationForm.experience}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-muted-foreground">Notice Period:</span>
+                        <span>{applicationForm.noticePeriod}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-muted-foreground">Expected CTC:</span>
+                        <span>{applicationForm.expectedCTC} LPA</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-muted-foreground">Resume:</span>
+                        <span>{applicationForm.resume?.name}</span>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                <Card className="border-green-500/20 bg-green-500/5">
+                  <CardContent className="p-4">
+                    <div className="flex items-start gap-3">
+                      <CheckCircle className="mt-0.5 h-5 w-5 text-green-500" />
+                      <div>
+                        <h4 className="font-semibold text-green-500">Ready to Submit</h4>
+                        <p className="text-sm text-muted-foreground">
+                          Your application will be sent to {selectedCompany?.name} for the {selectedJob?.title} position.
+                        </p>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                <div className="flex gap-4">
+                  <Button variant="outline" onClick={() => setApplicationStep(2)}>
+                    Back
+                  </Button>
+                  <Button className="flex-1 gap-2" onClick={submitApplication}>
+                    <Send className="h-4 w-4" />
+                    Submit Application
+                  </Button>
+                </div>
+              </div>
+            )}
+          </DialogContent>
+        </Dialog>
+
+        {/* My Applications Modal */}
+        <Dialog open={showMyApplications} onOpenChange={setShowMyApplications}>
+          <DialogContent className="max-h-[90vh] max-w-3xl overflow-y-auto">
+            <DialogHeader>
+              <DialogTitle>My Applications</DialogTitle>
+              <DialogDescription>
+                Track your job applications and schedule interviews
+              </DialogDescription>
+            </DialogHeader>
+
+            {applications.length === 0 ? (
+              <div className="py-12 text-center">
+                <FileText className="mx-auto h-12 w-12 text-muted-foreground" />
+                <p className="mt-4 text-muted-foreground">No applications yet</p>
+                <p className="text-sm text-muted-foreground">Start applying to jobs to track them here</p>
+              </div>
+            ) : (
+              <ScrollArea className="h-[500px]">
+                <div className="space-y-4 pr-4">
+                  {applications.map(app => (
+                    <Card key={app.id} className="border-border/50">
+                      <CardContent className="p-4">
+                        <div className="flex items-start justify-between">
+                          <div>
+                            <h4 className="font-semibold">{app.jobTitle}</h4>
+                            <p className="text-sm text-muted-foreground">{app.companyName}</p>
+                            <p className="mt-1 text-xs text-muted-foreground">
+                              Applied on {app.appliedDate.toLocaleDateString()}
+                            </p>
+                          </div>
+                          <Badge
+                            className={
+                              app.status === "applied" ? "bg-blue-500/10 text-blue-500" :
+                              app.status === "screening" ? "bg-yellow-500/10 text-yellow-500" :
+                              app.status === "interview_scheduled" ? "bg-purple-500/10 text-purple-500" :
+                              app.status === "interview_completed" ? "bg-cyan-500/10 text-cyan-500" :
+                              app.status === "offer" ? "bg-green-500/10 text-green-500" :
+                              "bg-red-500/10 text-red-500"
+                            }
+                          >
+                            {app.status.replace("_", " ").replace(/\b\w/g, l => l.toUpperCase())}
+                          </Badge>
+                        </div>
+
+                        {app.status === "interview_scheduled" && app.interviewDate && (
+                          <div className="mt-3 rounded-lg bg-purple-500/10 p-3">
+                            <div className="flex items-center gap-2 text-sm">
+                              <CalendarIcon className="h-4 w-4 text-purple-500" />
+                              <span>Interview on {app.interviewDate.toLocaleDateString()} at {app.interviewTime}</span>
+                            </div>
+                            <div className="mt-1 flex items-center gap-2 text-sm">
+                              {app.interviewType === "video" && <Video className="h-4 w-4 text-purple-500" />}
+                              {app.interviewType === "phone" && <MessageSquare className="h-4 w-4 text-purple-500" />}
+                              {app.interviewType === "onsite" && <Building2 className="h-4 w-4 text-purple-500" />}
+                              <span className="capitalize">{app.interviewType} Interview</span>
+                            </div>
+                          </div>
+                        )}
+
+                        {app.status === "applied" && (
+                          <div className="mt-3">
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              className="gap-2"
+                              onClick={() => {
+                                setApplications(prev => prev.map(a =>
+                                  a.id === app.id ? { ...a, status: "screening" } : a
+                                ))
+                              }}
+                            >
+                              <Loader2 className="h-4 w-4" />
+                              Simulate: Move to Screening
+                            </Button>
+                          </div>
+                        )}
+
+                        {app.status === "screening" && (
+                          <div className="mt-3">
+                            <Button
+                              size="sm"
+                              className="gap-2"
+                              onClick={() => {
+                                setShowInterviewScheduler(true)
+                                setSelectedJob({ id: app.jobId } as CompanyJob)
+                              }}
+                            >
+                              <CalendarIcon className="h-4 w-4" />
+                              Schedule Interview
+                            </Button>
+                          </div>
+                        )}
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+              </ScrollArea>
+            )}
+          </DialogContent>
+        </Dialog>
+
+        {/* Interview Scheduler Modal */}
+        <Dialog open={showInterviewScheduler} onOpenChange={setShowInterviewScheduler}>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Schedule Interview</DialogTitle>
+              <DialogDescription>
+                Select your preferred date, time, and interview type
+              </DialogDescription>
+            </DialogHeader>
+
+            <div className="space-y-4">
               <div className="space-y-2">
                 <Label>Interview Type</Label>
-                <div className="flex gap-2">
+                <div className="grid grid-cols-3 gap-2">
                   <Button
                     variant={interviewType === "video" ? "default" : "outline"}
-                    size="sm"
+                    className="gap-2"
                     onClick={() => setInterviewType("video")}
-                    className="flex-1 gap-1"
                   >
                     <Video className="h-4 w-4" />
-                    Video Call
+                    Video
                   </Button>
                   <Button
                     variant={interviewType === "phone" ? "default" : "outline"}
-                    size="sm"
+                    className="gap-2"
                     onClick={() => setInterviewType("phone")}
-                    className="flex-1 gap-1"
                   >
                     <MessageSquare className="h-4 w-4" />
                     Phone
                   </Button>
                   <Button
                     variant={interviewType === "onsite" ? "default" : "outline"}
-                    size="sm"
+                    className="gap-2"
                     onClick={() => setInterviewType("onsite")}
-                    className="flex-1 gap-1"
                   >
                     <Building2 className="h-4 w-4" />
                     On-site
@@ -1572,35 +1585,39 @@ export function TopCompaniesSection() {
                   mode="single"
                   selected={interviewDate}
                   onSelect={setInterviewDate}
-                  disabled={(date) => date < new Date() || date.getDay() === 0 || date.getDay() === 6}
+                  disabled={(date) => date < new Date()}
                   className="rounded-md border"
                 />
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="time">Select Time Slot</Label>
+                <Label>Select Time</Label>
                 <Select value={interviewTime} onValueChange={setInterviewTime}>
                   <SelectTrigger>
-                    <SelectValue placeholder="Choose a time slot" />
+                    <SelectValue placeholder="Select time slot" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="09:00 AM">09:00 AM</SelectItem>
-                    <SelectItem value="10:00 AM">10:00 AM</SelectItem>
-                    <SelectItem value="11:00 AM">11:00 AM</SelectItem>
-                    <SelectItem value="02:00 PM">02:00 PM</SelectItem>
-                    <SelectItem value="03:00 PM">03:00 PM</SelectItem>
-                    <SelectItem value="04:00 PM">04:00 PM</SelectItem>
-                    <SelectItem value="05:00 PM">05:00 PM</SelectItem>
+                    <SelectItem value="09:00">09:00 AM</SelectItem>
+                    <SelectItem value="10:00">10:00 AM</SelectItem>
+                    <SelectItem value="11:00">11:00 AM</SelectItem>
+                    <SelectItem value="14:00">02:00 PM</SelectItem>
+                    <SelectItem value="15:00">03:00 PM</SelectItem>
+                    <SelectItem value="16:00">04:00 PM</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
 
               <Button
                 className="w-full gap-2"
-                onClick={scheduleInterview}
                 disabled={!interviewDate || !interviewTime}
+                onClick={() => {
+                  const appToUpdate = applications.find(a => a.jobId === selectedJob?.id && a.status === "screening")
+                  if (appToUpdate) {
+                    scheduleInterview(appToUpdate.id)
+                  }
+                }}
               >
-                <CalendarIcon className="h-4 w-4" />
+                <Check className="h-4 w-4" />
                 Confirm Interview
               </Button>
             </div>
