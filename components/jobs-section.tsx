@@ -648,16 +648,18 @@ export function JobsSection() {
   const [selectedCategory, setSelectedCategory] = useState("all")
   const [searchQuery, setSearchQuery] = useState("")
   const [jobs, setJobs] = useState(jobsDatabase)
-  const [displayedJobs, setDisplayedJobs] = useState<typeof jobsDatabase>([])
+  const [displayedJobs, setDisplayedJobs] = useState<typeof jobsDatabase>(jobsDatabase.slice(0, 6))
   const [isLoading, setIsLoading] = useState(false)
   const [hasMore, setHasMore] = useState(true)
   const [selectedJob, setSelectedJob] = useState<typeof jobsDatabase[0] | null>(null)
   const loaderRef = useRef<HTMLDivElement>(null)
   const JOBS_PER_PAGE = 6
 
+  
+
   // Filter jobs based on category and search
   useEffect(() => {
-    let filtered = jobsDatabase
+    let filtered = [...jobsDatabase]
 
     if (selectedCategory !== "all") {
       filtered = filtered.filter(job => job.category === selectedCategory)
