@@ -92,10 +92,14 @@ export function InterviewPracticeSection({ resumeText, isVisible }: InterviewPra
 
   if (!isVisible) return null
 
+  const [error, setError] = useState<string | null>(null)
+
   const generateQuestions = async () => {
     if (!resumeText) return
 
     setIsGenerating(true)
+    setError(null)
+    
     try {
       const response = await fetch("/api/generate-interview-questions", {
         method: "POST",
@@ -108,14 +112,17 @@ export function InterviewPracticeSection({ resumeText, isVisible }: InterviewPra
         }),
       })
 
-      if (!response.ok) throw new Error("Failed to generate questions")
-
       const data = await response.json()
-      setQuestions(data.questions)
-      setPracticeMode(true)
-    } catch (error) {
-      console.error("Error generating questions:", error)
-      alert("Failed to generate interview questions. Please try again.")
+      
+      if (data.questions) {
+        setQuestions(data.questions)
+        setPracticeMode(true)
+      } else {
+        throw new Error(data.error || "Failed to generate questions")
+      }
+    } catch (err) {
+      console.error("Error generating questions:", err)
+      setError("Failed to generate questions. Please try again.")
     } finally {
       setIsGenerating(false)
     }
@@ -227,6 +234,12 @@ export function InterviewPracticeSection({ resumeText, isVisible }: InterviewPra
                 rows={3}
               />
             </div>
+
+            {error && (
+              <div className="rounded-lg border border-red-500/30 bg-red-500/10 p-4 text-sm text-red-600">
+                {error}
+              </div>
+            )}
 
             <Button
               onClick={generateQuestions}
