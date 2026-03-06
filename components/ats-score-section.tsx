@@ -56,6 +56,11 @@ const demoKeywords: KeywordMatch[] = [
 ]
 
 function calculateATSScore(keywords: KeywordMatch[]): number {
+  if (keywords.length === 0) return 0
+  
+  const jobAdKeywords = keywords.filter(kw => kw.inJobAd)
+  if (jobAdKeywords.length === 0) return 0
+  
   const weightedScore = keywords.reduce((acc, kw) => {
     const weight = kw.importance === "high" ? 3 : kw.importance === "medium" ? 2 : 1
     if (kw.inResume && kw.inJobAd) {
@@ -72,6 +77,7 @@ function calculateATSScore(keywords: KeywordMatch[]): number {
     return acc
   }, 0)
 
+  if (maxScore === 0) return 0
   return Math.round((weightedScore / maxScore) * 100)
 }
 
@@ -114,9 +120,9 @@ function getCategoryBadge(category: string) {
 export function ATSScoreSection() {
   const [resumeText, setResumeText] = useState("")
   const [jobAdText, setJobAdText] = useState("")
-  const [keywords, setKeywords] = useState<KeywordMatch[]>(demoKeywords)
+  const [keywords, setKeywords] = useState<KeywordMatch[]>([])
   const [isAnalyzing, setIsAnalyzing] = useState(false)
-  const [hasAnalyzed, setHasAnalyzed] = useState(true) // Start with demo data shown
+  const [hasAnalyzed, setHasAnalyzed] = useState(false) // Start with no analysis
   const [uploadedFileName, setUploadedFileName] = useState<string | null>(null)
   const [isUploading, setIsUploading] = useState(false)
   const fileInputRef = useRef<HTMLInputElement>(null)
@@ -158,34 +164,159 @@ export function ATSScoreSection() {
   const missingKeywords = keywords.filter(k => !k.inResume && k.inJobAd)
   const extraKeywords = keywords.filter(k => k.inResume && !k.inJobAd)
 
+  // Comprehensive keyword database with categories and importance
+  const keywordDatabase: { keyword: string; variants: string[]; category: KeywordMatch["category"]; importance: KeywordMatch["importance"] }[] = [
+    // Programming Languages - High importance
+    { keyword: "Python", variants: ["python", "py"], category: "technical", importance: "high" },
+    { keyword: "JavaScript", variants: ["javascript", "js", "ecmascript"], category: "technical", importance: "high" },
+    { keyword: "TypeScript", variants: ["typescript", "ts"], category: "technical", importance: "high" },
+    { keyword: "Java", variants: ["java"], category: "technical", importance: "high" },
+    { keyword: "C++", variants: ["c++", "cpp"], category: "technical", importance: "medium" },
+    { keyword: "C#", variants: ["c#", "csharp"], category: "technical", importance: "medium" },
+    { keyword: "Go", variants: ["golang", "go lang"], category: "technical", importance: "medium" },
+    { keyword: "Rust", variants: ["rust"], category: "technical", importance: "medium" },
+    { keyword: "Ruby", variants: ["ruby"], category: "technical", importance: "medium" },
+    { keyword: "PHP", variants: ["php"], category: "technical", importance: "medium" },
+    { keyword: "Swift", variants: ["swift"], category: "technical", importance: "medium" },
+    { keyword: "Kotlin", variants: ["kotlin"], category: "technical", importance: "medium" },
+    { keyword: "Scala", variants: ["scala"], category: "technical", importance: "medium" },
+    { keyword: "R", variants: [" r ", "r programming", "rstudio"], category: "technical", importance: "medium" },
+    
+    // AI/ML - High importance
+    { keyword: "Machine Learning", variants: ["machine learning", "ml", "machine-learning"], category: "technical", importance: "high" },
+    { keyword: "Deep Learning", variants: ["deep learning", "dl", "deep-learning"], category: "technical", importance: "high" },
+    { keyword: "Natural Language Processing", variants: ["nlp", "natural language processing", "natural language"], category: "technical", importance: "high" },
+    { keyword: "Computer Vision", variants: ["computer vision", "cv", "image recognition"], category: "technical", importance: "high" },
+    { keyword: "TensorFlow", variants: ["tensorflow", "tf"], category: "tool", importance: "high" },
+    { keyword: "PyTorch", variants: ["pytorch", "torch"], category: "tool", importance: "high" },
+    { keyword: "Scikit-learn", variants: ["scikit-learn", "sklearn", "scikit learn"], category: "tool", importance: "medium" },
+    { keyword: "Keras", variants: ["keras"], category: "tool", importance: "medium" },
+    { keyword: "OpenAI", variants: ["openai", "gpt", "chatgpt", "gpt-4", "gpt-3"], category: "tool", importance: "high" },
+    { keyword: "LangChain", variants: ["langchain", "lang chain"], category: "tool", importance: "medium" },
+    { keyword: "Hugging Face", variants: ["hugging face", "huggingface", "transformers"], category: "tool", importance: "medium" },
+    { keyword: "BERT", variants: ["bert"], category: "technical", importance: "medium" },
+    { keyword: "Neural Networks", variants: ["neural network", "neural networks", "nn", "ann"], category: "technical", importance: "medium" },
+    { keyword: "RAG", variants: ["rag", "retrieval augmented generation", "retrieval-augmented"], category: "technical", importance: "medium" },
+    
+    // Data - High importance
+    { keyword: "SQL", variants: ["sql", "mysql", "postgresql", "postgres", "sqlite"], category: "technical", importance: "high" },
+    { keyword: "NoSQL", variants: ["nosql", "mongodb", "cassandra", "couchdb"], category: "technical", importance: "medium" },
+    { keyword: "Data Analysis", variants: ["data analysis", "data analytics", "analytics"], category: "technical", importance: "high" },
+    { keyword: "Data Science", variants: ["data science", "data scientist"], category: "technical", importance: "high" },
+    { keyword: "Big Data", variants: ["big data", "bigdata"], category: "technical", importance: "medium" },
+    { keyword: "ETL", variants: ["etl", "extract transform load"], category: "technical", importance: "medium" },
+    { keyword: "Pandas", variants: ["pandas"], category: "tool", importance: "medium" },
+    { keyword: "NumPy", variants: ["numpy"], category: "tool", importance: "medium" },
+    { keyword: "Spark", variants: ["spark", "apache spark", "pyspark"], category: "tool", importance: "medium" },
+    { keyword: "Hadoop", variants: ["hadoop"], category: "tool", importance: "low" },
+    { keyword: "Tableau", variants: ["tableau"], category: "tool", importance: "medium" },
+    { keyword: "Power BI", variants: ["power bi", "powerbi"], category: "tool", importance: "medium" },
+    
+    // Web Development - High importance
+    { keyword: "React", variants: ["react", "reactjs", "react.js"], category: "tool", importance: "high" },
+    { keyword: "Angular", variants: ["angular", "angularjs"], category: "tool", importance: "high" },
+    { keyword: "Vue.js", variants: ["vue", "vuejs", "vue.js"], category: "tool", importance: "high" },
+    { keyword: "Next.js", variants: ["next.js", "nextjs", "next js"], category: "tool", importance: "high" },
+    { keyword: "Node.js", variants: ["node", "nodejs", "node.js"], category: "tool", importance: "high" },
+    { keyword: "Express", variants: ["express", "expressjs"], category: "tool", importance: "medium" },
+    { keyword: "Django", variants: ["django"], category: "tool", importance: "medium" },
+    { keyword: "Flask", variants: ["flask"], category: "tool", importance: "medium" },
+    { keyword: "FastAPI", variants: ["fastapi", "fast api"], category: "tool", importance: "medium" },
+    { keyword: "HTML", variants: ["html", "html5"], category: "technical", importance: "medium" },
+    { keyword: "CSS", variants: ["css", "css3", "sass", "scss", "less"], category: "technical", importance: "medium" },
+    { keyword: "REST API", variants: ["rest", "restful", "rest api", "api"], category: "technical", importance: "high" },
+    { keyword: "GraphQL", variants: ["graphql"], category: "technical", importance: "medium" },
+    { keyword: "Tailwind", variants: ["tailwind", "tailwindcss"], category: "tool", importance: "medium" },
+    
+    // Cloud & DevOps - High importance
+    { keyword: "AWS", variants: ["aws", "amazon web services", "ec2", "s3", "lambda"], category: "tool", importance: "high" },
+    { keyword: "Azure", variants: ["azure", "microsoft azure"], category: "tool", importance: "high" },
+    { keyword: "Google Cloud", variants: ["gcp", "google cloud", "google cloud platform"], category: "tool", importance: "high" },
+    { keyword: "Docker", variants: ["docker", "dockerfile", "containers"], category: "tool", importance: "high" },
+    { keyword: "Kubernetes", variants: ["kubernetes", "k8s"], category: "tool", importance: "high" },
+    { keyword: "CI/CD", variants: ["ci/cd", "cicd", "continuous integration", "continuous deployment"], category: "technical", importance: "high" },
+    { keyword: "Git", variants: ["git", "github", "gitlab", "bitbucket"], category: "tool", importance: "high" },
+    { keyword: "Jenkins", variants: ["jenkins"], category: "tool", importance: "medium" },
+    { keyword: "Terraform", variants: ["terraform"], category: "tool", importance: "medium" },
+    { keyword: "Linux", variants: ["linux", "ubuntu", "centos", "redhat"], category: "technical", importance: "medium" },
+    { keyword: "DevOps", variants: ["devops"], category: "technical", importance: "high" },
+    { keyword: "Microservices", variants: ["microservices", "microservice", "micro-services"], category: "technical", importance: "medium" },
+    
+    // Soft Skills - Medium importance
+    { keyword: "Communication", variants: ["communication", "communicate", "communicating"], category: "soft", importance: "medium" },
+    { keyword: "Leadership", variants: ["leadership", "leader", "leading", "lead teams"], category: "soft", importance: "high" },
+    { keyword: "Teamwork", variants: ["teamwork", "team work", "team player", "collaborate", "collaboration"], category: "soft", importance: "medium" },
+    { keyword: "Problem Solving", variants: ["problem solving", "problem-solving", "troubleshoot", "troubleshooting"], category: "soft", importance: "high" },
+    { keyword: "Analytical", variants: ["analytical", "analyze", "analysis"], category: "soft", importance: "medium" },
+    { keyword: "Project Management", variants: ["project management", "project manager", "pm"], category: "soft", importance: "medium" },
+    { keyword: "Agile", variants: ["agile", "scrum", "kanban", "sprint"], category: "soft", importance: "medium" },
+    { keyword: "Time Management", variants: ["time management", "deadline", "deadlines"], category: "soft", importance: "low" },
+    { keyword: "Critical Thinking", variants: ["critical thinking", "critical-thinking"], category: "soft", importance: "medium" },
+    { keyword: "Presentation", variants: ["presentation", "presenting", "public speaking"], category: "soft", importance: "low" },
+    
+    // Certifications - High importance
+    { keyword: "AWS Certified", variants: ["aws certified", "aws certification"], category: "certification", importance: "high" },
+    { keyword: "Google Certified", variants: ["google certified", "google certification"], category: "certification", importance: "high" },
+    { keyword: "Azure Certified", variants: ["azure certified", "azure certification"], category: "certification", importance: "high" },
+    { keyword: "PMP", variants: ["pmp", "project management professional"], category: "certification", importance: "medium" },
+    { keyword: "Scrum Master", variants: ["scrum master", "csm", "certified scrum master"], category: "certification", importance: "medium" },
+    { keyword: "Six Sigma", variants: ["six sigma", "lean six sigma"], category: "certification", importance: "low" },
+    
+    // Experience level keywords
+    { keyword: "Bachelor's Degree", variants: ["bachelor", "bachelors", "b.s.", "b.a.", "bs ", "ba ", "undergraduate"], category: "certification", importance: "medium" },
+    { keyword: "Master's Degree", variants: ["master", "masters", "m.s.", "m.a.", "ms ", "ma ", "graduate degree"], category: "certification", importance: "medium" },
+    { keyword: "PhD", variants: ["phd", "ph.d", "doctorate", "doctoral"], category: "certification", importance: "medium" },
+  ]
+
+  const checkKeywordPresence = (text: string, variants: string[]): boolean => {
+    const lowerText = text.toLowerCase()
+    return variants.some(variant => {
+      const regex = new RegExp(`\\b${variant.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`, 'i')
+      return regex.test(lowerText) || lowerText.includes(variant.toLowerCase())
+    })
+  }
+
   const handleAnalyze = async () => {
     if (!resumeText.trim() || !jobAdText.trim()) return
     
     setIsAnalyzing(true)
-    // Simulate AI analysis
-    await new Promise(resolve => setTimeout(resolve, 2000))
+    // Simulate processing time
+    await new Promise(resolve => setTimeout(resolve, 1500))
     
-    // In a real app, this would call an API to extract and compare keywords
-    // For demo, we'll generate sample results based on input length
-    const newKeywords: KeywordMatch[] = [
-      { keyword: "Python", inResume: resumeText.toLowerCase().includes("python"), inJobAd: jobAdText.toLowerCase().includes("python"), category: "technical", importance: "high" },
-      { keyword: "JavaScript", inResume: resumeText.toLowerCase().includes("javascript"), inJobAd: jobAdText.toLowerCase().includes("javascript"), category: "technical", importance: "high" },
-      { keyword: "React", inResume: resumeText.toLowerCase().includes("react"), inJobAd: jobAdText.toLowerCase().includes("react"), category: "tool", importance: "high" },
-      { keyword: "Machine Learning", inResume: resumeText.toLowerCase().includes("machine learning") || resumeText.toLowerCase().includes("ml"), inJobAd: jobAdText.toLowerCase().includes("machine learning") || jobAdText.toLowerCase().includes("ml"), category: "technical", importance: "high" },
-      { keyword: "SQL", inResume: resumeText.toLowerCase().includes("sql"), inJobAd: jobAdText.toLowerCase().includes("sql"), category: "technical", importance: "medium" },
-      { keyword: "AWS", inResume: resumeText.toLowerCase().includes("aws"), inJobAd: jobAdText.toLowerCase().includes("aws"), category: "tool", importance: "high" },
-      { keyword: "Docker", inResume: resumeText.toLowerCase().includes("docker"), inJobAd: jobAdText.toLowerCase().includes("docker"), category: "tool", importance: "medium" },
-      { keyword: "Communication", inResume: resumeText.toLowerCase().includes("communication"), inJobAd: jobAdText.toLowerCase().includes("communication"), category: "soft", importance: "medium" },
-      { keyword: "Teamwork", inResume: resumeText.toLowerCase().includes("team"), inJobAd: jobAdText.toLowerCase().includes("team"), category: "soft", importance: "medium" },
-      { keyword: "Git", inResume: resumeText.toLowerCase().includes("git"), inJobAd: jobAdText.toLowerCase().includes("git"), category: "tool", importance: "low" },
-      { keyword: "TypeScript", inResume: resumeText.toLowerCase().includes("typescript"), inJobAd: jobAdText.toLowerCase().includes("typescript"), category: "technical", importance: "medium" },
-      { keyword: "Node.js", inResume: resumeText.toLowerCase().includes("node"), inJobAd: jobAdText.toLowerCase().includes("node"), category: "tool", importance: "medium" },
-    ]
-
-    // Filter to only show keywords that appear in at least one document
-    const relevantKeywords = newKeywords.filter(k => k.inResume || k.inJobAd)
+    // Analyze keywords from both documents
+    const analyzedKeywords: KeywordMatch[] = []
     
-    setKeywords(relevantKeywords.length > 0 ? relevantKeywords : demoKeywords)
+    for (const kw of keywordDatabase) {
+      const inResume = checkKeywordPresence(resumeText, [kw.keyword.toLowerCase(), ...kw.variants])
+      const inJobAd = checkKeywordPresence(jobAdText, [kw.keyword.toLowerCase(), ...kw.variants])
+      
+      // Only include if keyword appears in at least one document
+      if (inResume || inJobAd) {
+        analyzedKeywords.push({
+          keyword: kw.keyword,
+          inResume,
+          inJobAd,
+          category: kw.category,
+          importance: kw.importance,
+        })
+      }
+    }
+    
+    // Sort by importance (high first), then by status (missing first for visibility)
+    const sortedKeywords = analyzedKeywords.sort((a, b) => {
+      const importanceOrder = { high: 0, medium: 1, low: 2 }
+      const aOrder = importanceOrder[a.importance]
+      const bOrder = importanceOrder[b.importance]
+      if (aOrder !== bOrder) return aOrder - bOrder
+      
+      // Then by status: missing in resume but in job ad first
+      if (!a.inResume && a.inJobAd && (b.inResume || !b.inJobAd)) return -1
+      if (!b.inResume && b.inJobAd && (a.inResume || !a.inJobAd)) return 1
+      
+      return 0
+    })
+    
+    setKeywords(sortedKeywords)
     setHasAnalyzed(true)
     setIsAnalyzing(false)
   }
@@ -279,16 +410,38 @@ export function ATSScoreSection() {
           </div>
         </div>
 
-        <div className="mt-6 flex justify-center">
+        {/* Initial Score Display - Before Analysis */}
+        {!hasAnalyzed && (
+          <div className="mt-12">
+            <div className="mx-auto max-w-md rounded-xl border border-border bg-card p-8 text-center">
+              <div className="text-6xl font-bold text-muted-foreground">0%</div>
+              <p className="mt-2 text-sm text-muted-foreground">
+                Upload your resume and paste a job description to calculate your ATS score
+              </p>
+              <Progress value={0} className="mt-4 h-3" />
+            </div>
+          </div>
+        )}
+
+        <div className="mt-6 flex flex-col items-center gap-2">
           <Button 
             size="lg" 
             onClick={handleAnalyze}
-            disabled={isAnalyzing}
+            disabled={isAnalyzing || !resumeText.trim() || !jobAdText.trim()}
             className="gap-2"
           >
             <Sparkles className="h-4 w-4" />
             {isAnalyzing ? "Analyzing..." : "Analyze ATS Score"}
           </Button>
+          {(!resumeText.trim() || !jobAdText.trim()) && !hasAnalyzed && (
+            <p className="text-xs text-muted-foreground">
+              {!resumeText.trim() && !jobAdText.trim() 
+                ? "Please provide your resume and a job description"
+                : !resumeText.trim() 
+                  ? "Please upload or paste your resume"
+                  : "Please paste a job description"}
+            </p>
+          )}
         </div>
 
         {/* Results Section */}
