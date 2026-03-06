@@ -2,6 +2,8 @@ import { Navbar } from "@/components/navbar"
 import { Hero } from "@/components/hero"
 import { ProblemSection } from "@/components/problem-section"
 import { FeaturesSection } from "@/components/features-section"
+import { RoadmapSection } from "@/components/roadmap-section"
+import { CareerGuidanceSection } from "@/components/career-guidance-section"
 import { ArchitectureSection } from "@/components/architecture-section"
 import { TechStackSection } from "@/components/tech-stack-section"
 import { JobsSection } from "@/components/jobs-section"
@@ -16,6 +18,8 @@ export default function Home() {
       <Hero />
       <ProblemSection />
       <FeaturesSection />
+      <RoadmapSection />
+      <CareerGuidanceSection />
       <ArchitectureSection />
       <TechStackSection />
       <JobsSection />

@@ -6,6 +6,8 @@ import { Brain, Menu, X } from "lucide-react"
 
 const navLinks = [
   { label: "Features", href: "/#features" },
+  { label: "Roadmap", href: "/#roadmap" },
+  { label: "Career Guide", href: "/#career-guidance" },
   { label: "Jobs", href: "/#jobs" },
   { label: "ATS Score", href: "/#ats-score" },
   { label: "Research", href: "/research" },
