@@ -35,9 +35,10 @@ import {
   ArrowRight,
   X,
   Play,
-  Bell,
-  CheckCircle,
+  ChevronDown,
+  ChevronUp,
 } from "lucide-react"
+import { FeatureTool } from "./feature-tool"
 
 const categories = [
   { id: "all", label: "All Features" },
@@ -235,11 +236,7 @@ export { features }
 export function FeaturesGrid() {
   const [activeCategory, setActiveCategory] = useState("all")
   const [selectedFeature, setSelectedFeature] = useState<typeof features[0] | null>(null)
-  const [notifiedFeatures, setNotifiedFeatures] = useState<Set<number>>(new Set())
-
-  const handleNotifyMe = (featureId: number) => {
-    setNotifiedFeatures(prev => new Set(prev).add(featureId))
-  }
+  const [showTool, setShowTool] = useState(false)
 
   const filteredFeatures = activeCategory === "all" 
     ? features 
@@ -321,8 +318,13 @@ export function FeaturesGrid() {
         </div>
 
         {/* Feature Detail Dialog */}
-        <Dialog open={!!selectedFeature} onOpenChange={(open) => !open && setSelectedFeature(null)}>
-          <DialogContent className="max-w-lg border-border/50 bg-background/95 backdrop-blur-xl">
+        <Dialog open={!!selectedFeature} onOpenChange={(open) => {
+          if (!open) {
+            setSelectedFeature(null)
+            setShowTool(false)
+          }
+        }}>
+          <DialogContent className="max-h-[90vh] max-w-2xl overflow-y-auto border-border/50 bg-background/95 backdrop-blur-xl">
             {selectedFeature && (
               <>
                 <DialogHeader>
@@ -364,36 +366,47 @@ export function FeaturesGrid() {
                         className="flex-1 gap-2"
                         onClick={() => {
                           setSelectedFeature(null)
+                          setShowTool(false)
                           document.getElementById("paper-chatbot")?.scrollIntoView({ behavior: "smooth" })
                         }}
                       >
                         <Play className="h-4 w-4" />
                         Try Paper Chatbot
                       </Button>
-                    ) : notifiedFeatures.has(selectedFeature.id) ? (
-                      <Button
-                        className="flex-1 gap-2"
-                        variant="secondary"
-                        disabled
-                      >
-                        <CheckCircle className="h-4 w-4 text-green-500" />
-                        You will be notified
-                      </Button>
                     ) : (
                       <Button
                         className="flex-1 gap-2"
-                        variant="default"
-                        onClick={() => handleNotifyMe(selectedFeature.id)}
+                        variant={showTool ? "secondary" : "default"}
+                        onClick={() => setShowTool(!showTool)}
                       >
-                        <Bell className="h-4 w-4" />
-                        Notify Me When Ready
+                        {showTool ? (
+                          <>
+                            <ChevronUp className="h-4 w-4" />
+                            Hide Tool
+                          </>
+                        ) : (
+                          <>
+                            <Play className="h-4 w-4" />
+                            Try This Feature
+                          </>
+                        )}
                       </Button>
                     )}
-                    <Button variant="outline" onClick={() => setSelectedFeature(null)} className="gap-2">
+                    <Button variant="outline" onClick={() => {
+                      setSelectedFeature(null)
+                      setShowTool(false)
+                    }} className="gap-2">
                       <X className="h-4 w-4" />
                       Close
                     </Button>
                   </div>
+
+                  {/* Interactive Tool */}
+                  {showTool && selectedFeature.slug !== "paper-chatbot" && (
+                    <div className="mt-4 rounded-lg border border-border/50 bg-secondary/20 p-4">
+                      <FeatureTool slug={selectedFeature.slug} title={selectedFeature.title} />
+                    </div>
+                  )}
                 </div>
               </>
             )}
