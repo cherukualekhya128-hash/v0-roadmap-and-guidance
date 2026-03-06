@@ -794,6 +794,12 @@ export function JobsSection() {
 
         {/* Jobs Grid */}
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+          {displayedJobs.length === 0 && !isLoading && (
+            <div className="col-span-full py-12 text-center">
+              <Briefcase className="mx-auto h-12 w-12 text-muted-foreground/50" />
+              <p className="mt-4 text-muted-foreground">No jobs found matching your criteria</p>
+            </div>
+          )}
           {displayedJobs.map((job) => {
             const CategoryIcon = getCategoryIcon(job.category)
             return (
@@ -850,11 +856,26 @@ export function JobsSection() {
                     {job.description}
                   </p>
                   <div className="flex items-center justify-between pt-2">
-                    <Button variant="ghost" size="sm" className="text-primary hover:text-primary">
+                    <Button 
+                      variant="ghost" 
+                      size="sm" 
+                      className="text-primary hover:text-primary"
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        setSelectedJob(job)
+                      }}
+                    >
                       View Details
                       <ChevronRight className="ml-1 h-3.5 w-3.5" />
                     </Button>
-                    <Button size="sm" className="bg-primary text-primary-foreground hover:bg-primary/90">
+                    <Button 
+                      size="sm" 
+                      className="bg-primary text-primary-foreground hover:bg-primary/90"
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        setSelectedJob(job)
+                      }}
+                    >
                       Apply Now
                     </Button>
                   </div>
