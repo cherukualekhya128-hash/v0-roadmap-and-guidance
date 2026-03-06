@@ -1384,7 +1384,7 @@ export function JobsSection() {
             const CategoryIcon = getCategoryIcon(job.category)
             return (
               <Card
-                key={`${job.id}-${job.title}`}
+                key={job.id}
                 className="group cursor-pointer border-border/50 bg-card/50 backdrop-blur-sm transition-all duration-300 hover:border-primary/30 hover:shadow-lg hover:shadow-primary/5"
                 onClick={() => setSelectedJob(job)}
               >

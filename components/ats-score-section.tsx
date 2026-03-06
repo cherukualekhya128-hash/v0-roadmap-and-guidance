@@ -135,6 +135,20 @@ export function ATSScoreSection() {
   const [isUploading, setIsUploading] = useState(false)
   const fileInputRef = useRef<HTMLInputElement>(null)
 
+  // Reset function to clear all state
+  const handleReset = () => {
+    setResumeText("")
+    setJobAdText("")
+    setKeywords([])
+    setResumeSkills([])
+    setHasAnalyzed(false)
+    setHasResumeSkills(false)
+    setUploadedFileName(null)
+    if (fileInputRef.current) {
+      fileInputRef.current.value = ""
+    }
+  }
+
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
     if (!file) return
@@ -481,6 +495,14 @@ export function ATSScoreSection() {
         {/* Resume Skills Display - After Resume Upload but before full analysis */}
         {!hasAnalyzed && hasResumeSkills && resumeSkills.length > 0 && (
           <div className="mt-12 space-y-6">
+            {/* Reset Button */}
+            <div className="flex justify-end">
+              <Button variant="outline" size="sm" onClick={handleReset} className="gap-2">
+                <Upload className="h-4 w-4" />
+                Upload Different Resume
+              </Button>
+            </div>
+
             <div className="rounded-xl border border-border bg-card p-6">
               <div className="flex items-center justify-between">
                 <div>
@@ -591,6 +613,14 @@ export function ATSScoreSection() {
         {/* Results Section */}
         {hasAnalyzed && (
           <div className="mt-12 space-y-8">
+            {/* Reset Button */}
+            <div className="flex justify-end">
+              <Button variant="outline" onClick={handleReset} className="gap-2">
+                <Upload className="h-4 w-4" />
+                Analyze Another Resume
+              </Button>
+            </div>
+
             {/* Score Overview */}
             <div className="grid gap-6 md:grid-cols-4">
               {/* Main Score Card */}
