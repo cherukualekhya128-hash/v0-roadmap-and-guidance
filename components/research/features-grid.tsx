@@ -2,7 +2,15 @@
 
 import { useState } from "react"
 import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog"
 import { cn } from "@/lib/utils"
 import {
   Network,
@@ -21,11 +29,14 @@ import {
   GraduationCap,
   Users,
   Award,
-  Shield,
   Image,
   Compass,
   Brain,
+  ArrowRight,
+  X,
+  Play,
 } from "lucide-react"
+import Link from "next/link"
 
 const categories = [
   { id: "all", label: "All Features" },
@@ -43,6 +54,7 @@ const features = [
     icon: Network,
     category: "knowledge",
     tags: ["Graph DB", "Neo4j", "Visualization"],
+    slug: "knowledge-graph",
   },
   {
     id: 2,
@@ -51,6 +63,7 @@ const features = [
     icon: FileText,
     category: "analysis",
     tags: ["NLP", "Skill Mapping", "Extraction"],
+    slug: "skill-extractor",
   },
   {
     id: 3,
@@ -59,6 +72,7 @@ const features = [
     icon: TrendingUp,
     category: "career",
     tags: ["ML", "Forecasting", "Trends"],
+    slug: "skill-predictor",
   },
   {
     id: 4,
@@ -67,6 +81,7 @@ const features = [
     icon: Flame,
     category: "visualization",
     tags: ["Heatmap", "Trends", "Dashboard"],
+    slug: "trend-heatmap",
   },
   {
     id: 5,
@@ -75,6 +90,7 @@ const features = [
     icon: MessageSquare,
     category: "knowledge",
     tags: ["RAG", "LLM", "Q&A"],
+    slug: "paper-chatbot",
   },
   {
     id: 6,
@@ -83,6 +99,7 @@ const features = [
     icon: GitBranch,
     category: "knowledge",
     tags: ["Citation Graph", "Discovery", "Tree"],
+    slug: "literature-explorer",
   },
   {
     id: 7,
@@ -91,6 +108,7 @@ const features = [
     icon: MapPin,
     category: "career",
     tags: ["Matching", "Recommendations", "Skills"],
+    slug: "topic-mapper",
   },
   {
     id: 8,
@@ -99,6 +117,7 @@ const features = [
     icon: Mic,
     category: "career",
     tags: ["Simulation", "Feedback", "Practice"],
+    slug: "interview-sim",
   },
   {
     id: 9,
@@ -107,6 +126,7 @@ const features = [
     icon: FileSearch,
     category: "career",
     tags: ["NLP", "Simplification", "Parsing"],
+    slug: "jd-simplifier",
   },
   {
     id: 10,
@@ -115,6 +135,7 @@ const features = [
     icon: BarChart3,
     category: "analysis",
     tags: ["Scoring", "Prediction", "Metrics"],
+    slug: "impact-score",
   },
   {
     id: 11,
@@ -123,6 +144,7 @@ const features = [
     icon: Lightbulb,
     category: "career",
     tags: ["Generation", "Ideas", "Portfolio"],
+    slug: "idea-generator",
   },
   {
     id: 12,
@@ -131,6 +153,7 @@ const features = [
     icon: Database,
     category: "analysis",
     tags: ["Datasets", "Kaggle", "Recommendations"],
+    slug: "dataset-recommender",
   },
   {
     id: 13,
@@ -139,6 +162,7 @@ const features = [
     icon: Clock,
     category: "visualization",
     tags: ["Timeline", "History", "Evolution"],
+    slug: "paper-timeline",
   },
   {
     id: 14,
@@ -147,6 +171,7 @@ const features = [
     icon: GraduationCap,
     category: "career",
     tags: ["Learning", "Courses", "Upskilling"],
+    slug: "learning-engine",
   },
   {
     id: 15,
@@ -155,6 +180,7 @@ const features = [
     icon: Users,
     category: "analysis",
     tags: ["Competition", "Statistics", "Probability"],
+    slug: "competition-analyzer",
   },
   {
     id: 16,
@@ -163,6 +189,7 @@ const features = [
     icon: Brain,
     category: "analysis",
     tags: ["Code Gen", "Implementation", "LLM"],
+    slug: "paper-to-code",
   },
   {
     id: 17,
@@ -171,6 +198,7 @@ const features = [
     icon: Users,
     category: "knowledge",
     tags: ["Networking", "Collaboration", "Discovery"],
+    slug: "collaboration-finder",
   },
   {
     id: 18,
@@ -179,6 +207,7 @@ const features = [
     icon: Award,
     category: "analysis",
     tags: ["Patents", "Innovation", "Startups"],
+    slug: "patent-detector",
   },
   {
     id: 19,
@@ -187,6 +216,7 @@ const features = [
     icon: Image,
     category: "visualization",
     tags: ["Diagrams", "Flowcharts", "Visual"],
+    slug: "visualization-generator",
   },
   {
     id: 20,
@@ -195,11 +225,15 @@ const features = [
     icon: Compass,
     category: "career",
     tags: ["Advisory", "Paths", "Guidance"],
+    slug: "career-advisor",
   },
 ]
 
+export { features }
+
 export function FeaturesGrid() {
   const [activeCategory, setActiveCategory] = useState("all")
+  const [selectedFeature, setSelectedFeature] = useState<typeof features[0] | null>(null)
 
   const filteredFeatures = activeCategory === "all" 
     ? features 
@@ -234,10 +268,11 @@ export function FeaturesGrid() {
 
         {/* Features grid */}
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {filteredFeatures.map((feature, index) => (
+          {filteredFeatures.map((feature) => (
             <Card
               key={feature.id}
-              className="group relative overflow-hidden border-border/50 bg-card/50 backdrop-blur-sm transition-all duration-300 hover:border-primary/30 hover:shadow-lg hover:shadow-primary/5"
+              onClick={() => setSelectedFeature(feature)}
+              className="group relative cursor-pointer overflow-hidden border-border/50 bg-card/50 backdrop-blur-sm transition-all duration-300 hover:border-primary/30 hover:shadow-lg hover:shadow-primary/5"
             >
               <CardHeader className="pb-3">
                 <div className="mb-3 flex items-center justify-between">
@@ -251,7 +286,7 @@ export function FeaturesGrid() {
                 <CardTitle className="text-lg text-foreground">{feature.title}</CardTitle>
               </CardHeader>
               <CardContent>
-                <CardDescription className="mb-4 text-muted-foreground">
+                <CardDescription className="mb-4 line-clamp-2 text-muted-foreground">
                   {feature.description}
                 </CardDescription>
                 <div className="flex flex-wrap gap-2">
@@ -265,6 +300,12 @@ export function FeaturesGrid() {
                     </Badge>
                   ))}
                 </div>
+                
+                {/* Click indicator */}
+                <div className="mt-4 flex items-center gap-1 text-xs text-primary opacity-0 transition-opacity group-hover:opacity-100">
+                  <span>Click to explore</span>
+                  <ArrowRight className="h-3 w-3" />
+                </div>
               </CardContent>
               
               {/* Hover gradient effect */}
@@ -272,6 +313,62 @@ export function FeaturesGrid() {
             </Card>
           ))}
         </div>
+
+        {/* Feature Detail Dialog */}
+        <Dialog open={!!selectedFeature} onOpenChange={(open) => !open && setSelectedFeature(null)}>
+          <DialogContent className="max-w-lg border-border/50 bg-background/95 backdrop-blur-xl">
+            {selectedFeature && (
+              <>
+                <DialogHeader>
+                  <div className="mb-4 flex items-center gap-4">
+                    <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/10">
+                      <selectedFeature.icon className="h-7 w-7 text-primary" />
+                    </div>
+                    <div>
+                      <DialogTitle className="text-xl text-foreground">
+                        {selectedFeature.title}
+                      </DialogTitle>
+                      <p className="mt-1 text-sm capitalize text-muted-foreground">
+                        {selectedFeature.category} Tool
+                      </p>
+                    </div>
+                  </div>
+                  <DialogDescription className="text-base leading-relaxed text-muted-foreground">
+                    {selectedFeature.description}
+                  </DialogDescription>
+                </DialogHeader>
+
+                <div className="mt-4 space-y-4">
+                  {/* Tags */}
+                  <div>
+                    <h4 className="mb-2 text-sm font-medium text-foreground">Technologies</h4>
+                    <div className="flex flex-wrap gap-2">
+                      {selectedFeature.tags.map((tag) => (
+                        <Badge key={tag} variant="secondary" className="bg-secondary text-muted-foreground">
+                          {tag}
+                        </Badge>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Actions */}
+                  <div className="flex gap-3 pt-2">
+                    <Button asChild className="flex-1 gap-2">
+                      <Link href={`/research/tools/${selectedFeature.slug}`}>
+                        <Play className="h-4 w-4" />
+                        Try This Feature
+                      </Link>
+                    </Button>
+                    <Button variant="outline" onClick={() => setSelectedFeature(null)} className="gap-2">
+                      <X className="h-4 w-4" />
+                      Close
+                    </Button>
+                  </div>
+                </div>
+              </>
+            )}
+          </DialogContent>
+        </Dialog>
 
         {/* Stats section */}
         <div className="mt-20 rounded-2xl border border-border/50 bg-card/30 p-8 backdrop-blur-sm">
