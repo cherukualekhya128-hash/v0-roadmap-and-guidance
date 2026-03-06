@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useRef } from "react"
 import Link from "next/link"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -9,6 +9,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Textarea } from "@/components/ui/textarea"
 import { Input } from "@/components/ui/input"
 import { Progress } from "@/components/ui/progress"
+import { ScrollArea } from "@/components/ui/scroll-area"
 import {
   ArrowLeft,
   Upload,
@@ -23,6 +24,16 @@ import {
   Target,
   TrendingUp,
   Zap,
+  BookOpen,
+  GraduationCap,
+  Rocket,
+  ChevronRight,
+  ExternalLink,
+  Clock,
+  DollarSign,
+  Star,
+  FileUp,
+  RefreshCw,
 } from "lucide-react"
 
 // Sample resume text for demo
@@ -81,20 +92,65 @@ Benefits:
 - 401k matching`
 
 interface AnalysisResult {
-  score: number
-  matchedSkills: Array<{
+  resumeAnalysis: {
+    overallScore: number
+    strengths: string[]
+    weaknesses: string[]
+    experienceLevel: string
+    primaryDomain: string
+    yearsOfExperience: number
+  }
+  extractedSkills: Array<{
     skill: string
     category: string
-    importance: string
-    context: string
+    proficiencyLevel: string
   }>
-  missingSkills: Array<{
+  atsScore: {
+    score: number
+    matchedKeywords: string[]
+    missingKeywords: string[]
+    suggestions: string[]
+  } | null
+  recommendedJobs: Array<{
+    title: string
+    matchScore: number
+    reason: string
+    salaryRange: string
+    requiredSkills: string[]
+    growthPotential: string
+  }>
+  skillImprovements: Array<{
     skill: string
-    category: string
+    currentLevel: string
+    targetLevel: string
     importance: string
-    suggestion: string
+    learningPath: string[]
+    estimatedTime: string
+    resources: Array<{
+      name: string
+      type: string
+      url: string | null
+    }>
   }>
-  recommendations: string[]
+  researchPapers: Array<{
+    title: string
+    authors: string
+    year: number
+    abstract: string
+    relevance: string
+    keyTopics: string[]
+    applicationToCareer: string
+  }>
+  careerPath: {
+    currentRole: string
+    nextSteps: Array<{
+      role: string
+      timeframe: string
+      requiredSkills: string[]
+      salaryIncrease: string
+    }>
+    longTermGoal: string
+  }
   summary: string
 }
 
@@ -102,20 +158,20 @@ export default function DemoPage() {
   const [resumeText, setResumeText] = useState("")
   const [jobDescription, setJobDescription] = useState("")
   const [isAnalyzing, setIsAnalyzing] = useState(false)
-  const [analysisResult, setAnalysisResult] = useState<AnalysisResult | null>(null)
-  const [activeTab, setActiveTab] = useState("input")
-  const [uploadedFile, setUploadedFile] = useState<string | null>(null)
-
-  const loadSampleData = () => {
-    setResumeText(sampleResume)
-    setJobDescription(sampleJobDescription)
-  }
+  const [result, setResult] = useState<AnalysisResult | null>(null)
+  const [error, setError] = useState<string | null>(null)
+  const [uploadedFileName, setUploadedFileName] = useState<string | null>(null)
+  const [isUploading, setIsUploading] = useState(false)
+  const [activeTab, setActiveTab] = useState("overview")
+  const fileInputRef = useRef<HTMLInputElement>(null)
 
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
     if (!file) return
 
-    setUploadedFile(file.name)
+    setIsUploading(true)
+    setUploadedFileName(file.name)
+    setError(null)
 
     try {
       const formData = new FormData()
@@ -126,70 +182,73 @@ export default function DemoPage() {
         body: formData,
       })
 
-      if (response.ok) {
-        const data = await response.json()
-        setResumeText(data.text)
+      if (!response.ok) {
+        const err = await response.json()
+        throw new Error(err.error || "Failed to parse file")
       }
-    } catch (error) {
-      console.error("Upload error:", error)
+
+      const data = await response.json()
+      setResumeText(data.text)
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to parse file")
+      setUploadedFileName(null)
+    } finally {
+      setIsUploading(false)
     }
   }
 
-  const analyzeResume = async () => {
-    if (!resumeText.trim() || !jobDescription.trim()) return
+  const loadSampleData = () => {
+    setResumeText(sampleResume)
+    setJobDescription(sampleJobDescription)
+    setUploadedFileName(null)
+    setResult(null)
+    setError(null)
+  }
+
+  const handleReset = () => {
+    setResumeText("")
+    setJobDescription("")
+    setResult(null)
+    setError(null)
+    setUploadedFileName(null)
+    setActiveTab("overview")
+    if (fileInputRef.current) {
+      fileInputRef.current.value = ""
+    }
+  }
+
+  const handleAnalyze = async () => {
+    if (!resumeText.trim()) {
+      setError("Please provide your resume text")
+      return
+    }
 
     setIsAnalyzing(true)
-    setActiveTab("results")
+    setError(null)
+    setResult(null)
 
     try {
-      const response = await fetch("/api/analyze-ats", {
+      const response = await fetch("/api/comprehensive-analysis", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ resumeText, jobDescription }),
+        body: JSON.stringify({
+          resumeText,
+          jobDescription: jobDescription.trim() || null,
+        }),
       })
 
-      if (response.ok) {
-        const result = await response.json()
-        setAnalysisResult(result)
-      } else {
-        // Fallback to mock analysis if API fails
-        setAnalysisResult(generateMockAnalysis())
+      if (!response.ok) {
+        const err = await response.json()
+        throw new Error(err.error || "Analysis failed")
       }
-    } catch (error) {
-      console.error("Analysis error:", error)
-      // Use mock analysis as fallback
-      setAnalysisResult(generateMockAnalysis())
+
+      const data = await response.json()
+      setResult(data)
+      setActiveTab("overview")
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Analysis failed. Please try again.")
     } finally {
       setIsAnalyzing(false)
-    }
-  }
-
-  const generateMockAnalysis = (): AnalysisResult => {
-    return {
-      score: 78,
-      matchedSkills: [
-        { skill: "React", category: "technical", importance: "high", context: "Frontend development experience" },
-        { skill: "TypeScript", category: "technical", importance: "high", context: "Programming languages" },
-        { skill: "Node.js", category: "technical", importance: "high", context: "Backend development" },
-        { skill: "PostgreSQL", category: "tool", importance: "high", context: "Database experience" },
-        { skill: "AWS", category: "tool", importance: "medium", context: "Cloud platform experience" },
-        { skill: "Docker", category: "tool", importance: "medium", context: "Tools section" },
-        { skill: "REST APIs", category: "technical", importance: "high", context: "Backend experience" },
-        { skill: "Agile", category: "soft", importance: "medium", context: "Methodology experience" },
-      ],
-      missingSkills: [
-        { skill: "GraphQL", category: "technical", importance: "medium", suggestion: "Add any GraphQL projects or experience to your resume" },
-        { skill: "CI/CD pipelines", category: "tool", importance: "medium", suggestion: "Mention Jenkins experience more prominently" },
-        { skill: "Machine Learning", category: "technical", importance: "low", suggestion: "Consider adding ML coursework or projects" },
-      ],
-      recommendations: [
-        "Highlight your microservices experience more prominently in the summary",
-        "Add specific metrics for your leadership and mentoring experience",
-        "Include GraphQL if you have any experience with it",
-        "Mention specific CI/CD tools and pipelines you've worked with",
-        "Consider adding a 'Key Achievements' section with quantified results",
-      ],
-      summary: "Your resume shows strong alignment with this Senior Full Stack Developer position. You have most of the required technical skills including React, TypeScript, Node.js, and PostgreSQL. Your 5+ years of experience and leadership background are excellent matches. To improve your ATS score, consider highlighting your CI/CD experience and adding any GraphQL knowledge.",
     }
   }
 
@@ -200,335 +259,561 @@ export default function DemoPage() {
   }
 
   const getScoreBg = (score: number) => {
-    if (score >= 80) return "bg-green-500"
-    if (score >= 60) return "bg-yellow-500"
-    return "bg-red-500"
+    if (score >= 80) return "bg-green-500/10 border-green-500/30"
+    if (score >= 60) return "bg-yellow-500/10 border-yellow-500/30"
+    return "bg-red-500/10 border-red-500/30"
+  }
+
+  const getImportanceColor = (importance: string) => {
+    switch (importance) {
+      case "critical": return "bg-red-500/20 text-red-400 border-red-500/30"
+      case "important": return "bg-yellow-500/20 text-yellow-400 border-yellow-500/30"
+      default: return "bg-blue-500/20 text-blue-400 border-blue-500/30"
+    }
   }
 
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
-      <header className="border-b border-border bg-card/50 backdrop-blur-sm">
-        <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-          <div className="flex items-center gap-4">
-            <Link href="/">
-              <Button variant="ghost" size="sm" className="gap-2">
-                <ArrowLeft className="h-4 w-4" />
-                Back to Home
-              </Button>
-            </Link>
-            <div className="h-6 w-px bg-border" />
-            <div className="flex items-center gap-2">
-              <Brain className="h-5 w-5 text-primary" />
-              <span className="font-semibold text-foreground">ATS Analyzer Demo</span>
-            </div>
+      <header className="sticky top-0 z-50 border-b border-border bg-background/80 backdrop-blur-lg">
+        <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6">
+          <Link href="/" className="flex items-center gap-2 text-muted-foreground hover:text-foreground">
+            <ArrowLeft className="h-4 w-4" />
+            Back to Home
+          </Link>
+          <div className="flex items-center gap-2">
+            <Brain className="h-6 w-6 text-primary" />
+            <span className="text-xl font-bold text-foreground">CareerGPT Demo</span>
           </div>
-          <Badge variant="outline" className="border-primary/50 text-primary">
-            <Sparkles className="mr-1 h-3 w-3" />
-            AI-Powered
-          </Badge>
+          <Button variant="outline" size="sm" onClick={loadSampleData}>
+            Load Sample Data
+          </Button>
         </div>
       </header>
 
-      {/* Main Content */}
-      <main className="mx-auto max-w-6xl px-6 py-8">
-        <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <div className="flex items-center justify-between">
-            <TabsList>
-              <TabsTrigger value="input" className="gap-2">
-                <FileText className="h-4 w-4" />
-                Input
-              </TabsTrigger>
-              <TabsTrigger value="results" className="gap-2" disabled={!analysisResult && !isAnalyzing}>
-                <Target className="h-4 w-4" />
-                Results
-              </TabsTrigger>
-            </TabsList>
+      <main className="mx-auto max-w-7xl px-6 py-8">
+        {/* Input Section */}
+        {!result && (
+          <div className="space-y-8">
+            <div className="text-center">
+              <h1 className="text-3xl font-bold text-foreground">AI Career Analysis</h1>
+              <p className="mt-2 text-muted-foreground">
+                Upload your resume to get ATS score, job recommendations, skill improvements, and research papers
+              </p>
+            </div>
 
-            {activeTab === "input" && (
-              <Button variant="outline" onClick={loadSampleData} className="gap-2">
-                <Zap className="h-4 w-4" />
-                Load Sample Data
-              </Button>
-            )}
-          </div>
-
-          {/* Input Tab */}
-          <TabsContent value="input" className="space-y-6">
             <div className="grid gap-6 lg:grid-cols-2">
               {/* Resume Input */}
-              <Card>
+              <Card className="border-border bg-card">
                 <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
+                  <CardTitle className="flex items-center gap-2 text-foreground">
                     <FileText className="h-5 w-5 text-primary" />
                     Your Resume
                   </CardTitle>
-                  <CardDescription>
-                    Upload your resume or paste the text directly
-                  </CardDescription>
+                  <CardDescription>Upload a file or paste your resume text</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                  <div className="flex gap-2">
+                  {/* File Upload */}
+                  <div
+                    onClick={() => fileInputRef.current?.click()}
+                    className="flex cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-border bg-muted/30 p-6 transition-colors hover:border-primary/50 hover:bg-muted/50"
+                  >
                     <Input
+                      ref={fileInputRef}
                       type="file"
                       accept=".pdf,.doc,.docx,.txt"
                       onChange={handleFileUpload}
                       className="hidden"
-                      id="resume-upload"
                     />
-                    <label htmlFor="resume-upload" className="flex-1">
-                      <Button variant="outline" className="w-full gap-2" asChild>
-                        <span>
-                          <Upload className="h-4 w-4" />
-                          {uploadedFile || "Upload Resume"}
-                        </span>
-                      </Button>
-                    </label>
+                    {isUploading ? (
+                      <div className="flex flex-col items-center gap-2">
+                        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+                        <span className="text-sm text-muted-foreground">Parsing resume...</span>
+                      </div>
+                    ) : uploadedFileName ? (
+                      <div className="flex flex-col items-center gap-2">
+                        <FileUp className="h-8 w-8 text-primary" />
+                        <span className="text-sm font-medium text-foreground">{uploadedFileName}</span>
+                        <span className="text-xs text-muted-foreground">Click to upload different file</span>
+                      </div>
+                    ) : (
+                      <div className="flex flex-col items-center gap-2">
+                        <Upload className="h-8 w-8 text-muted-foreground" />
+                        <span className="text-sm font-medium text-foreground">Upload Resume</span>
+                        <span className="text-xs text-muted-foreground">PDF, DOC, DOCX, or TXT</span>
+                      </div>
+                    )}
                   </div>
+
+                  <div className="flex items-center gap-3">
+                    <div className="h-px flex-1 bg-border" />
+                    <span className="text-xs text-muted-foreground">or paste text</span>
+                    <div className="h-px flex-1 bg-border" />
+                  </div>
+
                   <Textarea
-                    placeholder="Or paste your resume text here..."
+                    placeholder="Paste your resume text here..."
+                    className="min-h-[200px] resize-none border-border bg-background text-foreground"
                     value={resumeText}
-                    onChange={(e) => setResumeText(e.target.value)}
-                    className="min-h-[300px] resize-none"
+                    onChange={(e) => {
+                      setResumeText(e.target.value)
+                      if (e.target.value !== resumeText) setUploadedFileName(null)
+                    }}
                   />
-                  <p className="text-xs text-muted-foreground">
-                    {resumeText.length > 0 ? `${resumeText.split(/\s+/).length} words` : "No content"}
-                  </p>
                 </CardContent>
               </Card>
 
               {/* Job Description Input */}
-              <Card>
+              <Card className="border-border bg-card">
                 <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
+                  <CardTitle className="flex items-center gap-2 text-foreground">
                     <Briefcase className="h-5 w-5 text-primary" />
                     Job Description
+                    <Badge variant="outline" className="ml-2 text-xs">Optional</Badge>
                   </CardTitle>
-                  <CardDescription>
-                    Paste the job description you want to match against
-                  </CardDescription>
+                  <CardDescription>Add a job description for ATS score calculation</CardDescription>
                 </CardHeader>
-                <CardContent className="space-y-4">
+                <CardContent>
                   <Textarea
-                    placeholder="Paste the job description here..."
+                    placeholder="Paste the job description here for ATS matching..."
+                    className="min-h-[280px] resize-none border-border bg-background text-foreground"
                     value={jobDescription}
                     onChange={(e) => setJobDescription(e.target.value)}
-                    className="min-h-[340px] resize-none"
                   />
-                  <p className="text-xs text-muted-foreground">
-                    {jobDescription.length > 0 ? `${jobDescription.split(/\s+/).length} words` : "No content"}
-                  </p>
                 </CardContent>
               </Card>
             </div>
 
+            {/* Error Display */}
+            {error && (
+              <div className="rounded-lg border border-red-500/30 bg-red-500/10 p-4 text-center text-red-400">
+                <AlertCircle className="mx-auto mb-2 h-6 w-6" />
+                {error}
+              </div>
+            )}
+
             {/* Analyze Button */}
-            <div className="flex justify-center">
+            <div className="flex flex-col items-center gap-4">
               <Button
                 size="lg"
-                onClick={analyzeResume}
-                disabled={!resumeText.trim() || !jobDescription.trim() || isAnalyzing}
+                onClick={handleAnalyze}
+                disabled={isAnalyzing || !resumeText.trim()}
                 className="gap-2 px-8"
               >
                 {isAnalyzing ? (
                   <>
-                    <Loader2 className="h-4 w-4 animate-spin" />
-                    Analyzing...
+                    <Loader2 className="h-5 w-5 animate-spin" />
+                    Analyzing with AI...
                   </>
                 ) : (
                   <>
-                    <Brain className="h-4 w-4" />
-                    Analyze ATS Compatibility
+                    <Sparkles className="h-5 w-5" />
+                    Analyze Resume
                   </>
                 )}
               </Button>
+              {!resumeText.trim() && (
+                <p className="text-sm text-muted-foreground">
+                  Upload or paste your resume to get started
+                </p>
+              )}
             </div>
-          </TabsContent>
 
-          {/* Results Tab */}
-          <TabsContent value="results" className="space-y-6">
-            {isAnalyzing ? (
-              <Card className="p-12">
-                <div className="flex flex-col items-center justify-center gap-4">
-                  <Loader2 className="h-12 w-12 animate-spin text-primary" />
-                  <p className="text-lg font-medium text-foreground">Analyzing your resume...</p>
-                  <p className="text-sm text-muted-foreground">This may take a few seconds</p>
+            {/* Features Preview */}
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+              {[
+                { icon: Target, label: "ATS Score", desc: "Match against job requirements" },
+                { icon: Briefcase, label: "Job Recommendations", desc: "AI-matched opportunities" },
+                { icon: TrendingUp, label: "Skill Improvements", desc: "Personalized learning paths" },
+                { icon: BookOpen, label: "Research Papers", desc: "Relevant academic resources" },
+              ].map((feature) => (
+                <div key={feature.label} className="rounded-lg border border-border bg-card/50 p-4 text-center">
+                  <feature.icon className="mx-auto mb-2 h-8 w-8 text-primary" />
+                  <h3 className="font-medium text-foreground">{feature.label}</h3>
+                  <p className="mt-1 text-xs text-muted-foreground">{feature.desc}</p>
                 </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Results Section */}
+        {result && (
+          <div className="space-y-6">
+            {/* Header with Reset */}
+            <div className="flex items-center justify-between">
+              <h1 className="text-2xl font-bold text-foreground">Analysis Results</h1>
+              <Button variant="outline" onClick={handleReset} className="gap-2">
+                <RefreshCw className="h-4 w-4" />
+                Analyze Another Resume
+              </Button>
+            </div>
+
+            {/* Score Overview Cards */}
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+              <Card className={`border ${getScoreBg(result.resumeAnalysis.overallScore)}`}>
+                <CardContent className="p-6 text-center">
+                  <Target className="mx-auto mb-2 h-8 w-8 text-primary" />
+                  <div className={`text-4xl font-bold ${getScoreColor(result.resumeAnalysis.overallScore)}`}>
+                    {result.resumeAnalysis.overallScore}%
+                  </div>
+                  <p className="mt-1 text-sm text-muted-foreground">Resume Score</p>
+                </CardContent>
               </Card>
-            ) : analysisResult ? (
-              <>
-                {/* Score Overview */}
-                <div className="grid gap-6 md:grid-cols-4">
-                  <Card className="md:col-span-2">
-                    <CardContent className="flex items-center justify-between p-6">
-                      <div>
-                        <p className="text-sm text-muted-foreground">ATS Compatibility Score</p>
-                        <p className={`text-5xl font-bold ${getScoreColor(analysisResult.score)}`}>
-                          {analysisResult.score}%
-                        </p>
-                      </div>
-                      <div className="h-24 w-24">
-                        <div className="relative flex h-full w-full items-center justify-center rounded-full border-4 border-muted">
-                          <div 
-                            className={`absolute inset-0 rounded-full ${getScoreBg(analysisResult.score)}`}
-                            style={{ 
-                              clipPath: `polygon(0 0, 100% 0, 100% ${100 - analysisResult.score}%, 0 ${100 - analysisResult.score}%)` 
-                            }}
-                          />
-                          <TrendingUp className={`h-8 w-8 ${getScoreColor(analysisResult.score)}`} />
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
 
-                  <Card>
-                    <CardContent className="p-6">
-                      <div className="flex items-center gap-2 text-green-500">
-                        <CheckCircle className="h-5 w-5" />
-                        <span className="font-medium">Matched</span>
-                      </div>
-                      <p className="mt-2 text-3xl font-bold text-foreground">
-                        {analysisResult.matchedSkills.length}
-                      </p>
-                      <p className="text-sm text-muted-foreground">skills found</p>
-                    </CardContent>
-                  </Card>
-
-                  <Card>
-                    <CardContent className="p-6">
-                      <div className="flex items-center gap-2 text-red-500">
-                        <XCircle className="h-5 w-5" />
-                        <span className="font-medium">Missing</span>
-                      </div>
-                      <p className="mt-2 text-3xl font-bold text-foreground">
-                        {analysisResult.missingSkills.length}
-                      </p>
-                      <p className="text-sm text-muted-foreground">skills to add</p>
-                    </CardContent>
-                  </Card>
-                </div>
-
-                {/* Summary */}
-                <Card>
-                  <CardHeader>
-                    <CardTitle>Analysis Summary</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-muted-foreground">{analysisResult.summary}</p>
+              {result.atsScore && (
+                <Card className={`border ${getScoreBg(result.atsScore.score)}`}>
+                  <CardContent className="p-6 text-center">
+                    <Zap className="mx-auto mb-2 h-8 w-8 text-yellow-500" />
+                    <div className={`text-4xl font-bold ${getScoreColor(result.atsScore.score)}`}>
+                      {result.atsScore.score}%
+                    </div>
+                    <p className="mt-1 text-sm text-muted-foreground">ATS Score</p>
                   </CardContent>
                 </Card>
+              )}
 
-                {/* Skills Analysis */}
+              <Card className="border border-border">
+                <CardContent className="p-6 text-center">
+                  <Briefcase className="mx-auto mb-2 h-8 w-8 text-blue-500" />
+                  <div className="text-4xl font-bold text-foreground">
+                    {result.recommendedJobs.length}
+                  </div>
+                  <p className="mt-1 text-sm text-muted-foreground">Job Matches</p>
+                </CardContent>
+              </Card>
+
+              <Card className="border border-border">
+                <CardContent className="p-6 text-center">
+                  <BookOpen className="mx-auto mb-2 h-8 w-8 text-purple-500" />
+                  <div className="text-4xl font-bold text-foreground">
+                    {result.researchPapers.length}
+                  </div>
+                  <p className="mt-1 text-sm text-muted-foreground">Papers Found</p>
+                </CardContent>
+              </Card>
+            </div>
+
+            {/* Summary */}
+            <Card className="border-border">
+              <CardContent className="p-6">
+                <p className="text-muted-foreground leading-relaxed">{result.summary}</p>
+              </CardContent>
+            </Card>
+
+            {/* Tabs for detailed results */}
+            <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
+              <TabsList className="grid w-full grid-cols-5 bg-muted">
+                <TabsTrigger value="overview">Overview</TabsTrigger>
+                <TabsTrigger value="jobs">Jobs</TabsTrigger>
+                <TabsTrigger value="skills">Skills</TabsTrigger>
+                <TabsTrigger value="papers">Papers</TabsTrigger>
+                <TabsTrigger value="career">Career Path</TabsTrigger>
+              </TabsList>
+
+              {/* Overview Tab */}
+              <TabsContent value="overview" className="space-y-6">
                 <div className="grid gap-6 lg:grid-cols-2">
-                  {/* Matched Skills */}
-                  <Card>
+                  {/* Strengths */}
+                  <Card className="border-border">
                     <CardHeader>
                       <CardTitle className="flex items-center gap-2 text-green-500">
                         <CheckCircle className="h-5 w-5" />
-                        Matched Skills
+                        Strengths
                       </CardTitle>
-                      <CardDescription>
-                        Skills from your resume that match the job requirements
-                      </CardDescription>
                     </CardHeader>
                     <CardContent>
-                      <div className="space-y-3">
-                        {analysisResult.matchedSkills.map((skill, index) => (
-                          <div key={index} className="flex items-start justify-between rounded-lg border border-border p-3">
-                            <div>
-                              <div className="flex items-center gap-2">
-                                <span className="font-medium text-foreground">{skill.skill}</span>
-                                <Badge variant="outline" className="text-xs">
-                                  {skill.importance}
-                                </Badge>
-                              </div>
-                              <p className="mt-1 text-xs text-muted-foreground">{skill.context}</p>
-                            </div>
-                            <CheckCircle className="h-4 w-4 text-green-500 shrink-0" />
-                          </div>
+                      <ul className="space-y-2">
+                        {result.resumeAnalysis.strengths.map((strength, i) => (
+                          <li key={i} className="flex items-start gap-2 text-sm text-muted-foreground">
+                            <CheckCircle className="mt-0.5 h-4 w-4 shrink-0 text-green-500" />
+                            {strength}
+                          </li>
                         ))}
-                      </div>
+                      </ul>
                     </CardContent>
                   </Card>
 
-                  {/* Missing Skills */}
-                  <Card>
+                  {/* Weaknesses */}
+                  <Card className="border-border">
                     <CardHeader>
                       <CardTitle className="flex items-center gap-2 text-red-500">
                         <AlertCircle className="h-5 w-5" />
-                        Missing Skills
+                        Areas to Improve
                       </CardTitle>
-                      <CardDescription>
-                        Skills from the job description not found in your resume
-                      </CardDescription>
                     </CardHeader>
                     <CardContent>
-                      <div className="space-y-3">
-                        {analysisResult.missingSkills.map((skill, index) => (
-                          <div key={index} className="rounded-lg border border-border p-3">
-                            <div className="flex items-center justify-between">
-                              <div className="flex items-center gap-2">
-                                <span className="font-medium text-foreground">{skill.skill}</span>
-                                <Badge variant="outline" className="text-xs">
-                                  {skill.importance}
-                                </Badge>
-                              </div>
-                              <XCircle className="h-4 w-4 text-red-500 shrink-0" />
-                            </div>
-                            <p className="mt-2 text-xs text-muted-foreground">{skill.suggestion}</p>
-                          </div>
+                      <ul className="space-y-2">
+                        {result.resumeAnalysis.weaknesses.map((weakness, i) => (
+                          <li key={i} className="flex items-start gap-2 text-sm text-muted-foreground">
+                            <XCircle className="mt-0.5 h-4 w-4 shrink-0 text-red-500" />
+                            {weakness}
+                          </li>
                         ))}
-                      </div>
+                      </ul>
                     </CardContent>
                   </Card>
                 </div>
 
-                {/* Recommendations */}
-                <Card>
+                {/* Extracted Skills */}
+                <Card className="border-border">
                   <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                      <Sparkles className="h-5 w-5 text-primary" />
-                      Recommendations
-                    </CardTitle>
-                    <CardDescription>
-                      Actions to improve your ATS score
-                    </CardDescription>
+                    <CardTitle>Extracted Skills</CardTitle>
+                    <CardDescription>Skills identified from your resume</CardDescription>
                   </CardHeader>
                   <CardContent>
-                    <ul className="space-y-3">
-                      {analysisResult.recommendations.map((rec, index) => (
-                        <li key={index} className="flex items-start gap-3">
-                          <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary/10 text-xs font-medium text-primary">
-                            {index + 1}
-                          </div>
-                          <span className="text-muted-foreground">{rec}</span>
-                        </li>
+                    <div className="flex flex-wrap gap-2">
+                      {result.extractedSkills.map((skill, i) => (
+                        <Badge
+                          key={i}
+                          variant="outline"
+                          className={
+                            skill.category === "technical" ? "border-blue-500/50 bg-blue-500/10 text-blue-400" :
+                            skill.category === "tool" ? "border-cyan-500/50 bg-cyan-500/10 text-cyan-400" :
+                            skill.category === "soft" ? "border-purple-500/50 bg-purple-500/10 text-purple-400" :
+                            "border-orange-500/50 bg-orange-500/10 text-orange-400"
+                          }
+                        >
+                          {skill.skill}
+                          <span className="ml-1 opacity-60">({skill.proficiencyLevel})</span>
+                        </Badge>
                       ))}
-                    </ul>
+                    </div>
                   </CardContent>
                 </Card>
 
-                {/* Actions */}
-                <div className="flex justify-center gap-4">
-                  <Button variant="outline" onClick={() => setActiveTab("input")} className="gap-2">
-                    <ArrowLeft className="h-4 w-4" />
-                    Edit Input
-                  </Button>
-                  <Button onClick={() => {
-                    setAnalysisResult(null)
-                    setResumeText("")
-                    setJobDescription("")
-                    setUploadedFile(null)
-                    setActiveTab("input")
-                  }} className="gap-2">
-                    <Zap className="h-4 w-4" />
-                    Analyze Another Resume
-                  </Button>
+                {/* ATS Analysis */}
+                {result.atsScore && (
+                  <Card className="border-border">
+                    <CardHeader>
+                      <CardTitle className="flex items-center gap-2">
+                        <Zap className="h-5 w-5 text-yellow-500" />
+                        ATS Analysis
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                      <div className="grid gap-4 md:grid-cols-2">
+                        <div>
+                          <h4 className="mb-2 text-sm font-medium text-green-500">Matched Keywords</h4>
+                          <div className="flex flex-wrap gap-1">
+                            {result.atsScore.matchedKeywords.map((kw, i) => (
+                              <Badge key={i} variant="outline" className="border-green-500/50 bg-green-500/10 text-green-400">
+                                {kw}
+                              </Badge>
+                            ))}
+                          </div>
+                        </div>
+                        <div>
+                          <h4 className="mb-2 text-sm font-medium text-red-500">Missing Keywords</h4>
+                          <div className="flex flex-wrap gap-1">
+                            {result.atsScore.missingKeywords.map((kw, i) => (
+                              <Badge key={i} variant="outline" className="border-red-500/50 bg-red-500/10 text-red-400">
+                                {kw}
+                              </Badge>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+                      <div>
+                        <h4 className="mb-2 text-sm font-medium text-foreground">Suggestions</h4>
+                        <ul className="space-y-1">
+                          {result.atsScore.suggestions.map((suggestion, i) => (
+                            <li key={i} className="flex items-start gap-2 text-sm text-muted-foreground">
+                              <ChevronRight className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
+                              {suggestion}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </CardContent>
+                  </Card>
+                )}
+              </TabsContent>
+
+              {/* Jobs Tab */}
+              <TabsContent value="jobs" className="space-y-4">
+                <h3 className="text-lg font-semibold text-foreground">Recommended Jobs for You</h3>
+                <div className="grid gap-4 md:grid-cols-2">
+                  {result.recommendedJobs.map((job, i) => (
+                    <Card key={i} className="border-border">
+                      <CardHeader className="pb-2">
+                        <div className="flex items-start justify-between">
+                          <CardTitle className="text-lg text-foreground">{job.title}</CardTitle>
+                          <Badge className={getScoreBg(job.matchScore)}>
+                            {job.matchScore}% match
+                          </Badge>
+                        </div>
+                      </CardHeader>
+                      <CardContent className="space-y-3">
+                        <p className="text-sm text-muted-foreground">{job.reason}</p>
+                        <div className="flex items-center gap-4 text-sm">
+                          <span className="flex items-center gap-1 text-green-500">
+                            <DollarSign className="h-4 w-4" />
+                            {job.salaryRange}
+                          </span>
+                          <span className="flex items-center gap-1 text-muted-foreground">
+                            <TrendingUp className="h-4 w-4" />
+                            {job.growthPotential} growth
+                          </span>
+                        </div>
+                        <div className="flex flex-wrap gap-1">
+                          {job.requiredSkills.slice(0, 5).map((skill, j) => (
+                            <Badge key={j} variant="secondary" className="text-xs">
+                              {skill}
+                            </Badge>
+                          ))}
+                        </div>
+                      </CardContent>
+                    </Card>
+                  ))}
                 </div>
-              </>
-            ) : null}
-          </TabsContent>
-        </Tabs>
+              </TabsContent>
+
+              {/* Skills Tab */}
+              <TabsContent value="skills" className="space-y-4">
+                <h3 className="text-lg font-semibold text-foreground">Skill Development Plan</h3>
+                <div className="space-y-4">
+                  {result.skillImprovements.map((skill, i) => (
+                    <Card key={i} className="border-border">
+                      <CardHeader className="pb-2">
+                        <div className="flex items-center justify-between">
+                          <CardTitle className="text-lg text-foreground">{skill.skill}</CardTitle>
+                          <Badge className={getImportanceColor(skill.importance)}>
+                            {skill.importance}
+                          </Badge>
+                        </div>
+                        <CardDescription>
+                          {skill.currentLevel} → {skill.targetLevel} | Estimated: {skill.estimatedTime}
+                        </CardDescription>
+                      </CardHeader>
+                      <CardContent className="space-y-4">
+                        <div>
+                          <h4 className="mb-2 text-sm font-medium text-foreground">Learning Path</h4>
+                          <ol className="space-y-1">
+                            {skill.learningPath.map((step, j) => (
+                              <li key={j} className="flex items-start gap-2 text-sm text-muted-foreground">
+                                <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-primary/20 text-xs text-primary">
+                                  {j + 1}
+                                </span>
+                                {step}
+                              </li>
+                            ))}
+                          </ol>
+                        </div>
+                        <div>
+                          <h4 className="mb-2 text-sm font-medium text-foreground">Recommended Resources</h4>
+                          <div className="flex flex-wrap gap-2">
+                            {skill.resources.map((resource, j) => (
+                              <Badge key={j} variant="outline" className="gap-1">
+                                {resource.type === "course" && <GraduationCap className="h-3 w-3" />}
+                                {resource.type === "book" && <BookOpen className="h-3 w-3" />}
+                                {resource.type === "certification" && <Star className="h-3 w-3" />}
+                                {resource.name}
+                                {resource.url && <ExternalLink className="h-3 w-3" />}
+                              </Badge>
+                            ))}
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+              </TabsContent>
+
+              {/* Papers Tab */}
+              <TabsContent value="papers" className="space-y-4">
+                <h3 className="text-lg font-semibold text-foreground">Relevant Research Papers</h3>
+                <div className="space-y-4">
+                  {result.researchPapers.map((paper, i) => (
+                    <Card key={i} className="border-border">
+                      <CardHeader className="pb-2">
+                        <CardTitle className="text-lg text-foreground">{paper.title}</CardTitle>
+                        <CardDescription>
+                          {paper.authors} ({paper.year})
+                        </CardDescription>
+                      </CardHeader>
+                      <CardContent className="space-y-3">
+                        <p className="text-sm text-muted-foreground">{paper.abstract}</p>
+                        <div className="flex flex-wrap gap-1">
+                          {paper.keyTopics.map((topic, j) => (
+                            <Badge key={j} variant="secondary" className="text-xs">
+                              {topic}
+                            </Badge>
+                          ))}
+                        </div>
+                        <div className="rounded-lg border border-primary/30 bg-primary/5 p-3">
+                          <h4 className="mb-1 text-sm font-medium text-primary">Why this matters for your career</h4>
+                          <p className="text-sm text-muted-foreground">{paper.applicationToCareer}</p>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+              </TabsContent>
+
+              {/* Career Tab */}
+              <TabsContent value="career" className="space-y-6">
+                <Card className="border-border">
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <Rocket className="h-5 w-5 text-primary" />
+                      Your Career Path
+                    </CardTitle>
+                    <CardDescription>
+                      Current Role: {result.careerPath.currentRole}
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-6">
+                      {/* Career Steps */}
+                      <div className="relative">
+                        {result.careerPath.nextSteps.map((step, i) => (
+                          <div key={i} className="relative flex gap-4 pb-8 last:pb-0">
+                            {/* Timeline line */}
+                            {i < result.careerPath.nextSteps.length - 1 && (
+                              <div className="absolute left-4 top-8 h-full w-px bg-border" />
+                            )}
+                            {/* Timeline dot */}
+                            <div className="relative z-10 flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground">
+                              {i + 1}
+                            </div>
+                            {/* Content */}
+                            <div className="flex-1 rounded-lg border border-border bg-card/50 p-4">
+                              <div className="flex items-start justify-between">
+                                <h4 className="font-semibold text-foreground">{step.role}</h4>
+                                <Badge variant="outline" className="text-xs">
+                                  <Clock className="mr-1 h-3 w-3" />
+                                  {step.timeframe}
+                                </Badge>
+                              </div>
+                              <p className="mt-1 text-sm text-green-500">{step.salaryIncrease}</p>
+                              <div className="mt-3 flex flex-wrap gap-1">
+                                {step.requiredSkills.map((skill, j) => (
+                                  <Badge key={j} variant="secondary" className="text-xs">
+                                    {skill}
+                                  </Badge>
+                                ))}
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+
+                      {/* Long-term Goal */}
+                      <div className="rounded-lg border border-primary/30 bg-primary/5 p-4">
+                        <h4 className="mb-2 flex items-center gap-2 font-semibold text-primary">
+                          <Star className="h-5 w-5" />
+                          Long-term Goal
+                        </h4>
+                        <p className="text-muted-foreground">{result.careerPath.longTermGoal}</p>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              </TabsContent>
+            </Tabs>
+          </div>
+        )}
       </main>
     </div>
   )
