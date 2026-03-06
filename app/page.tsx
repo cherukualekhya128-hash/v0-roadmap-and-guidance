@@ -4,6 +4,7 @@ import { ProblemSection } from "@/components/problem-section"
 import { FeaturesSection } from "@/components/features-section"
 import { ArchitectureSection } from "@/components/architecture-section"
 import { TechStackSection } from "@/components/tech-stack-section"
+import { ATSScoreSection } from "@/components/ats-score-section"
 import { DemoSection } from "@/components/demo-section"
 import { Footer } from "@/components/footer"
 
@@ -16,6 +17,7 @@ export default function Home() {
       <FeaturesSection />
       <ArchitectureSection />
       <TechStackSection />
+      <ATSScoreSection />
       <DemoSection />
       <Footer />
     </main>
