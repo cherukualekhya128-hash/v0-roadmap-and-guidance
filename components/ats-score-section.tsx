@@ -25,8 +25,10 @@ import {
   Target,
   Upload,
   FileUp,
-  Loader2
+  Loader2,
+  MessageSquare
 } from "lucide-react"
+import { InterviewPracticeSection } from "@/components/interview-practice-section"
 
 interface KeywordMatch {
   keyword: string
@@ -773,6 +775,12 @@ export function ATSScoreSection() {
             )}
           </div>
         )}
+
+        {/* Interview Practice Section - Shows after resume upload */}
+        <InterviewPracticeSection 
+          resumeText={resumeText} 
+          isVisible={hasResumeSkills || hasAnalyzed} 
+        />
       </div>
     </section>
   )
