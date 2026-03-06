@@ -353,12 +353,27 @@ export function FeaturesGrid() {
 
                   {/* Actions */}
                   <div className="flex gap-3 pt-2">
-                    <Button asChild className="flex-1 gap-2">
-                      <Link href={`/research/tools/${selectedFeature.slug}`}>
+                    {selectedFeature.slug === "paper-chatbot" ? (
+                      <Button
+                        className="flex-1 gap-2"
+                        onClick={() => {
+                          setSelectedFeature(null)
+                          document.getElementById("paper-chatbot")?.scrollIntoView({ behavior: "smooth" })
+                        }}
+                      >
                         <Play className="h-4 w-4" />
-                        Try This Feature
-                      </Link>
-                    </Button>
+                        Try Paper Chatbot
+                      </Button>
+                    ) : (
+                      <Button
+                        className="flex-1 gap-2"
+                        variant="secondary"
+                        disabled
+                      >
+                        <Clock className="h-4 w-4" />
+                        Coming Soon
+                      </Button>
+                    )}
                     <Button variant="outline" onClick={() => setSelectedFeature(null)} className="gap-2">
                       <X className="h-4 w-4" />
                       Close
