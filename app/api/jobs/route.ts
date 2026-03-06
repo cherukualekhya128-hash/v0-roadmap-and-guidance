@@ -1,100 +1,17 @@
 import { NextRequest, NextResponse } from "next/server"
-
-// Mock jobs database - in production, this would come from a database
-const jobsDatabase = [
-  {
-    id: 1,
-    title: "Senior Frontend Developer",
-    company: "TechCorp Inc.",
-    location: "San Francisco, CA",
-    salary: "$120,000 - $160,000",
-    type: "Full-time",
-    posted: "2024-01-15",
-    category: "frontend",
-    skills: ["React", "TypeScript", "Next.js", "Tailwind CSS", "GraphQL"],
-    description: "Join our team to build beautiful, performant user interfaces.",
-    requirements: [
-      "5+ years of frontend development experience",
-      "Expert-level React and TypeScript skills",
-      "Experience with modern CSS and design systems",
-    ],
-  },
-  {
-    id: 2,
-    title: "Backend Engineer",
-    company: "DataFlow Systems",
-    location: "New York, NY",
-    salary: "$130,000 - $170,000",
-    type: "Full-time",
-    posted: "2024-01-14",
-    category: "backend",
-    skills: ["Node.js", "Python", "PostgreSQL", "AWS", "Docker"],
-    description: "Design and implement scalable backend services.",
-    requirements: [
-      "4+ years of backend development experience",
-      "Proficiency in Node.js or Python",
-      "Experience with cloud services",
-    ],
-  },
-  {
-    id: 3,
-    title: "Full Stack Developer",
-    company: "Infosys",
-    location: "Hyderabad, Telangana, India",
-    salary: "₹8,00,000 - ₹15,00,000",
-    type: "Full-time",
-    posted: "2024-01-13",
-    category: "fullstack",
-    skills: ["React", "Node.js", "MongoDB", "Express", "AWS"],
-    description: "Work on end-to-end application development using MERN stack.",
-    requirements: [
-      "3-6 years of full stack experience",
-      "Proficiency in MERN stack",
-      "Experience with cloud services",
-    ],
-  },
-  {
-    id: 4,
-    title: "Machine Learning Engineer",
-    company: "Google",
-    location: "Hyderabad, Telangana, India",
-    salary: "₹25,00,000 - ₹45,00,000",
-    type: "Full-time",
-    posted: "2024-01-12",
-    category: "ai",
-    skills: ["Python", "TensorFlow", "PyTorch", "Deep Learning", "NLP"],
-    description: "Design and implement machine learning models for products used by billions.",
-    requirements: [
-      "4+ years of ML experience",
-      "Strong Python skills",
-      "Deep learning expertise",
-    ],
-  },
-  {
-    id: 5,
-    title: "DevOps Engineer",
-    company: "Accenture",
-    location: "Pune, Maharashtra, India",
-    salary: "₹10,00,000 - ₹18,00,000",
-    type: "Full-time",
-    posted: "2024-01-11",
-    category: "devops",
-    skills: ["AWS", "Docker", "Kubernetes", "Jenkins", "Terraform"],
-    description: "Implement CI/CD pipelines, manage cloud infrastructure.",
-    requirements: [
-      "4-7 years of DevOps experience",
-      "Strong AWS/Azure expertise",
-      "Infrastructure as Code experience",
-    ],
-  },
-]
+import { jobsDatabase, JobListing } from "@/lib/jobs-data"
 
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url)
   const category = searchParams.get("category")
   const search = searchParams.get("search")
+  const location = searchParams.get("location")
+  const locationType = searchParams.get("locationType")
+  const employmentType = searchParams.get("employmentType")
+  const experienceLevel = searchParams.get("experienceLevel")
+  const company = searchParams.get("company")
   const page = parseInt(searchParams.get("page") || "1")
-  const limit = parseInt(searchParams.get("limit") || "10")
+  const limit = parseInt(searchParams.get("limit") || "20")
 
   let filteredJobs = [...jobsDatabase]
 
@@ -103,14 +20,47 @@ export async function GET(req: NextRequest) {
     filteredJobs = filteredJobs.filter(job => job.category === category)
   }
 
-  // Filter by search query
+  // Filter by location type (Remote, Hybrid, On-site)
+  if (locationType && locationType !== "all") {
+    filteredJobs = filteredJobs.filter(job => job.locationType === locationType)
+  }
+
+  // Filter by employment type
+  if (employmentType && employmentType !== "all") {
+    filteredJobs = filteredJobs.filter(job => job.employmentType === employmentType)
+  }
+
+  // Filter by experience level
+  if (experienceLevel && experienceLevel !== "all") {
+    filteredJobs = filteredJobs.filter(job => job.experienceLevel === experienceLevel)
+  }
+
+  // Filter by company
+  if (company) {
+    const companyQuery = company.toLowerCase()
+    filteredJobs = filteredJobs.filter(job => 
+      job.company.toLowerCase().includes(companyQuery)
+    )
+  }
+
+  // Filter by location (city/country)
+  if (location) {
+    const locationQuery = location.toLowerCase()
+    filteredJobs = filteredJobs.filter(job =>
+      job.location.toLowerCase().includes(locationQuery)
+    )
+  }
+
+  // Filter by search query (title, company, skills, description)
   if (search) {
     const query = search.toLowerCase()
     filteredJobs = filteredJobs.filter(job =>
       job.title.toLowerCase().includes(query) ||
       job.company.toLowerCase().includes(query) ||
       job.skills.some(skill => skill.toLowerCase().includes(query)) ||
-      job.location.toLowerCase().includes(query)
+      job.location.toLowerCase().includes(query) ||
+      job.aboutJob.toLowerCase().includes(query) ||
+      job.industry.toLowerCase().includes(query)
     )
   }
 
@@ -119,6 +69,12 @@ export async function GET(req: NextRequest) {
   const startIndex = (page - 1) * limit
   const endIndex = startIndex + limit
   const paginatedJobs = filteredJobs.slice(startIndex, endIndex)
+
+  // Get unique values for filters
+  const categories = [...new Set(jobsDatabase.map(job => job.category))]
+  const locations = [...new Set(jobsDatabase.map(job => job.location))].slice(0, 50)
+  const companies = [...new Set(jobsDatabase.map(job => job.company))].slice(0, 100)
+  const industries = [...new Set(jobsDatabase.map(job => job.industry))]
 
   return NextResponse.json({
     jobs: paginatedJobs,
@@ -129,26 +85,49 @@ export async function GET(req: NextRequest) {
       totalPages: Math.ceil(total / limit),
       hasMore: endIndex < total,
     },
+    filters: {
+      categories,
+      locations,
+      companies,
+      industries,
+      locationTypes: ["Remote", "Hybrid", "On-site"],
+      employmentTypes: ["Full-time", "Part-time", "Contract", "Internship", "Freelance"],
+      experienceLevels: ["Entry level", "Associate", "Mid-Senior level", "Director", "Executive"]
+    }
   })
 }
 
+// Get single job by ID
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json()
-    const { jobId, applicantData } = body
-
-    // In production, this would save to a database
-    console.log("Job application received:", { jobId, applicantData })
-
-    return NextResponse.json({
-      success: true,
-      message: "Application submitted successfully",
-      applicationId: `APP-${Date.now()}`,
-    })
+    
+    // If requesting a specific job
+    if (body.jobId) {
+      const job = jobsDatabase.find(j => j.id === body.jobId)
+      if (!job) {
+        return NextResponse.json({ error: "Job not found" }, { status: 404 })
+      }
+      return NextResponse.json({ job })
+    }
+    
+    // If submitting a job application
+    if (body.applicantData) {
+      const { jobId, applicantData } = body
+      console.log("Job application received:", { jobId, applicantData })
+      
+      return NextResponse.json({
+        success: true,
+        message: "Application submitted successfully",
+        applicationId: `APP-${Date.now()}`,
+      })
+    }
+    
+    return NextResponse.json({ error: "Invalid request" }, { status: 400 })
   } catch (error) {
-    console.error("Application error:", error)
+    console.error("API error:", error)
     return NextResponse.json(
-      { error: "Failed to submit application" },
+      { error: "Failed to process request" },
       { status: 500 }
     )
   }
