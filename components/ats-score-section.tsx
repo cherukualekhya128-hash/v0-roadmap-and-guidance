@@ -1,10 +1,11 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useRef } from "react"
 import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
 import { Badge } from "@/components/ui/badge"
 import { Progress } from "@/components/ui/progress"
+import { Input } from "@/components/ui/input"
 import {
   Table,
   TableBody,
@@ -21,7 +22,10 @@ import {
   Sparkles,
   TrendingUp,
   AlertTriangle,
-  Target
+  Target,
+  Upload,
+  FileUp,
+  Loader2
 } from "lucide-react"
 
 interface KeywordMatch {
@@ -113,6 +117,41 @@ export function ATSScoreSection() {
   const [keywords, setKeywords] = useState<KeywordMatch[]>(demoKeywords)
   const [isAnalyzing, setIsAnalyzing] = useState(false)
   const [hasAnalyzed, setHasAnalyzed] = useState(true) // Start with demo data shown
+  const [uploadedFileName, setUploadedFileName] = useState<string | null>(null)
+  const [isUploading, setIsUploading] = useState(false)
+  const fileInputRef = useRef<HTMLInputElement>(null)
+
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (!file) return
+
+    setIsUploading(true)
+    setUploadedFileName(file.name)
+
+    try {
+      const formData = new FormData()
+      formData.append("file", file)
+
+      const response = await fetch("/api/parse-resume", {
+        method: "POST",
+        body: formData,
+      })
+
+      if (!response.ok) {
+        const error = await response.json()
+        throw new Error(error.error || "Failed to parse file")
+      }
+
+      const data = await response.json()
+      setResumeText(data.text)
+    } catch (error) {
+      console.error("Upload error:", error)
+      setUploadedFileName(null)
+      alert(error instanceof Error ? error.message : "Failed to parse file")
+    } finally {
+      setIsUploading(false)
+    }
+  }
 
   const atsScore = calculateATSScore(keywords)
   const matchedKeywords = keywords.filter(k => k.inResume && k.inJobAd)
@@ -169,15 +208,61 @@ export function ATSScoreSection() {
         {/* Input Section */}
         <div className="mt-12 grid gap-6 lg:grid-cols-2">
           <div className="space-y-3">
-            <div className="flex items-center gap-2">
-              <FileText className="h-5 w-5 text-primary" />
-              <label className="font-medium text-foreground">Your Resume</label>
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <FileText className="h-5 w-5 text-primary" />
+                <label className="font-medium text-foreground">Your Resume</label>
+              </div>
+              <span className="text-xs text-muted-foreground">PDF, DOC, DOCX, or TXT</span>
             </div>
+            
+            {/* File Upload Area */}
+            <div
+              onClick={() => fileInputRef.current?.click()}
+              className="relative flex cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-border bg-card/50 p-6 transition-colors hover:border-primary/50 hover:bg-card"
+            >
+              <Input
+                ref={fileInputRef}
+                type="file"
+                accept=".pdf,.doc,.docx,.txt"
+                onChange={handleFileUpload}
+                className="hidden"
+              />
+              {isUploading ? (
+                <div className="flex flex-col items-center gap-2">
+                  <Loader2 className="h-8 w-8 animate-spin text-primary" />
+                  <span className="text-sm text-muted-foreground">Parsing resume...</span>
+                </div>
+              ) : uploadedFileName ? (
+                <div className="flex flex-col items-center gap-2">
+                  <FileUp className="h-8 w-8 text-primary" />
+                  <span className="text-sm font-medium text-foreground">{uploadedFileName}</span>
+                  <span className="text-xs text-muted-foreground">Click to upload a different file</span>
+                </div>
+              ) : (
+                <div className="flex flex-col items-center gap-2">
+                  <Upload className="h-8 w-8 text-muted-foreground" />
+                  <span className="text-sm font-medium text-foreground">Upload Resume</span>
+                  <span className="text-xs text-muted-foreground">Click or drag and drop</span>
+                </div>
+              )}
+            </div>
+
+            {/* Or divider */}
+            <div className="flex items-center gap-3">
+              <div className="h-px flex-1 bg-border" />
+              <span className="text-xs text-muted-foreground">or paste text</span>
+              <div className="h-px flex-1 bg-border" />
+            </div>
+
             <Textarea
               placeholder="Paste your resume text here..."
-              className="min-h-[200px] resize-none border-border bg-card text-foreground placeholder:text-muted-foreground"
+              className="min-h-[150px] resize-none border-border bg-card text-foreground placeholder:text-muted-foreground"
               value={resumeText}
-              onChange={(e) => setResumeText(e.target.value)}
+              onChange={(e) => {
+                setResumeText(e.target.value)
+                if (e.target.value !== resumeText) setUploadedFileName(null)
+              }}
             />
           </div>
           <div className="space-y-3">
