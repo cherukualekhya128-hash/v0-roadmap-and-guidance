@@ -8,7 +8,8 @@ const navLinks = [
   { label: "Features", href: "/#features" },
   { label: "Jobs", href: "/#jobs" },
   { label: "ATS Score", href: "/#ats-score" },
-  { label: "Research Assistant", href: "/research" },
+  { label: "Try Demo", href: "/demo" },
+  { label: "Research", href: "/research" },
 ]
 
 export function Navbar() {
