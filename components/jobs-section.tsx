@@ -47,6 +47,7 @@ import {
   Filter,
 } from "lucide-react"
 import type { JobListing } from "@/lib/jobs-data"
+import { ResumeJobMatcher } from "./resume-job-matcher"
 
 // Job categories with their icons
 const jobCategories = [
@@ -188,6 +189,15 @@ export function JobsSection() {
           </p>
         </div>
 
+        {/* Resume Job Matcher */}
+        <ResumeJobMatcher 
+          onJobSelect={(job) => {
+            setSelectedJob(job)
+            // Scroll to the jobs detail section
+            document.getElementById("jobs-detail")?.scrollIntoView({ behavior: "smooth", block: "start" })
+          }}
+        />
+
         {/* Search and Filters */}
         <div className="mb-6 space-y-4">
           {/* Search Bar */}
@@ -302,7 +312,7 @@ export function JobsSection() {
         </div>
 
         {/* Jobs Layout - List + Detail */}
-        <div className="grid gap-6 lg:grid-cols-5">
+        <div id="jobs-detail" className="grid gap-6 lg:grid-cols-5">
           {/* Jobs List */}
           <div className="lg:col-span-2">
             <ScrollArea className="h-[700px] pr-4">
