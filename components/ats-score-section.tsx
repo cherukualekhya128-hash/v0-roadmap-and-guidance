@@ -117,12 +117,20 @@ function getCategoryBadge(category: string) {
   }
 }
 
+interface ResumeSkill {
+  keyword: string
+  category: KeywordMatch["category"]
+  importance: KeywordMatch["importance"]
+}
+
 export function ATSScoreSection() {
   const [resumeText, setResumeText] = useState("")
   const [jobAdText, setJobAdText] = useState("")
   const [keywords, setKeywords] = useState<KeywordMatch[]>([])
+  const [resumeSkills, setResumeSkills] = useState<ResumeSkill[]>([])
   const [isAnalyzing, setIsAnalyzing] = useState(false)
   const [hasAnalyzed, setHasAnalyzed] = useState(false) // Start with no analysis
+  const [hasResumeSkills, setHasResumeSkills] = useState(false) // Track if we have extracted resume skills
   const [uploadedFileName, setUploadedFileName] = useState<string | null>(null)
   const [isUploading, setIsUploading] = useState(false)
   const fileInputRef = useRef<HTMLInputElement>(null)
@@ -150,10 +158,13 @@ export function ATSScoreSection() {
 
       const data = await response.json()
       setResumeText(data.text)
+      setIsUploading(false)
       
-      // Auto-analyze if job description is already provided
+      // Always extract and show resume skills immediately after upload
+      await extractResumeSkills(data.text)
+      
+      // If job description is provided, also do full analysis
       if (jobAdText.trim()) {
-        setIsUploading(false)
         await runAnalysis(data.text, jobAdText)
       }
     } catch (error) {
@@ -280,6 +291,38 @@ export function ATSScoreSection() {
       const regex = new RegExp(`\\b${variant.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`, 'i')
       return regex.test(lowerText) || lowerText.includes(variant.toLowerCase())
     })
+  }
+
+  // Extract skills from resume only (for immediate feedback after upload)
+  const extractResumeSkills = async (resume: string) => {
+    if (!resume.trim()) return
+    
+    setIsAnalyzing(true)
+    await new Promise(resolve => setTimeout(resolve, 500))
+    
+    const extractedSkills: ResumeSkill[] = []
+    
+    for (const kw of keywordDatabase) {
+      const inResume = checkKeywordPresence(resume, [kw.keyword.toLowerCase(), ...kw.variants])
+      
+      if (inResume) {
+        extractedSkills.push({
+          keyword: kw.keyword,
+          category: kw.category,
+          importance: kw.importance,
+        })
+      }
+    }
+    
+    // Sort by importance (high first)
+    const sortedSkills = extractedSkills.sort((a, b) => {
+      const importanceOrder = { high: 0, medium: 1, low: 2 }
+      return importanceOrder[a.importance] - importanceOrder[b.importance]
+    })
+    
+    setResumeSkills(sortedSkills)
+    setHasResumeSkills(true)
+    setIsAnalyzing(false)
   }
 
   // Reusable analysis function that can be called with custom text
@@ -423,7 +466,7 @@ export function ATSScoreSection() {
         </div>
 
         {/* Initial Score Display - Before Analysis */}
-        {!hasAnalyzed && (
+        {!hasAnalyzed && !hasResumeSkills && (
           <div className="mt-12">
             <div className="mx-auto max-w-md rounded-xl border border-border bg-card p-8 text-center">
               <div className="text-6xl font-bold text-muted-foreground">0%</div>
@@ -431,6 +474,93 @@ export function ATSScoreSection() {
                 Upload your resume and paste a job description to calculate your ATS score
               </p>
               <Progress value={0} className="mt-4 h-3" />
+            </div>
+          </div>
+        )}
+
+        {/* Resume Skills Display - After Resume Upload but before full analysis */}
+        {!hasAnalyzed && hasResumeSkills && resumeSkills.length > 0 && (
+          <div className="mt-12 space-y-6">
+            <div className="rounded-xl border border-border bg-card p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h3 className="text-lg font-semibold text-foreground">Skills Found in Your Resume</h3>
+                  <p className="mt-1 text-sm text-muted-foreground">
+                    We detected {resumeSkills.length} skills. Add a job description to see your ATS match score.
+                  </p>
+                </div>
+                <div className="flex h-16 w-16 items-center justify-center rounded-full border-4 border-primary/20 bg-primary/10">
+                  <span className="text-2xl font-bold text-primary">{resumeSkills.length}</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Skills by Category */}
+            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+              {(["technical", "tool", "soft", "certification"] as const).map((category) => {
+                const categorySkills = resumeSkills.filter(s => s.category === category)
+                if (categorySkills.length === 0) return null
+                
+                const categoryLabels = {
+                  technical: { label: "Technical Skills", color: "text-primary border-primary/50" },
+                  tool: { label: "Tools & Frameworks", color: "text-cyan-500 border-cyan-500/50" },
+                  soft: { label: "Soft Skills", color: "text-purple-500 border-purple-500/50" },
+                  certification: { label: "Certifications", color: "text-orange-500 border-orange-500/50" },
+                }
+                
+                return (
+                  <div key={category} className="rounded-lg border border-border bg-card/50 p-4">
+                    <h4 className={`mb-3 text-sm font-semibold ${categoryLabels[category].color.split(" ")[0]}`}>
+                      {categoryLabels[category].label} ({categorySkills.length})
+                    </h4>
+                    <div className="flex flex-wrap gap-1.5">
+                      {categorySkills.map((skill) => (
+                        <Badge
+                          key={skill.keyword}
+                          variant="outline"
+                          className={`text-xs ${categoryLabels[category].color}`}
+                        >
+                          {skill.keyword}
+                        </Badge>
+                      ))}
+                    </div>
+                  </div>
+                )
+              })}
+            </div>
+
+            {/* Skills Table */}
+            <div className="rounded-xl border border-border bg-card">
+              <div className="border-b border-border p-4">
+                <h3 className="font-semibold text-foreground">Your Skills Breakdown</h3>
+              </div>
+              <div className="max-h-[300px] overflow-auto">
+                <Table>
+                  <TableHeader>
+                    <TableRow className="border-border hover:bg-transparent">
+                      <TableHead className="text-muted-foreground">Skill</TableHead>
+                      <TableHead className="text-muted-foreground">Category</TableHead>
+                      <TableHead className="text-muted-foreground">Market Value</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {resumeSkills.map((skill) => (
+                      <TableRow key={skill.keyword} className="border-border">
+                        <TableCell className="font-medium text-foreground">{skill.keyword}</TableCell>
+                        <TableCell>{getCategoryBadge(skill.category)}</TableCell>
+                        <TableCell>{getImportanceBadge(skill.importance)}</TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </div>
+            </div>
+
+            <div className="rounded-lg border border-primary/30 bg-primary/5 p-4 text-center">
+              <p className="text-sm text-foreground">
+                <Sparkles className="mr-2 inline h-4 w-4 text-primary" />
+                Paste a job description above to see how your skills match and get your ATS score
+              </p>
             </div>
           </div>
         )}
@@ -451,7 +581,9 @@ export function ATSScoreSection() {
                 ? "Please provide your resume and a job description"
                 : !resumeText.trim() 
                   ? "Please upload or paste your resume"
-                  : "Please paste a job description"}
+                  : hasResumeSkills 
+                    ? `${resumeSkills.length} skills detected - add a job description to calculate ATS score`
+                    : "Please paste a job description"}
             </p>
           )}
         </div>
